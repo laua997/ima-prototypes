@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-inter-face), "Inter", sans-serif;
+  --font-pixel: var(--font-pixel-face), ui-monospace, monospace;
+  --font-grotesk: var(--font-grotesk-face), "Space Grotesk", sans-serif;
+  --font-fraunces: var(--font-fraunces-face), Georgia, serif;
+  --font-outfit: var(--font-outfit-face), "Outfit", sans-serif;
+  --font-baskerville: var(--font-baskerville-face), Georgia, serif;
+  --font-plex: var(--font-plex-face), "IBM Plex Sans", sans-serif;
+  --color-ink: #1c1915;
+  --color-paper: #f3efe6;
+  --color-butter: #e2b340;
+  --color-vermilion: #8e2a1c;
+  --color-cobalt: #1d4e89;
+  --color-bench: #d7d0c3;
+}
+
+:root {
+  color-scheme: light;
+  --background: #f3efe6;
+  --foreground: #1c1915;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 2px solid #1c1915;
+  outline-offset: 3px;
+}
+
+.nudge-glow {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.9),
+    0 0 22px 6px rgba(150, 198, 96, 0.45),
+    0 0 54px 18px rgba(176, 214, 120, 0.28);
+}
+
+.print-sheet {
+  width: min(8.5in, calc(100% - 1.5rem));
+  min-height: 11in;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 1fr;
+  gap: 0.18in;
+  padding: 0.4in;
+  margin-bottom: 1.25rem;
+}
+
+.deck-card {
+  position: relative;
+  display: flex;
+  min-height: 4.4in;
+  flex-direction: column;
+  border: 1px dashed #1b1a17;
+  padding: 0.16in 0.18in 0.2in;
+  background: white;
+}
+
+.deck-card::before,
+.deck-card::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: #1d4e89;
+  border-style: solid;
+}
+
+.deck-card::before {
+  top: 4px;
+  left: 4px;
+  border-width: 1px 0 0 1px;
+}
+
+.deck-card::after {
+  right: 4px;
+  bottom: 4px;
+  border-width: 0 1px 1px 0;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  .print-sheet {
+    width: 8.5in;
+    height: 11in;
+    min-height: 11in;
+    margin: 0;
+    box-shadow: none !important;
+    break-after: page;
+  }
+
+  .deck-card {
+    break-inside: avoid;
+  }
+}
+
+@page {
+  size: letter;
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nudge-glow {
+    box-shadow: 0 0 0 1px rgba(28, 25, 21, 0.12);
+  }
+}
