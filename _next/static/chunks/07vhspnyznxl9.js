@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,56254,e=>{"use strict";var t=e.i(43476),i=e.i(1127);e.s(["FieldScreen",0,function(){return(0,t.jsx)(i.f,{})}])}]);

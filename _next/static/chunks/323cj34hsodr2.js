@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,91181,t=>{"use strict";var e=t.i(43476),c=t.i(1127);t.s(["PlateScreen",0,function({id:t}){return(0,e.jsx)(c.f,{plateId:t})}])}]);
