@@ -152,6 +152,9 @@ img{max-width:100%}
 #popup .row{display:flex;gap:8px;justify-content:flex-end;align-items:center}
 #popup .hint{margin:0;font-size:13px;color:#c8c8c8;line-height:1.4}
 #popup .warn{margin:0;color:var(--pink);font-size:12px}
+#popup .foot{display:flex;align-items:center;justify-content:space-between;gap:12px}
+#popup .btn.end{background:transparent;color:#fff;padding:5px 10px;font-size:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
+#popup .btn.end:hover{box-shadow:inset 0 0 0 1px var(--pink);color:#fff}
 #copybox .btn{border:1px solid #000;border-radius:2px;padding:6px 10px;font:400 12px/1 var(--ui);letter-spacing:0;cursor:pointer;background:#fff;color:#000;box-shadow:none}
 #copybox .btn:hover{background:#000;color:#fff}
 #map .btn,#detail .btn{border:1px solid #fff;border-radius:2px;padding:6px 10px;font:400 12px/1 var(--ui);letter-spacing:0;cursor:pointer;background:transparent;color:#fff;box-shadow:none}
@@ -340,6 +343,32 @@ body.picking,body.picking img.photo{cursor:crosshair}
 #detail .btn.pink:hover,#zoom .btn.pink:hover{background:var(--pink);color:#fff;box-shadow:0 6px 22px rgba(255,45,111,.22)}
 #detail .btn.line{border:0;border-radius:999px;background:transparent;color:#fff;padding:8px 14px;font:400 14px/1 var(--ui);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
 #detail .btn.line:hover{background:#fff;color:#111}
+#summary{position:fixed;inset:0;z-index:110;background:rgba(0,0,0,.55);display:grid;place-items:center;padding:24px;opacity:0;transition:opacity 240ms cubic-bezier(.16,1,.3,1)}
+#summary.on{opacity:1}
+#summary .sheet{width:min(520px,calc(100vw - 48px));max-height:calc(100vh - 48px);overflow:auto;background:#111;border:0;border-radius:22px;padding:28px;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.28);display:grid;gap:12px;align-content:start;font-family:var(--ui);letter-spacing:0;transform:translateY(10px) scale(.97);transition:transform 240ms cubic-bezier(.16,1,.3,1)}
+#summary.on .sheet{transform:none}
+#summary h2{margin:0;font:500 18px/1.3 var(--ui);letter-spacing:0;color:#fff}
+#summary .fact{display:grid;gap:2px}
+#summary .fact span{font-size:11px;line-height:1.3;color:#c8c8c8}
+#summary .fact p,#summary .plain{margin:0;font-size:14px;line-height:1.35;color:#fff}
+#summary .fact p + p{margin-top:8px}
+#summary .name{width:100%;border:0;box-shadow:inset 0 0 0 1px #2a2a2a;border-radius:12px;padding:8px 10px;font:400 14px/1.4 var(--ui);letter-spacing:0;background:#141414;color:#fff}
+#summary .name:focus{outline:2px solid var(--pink);outline-offset:1px}
+#summary .saved{display:grid;gap:10px;margin-top:8px}
+#summary .saved-item{display:flex;gap:12px;align-items:center;min-width:0}
+#summary .saved-item img,#summary .quote-tile{width:52px;height:68px;border-radius:12px;background:#141414;flex:none}
+#summary .saved-item img{object-fit:cover;display:block}
+#summary .quote-tile{display:flex;align-items:center;justify-content:center;font:500 28px/1 var(--ui);color:#fff}
+#summary .saved-item .copy{min-width:0}
+#summary .saved-item b{display:block;font-weight:500;font-size:14px;line-height:1.35;color:#fff}
+#summary .saved-item .src{display:block;margin-top:2px;font-size:12px;line-height:1.35;color:#c8c8c8}
+#summary .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+#summary .row{display:flex;gap:8px;justify-content:flex-end;align-items:center;margin-top:4px}
+#summary .btn{cursor:pointer;font-family:var(--ui);letter-spacing:0}
+#summary .btn.pink{border:0;border-radius:999px;background:var(--pink);color:#fff;padding:8px 14px;font:400 14px/1 var(--ui);box-shadow:0 4px 18px rgba(255,45,111,.16)}
+#summary .btn.pink:hover{box-shadow:0 6px 22px rgba(255,45,111,.22)}
+#summary .btn.line{border:0;border-radius:999px;background:transparent;color:#fff;padding:8px 14px;font:400 14px/1 var(--ui);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
+#summary .btn.line:hover{background:#fff;color:#111}
 #zoom{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:24px;opacity:0;transition:opacity 240ms cubic-bezier(.16,1,.3,1)}
 #zoom.on{opacity:1}
 #zoom .zoom-card{width:min(720px,100%);max-height:calc(100vh - 48px);overflow:auto;background:#111;color:#fff;border-radius:22px;padding:16px;display:grid;gap:12px;box-shadow:0 10px 30px rgba(0,0,0,.28);font-family:var(--ui);transform:translateY(10px) scale(.97);transition:transform 240ms cubic-bezier(.16,1,.3,1)}
@@ -364,7 +393,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
 }
 @media (prefers-reduced-motion:reduce){
   .reel.play img,.map-card{animation:none;transform:none}
-  #detail,#detail .sheet,#zoom,#zoom .zoom-card,.map-card{transition:none}
+  #detail,#detail .sheet,#zoom,#zoom .zoom-card,#summary,#summary .sheet,.map-card{transition:none}
 }
 </style>
 </head>
@@ -427,6 +456,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
 <div id="marquee" hidden></div>
 <div id="map" hidden></div>
 <div id="detail" hidden></div>
+<div id="summary" hidden></div>
 <div id="zoom" hidden></div>
 <div id="toast" hidden role="status"></div>
 <div id="copybox" hidden></div>
@@ -683,6 +713,8 @@ body.picking,body.picking img.photo{cursor:crosshair}
   var seedReady = false;
   var makingProject = false;
   var newProjectDraft = "";
+  var summary = null;
+  var summarySeq = 0;
 
   function cloneData(v) { return JSON.parse(JSON.stringify(v)); }
   function freshState() {
@@ -728,6 +760,11 @@ body.picking,body.picking img.photo{cursor:crosshair}
   }
   function liveSaves() {
     return currentProject().saves.filter(function (s) { return s.session === "This session"; });
+  }
+  function markSessionOn() {
+    if (!state.active || !state.startedAt) state.startedAt = Date.now();
+    state.active = true;
+    state.dismissed = false;
   }
   function createProject(name) {
     var project = { id: "p-" + Date.now(), name: name, sessions: [], saves: [], stickies: [], links: [], spots: {}, headings: [], labelPos: {}, labelLayout: 3, zoom: 1 };
@@ -951,7 +988,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     } else {
       var textBtn = textSel ? '<div class="row"><button class="btn line" id="save-text" type="button">Save selected text</button></div>' : "";
       var textHint = (!textSel && tab === "sub") ? '<p class="clip-hint">Highlight text to save it</p>' : "";
-      html = '<div class="island"><div class="live"><i class="dotp"></i><p class="q">Session on</p><span class="count" id="save-count">' + n + " saved</span></div>" + projectField("live-project") + textHint + textBtn + "<div class=\"row\"><button class=\"btn line\" id=\"save-detail\" type=\"button\">Save a detail</button><button class=\"btn pink\" id=\"open-map\" type=\"button\">Open map</button></div><button class=\"btn text\" id=\"reset-sample\" type=\"button\">Reset sample</button></div>";
+      html = '<div class="island"><div class="live"><i class="dotp"></i><p class="q">Session on</p><span class="count" id="save-count">' + n + " saved</span></div>" + projectField("live-project") + textHint + textBtn + "<div class=\"row\"><button class=\"btn line\" id=\"save-detail\" type=\"button\">Save a detail</button><button class=\"btn pink\" id=\"open-map\" type=\"button\">Open map</button></div><div class=\"foot\"><button class=\"btn text\" id=\"reset-sample\" type=\"button\">Reset sample</button><button class=\"btn end\" id=\"end-session\" type=\"button\">End session</button></div></div>";
     }
     root.classList.toggle("review", mode === "review");
     root.innerHTML = html;
@@ -1718,7 +1755,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
   }
 
   function startPick() {
-    if (!state.active) { state.active = true; state.dismissed = false; persist(); }
+    if (!state.active) { markSessionOn(); persist(); }
     mode = "pick";
     document.body.classList.add("picking");
     document.getElementById("veil").hidden = true;
@@ -1792,7 +1829,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
         tag: draft.tag,
         note: draft.note
       });
-      state.active = true;
+      markSessionOn();
       persist();
       draft = null;
       textSel = "";
@@ -1822,7 +1859,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
       tag: draft.tag,
       note: draft.note
     });
-    state.active = true;
+    markSessionOn();
     persist();
     draft = null;
     mode = "live";
@@ -1830,10 +1867,201 @@ body.picking,body.picking img.photo{cursor:crosshair}
     toast("Saved to " + savedName);
     if (view === "profile") renderCenter();
   }
+  function sessionStamp(date) {
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return "Session, " + months[date.getMonth()] + " " + date.getDate();
+  }
+  function uniqueSessionName(project, base) {
+    var names = {};
+    (project.sessions || []).forEach(function (s) {
+      if (s && s.name && s.name !== "This session") names[s.name] = true;
+    });
+    (project.saves || []).forEach(function (s) {
+      if (s.session && s.session !== "This session") names[s.session] = true;
+    });
+    if (!names[base]) return base;
+    var n = 2;
+    while (names[base + ", " + n]) n += 1;
+    return base + ", " + n;
+  }
+  function renameSession(project, from, to) {
+    if (!from || !to || from === to) return;
+    (project.saves || []).forEach(function (s) { if (s.session === from) s.session = to; });
+    if (!project.sessions) project.sessions = [];
+    var found = false;
+    project.sessions.forEach(function (s) {
+      if (s && s.name === from) { s.name = to; found = true; }
+    });
+    if (!found) project.sessions.push({ name: to });
+    var seen = {};
+    project.sessions = project.sessions.filter(function (s) {
+      if (!s || !s.name || s.name === "This session" || seen[s.name]) return false;
+      seen[s.name] = true;
+      return true;
+    });
+    if (project.labelPos) {
+      var oldKey = labelKey("session", from);
+      var nextKey = labelKey("session", to);
+      if (project.labelPos[oldKey] && !project.labelPos[nextKey]) project.labelPos[nextKey] = project.labelPos[oldKey];
+      delete project.labelPos[oldKey];
+    }
+  }
+  function formatLength(ms) {
+    if (!ms || ms < 0) return "Not recorded";
+    var mins = Math.round(ms / 60000);
+    if (mins < 1) {
+      var secs = Math.max(1, Math.round(ms / 1000));
+      return secs === 1 ? "1 second" : secs + " seconds";
+    }
+    if (mins < 60) return mins === 1 ? "1 minute" : mins + " minutes";
+    var hours = Math.floor(mins / 60);
+    var rem = mins % 60;
+    var hourLabel = hours === 1 ? "1 hour" : hours + " hours";
+    if (!rem) return hourLabel;
+    return hourLabel + " " + (rem === 1 ? "1 minute" : rem + " minutes");
+  }
+  function summaryProject() {
+    if (!summary) return null;
+    return (state.projects || []).filter(function (p) { return p.id === summary.projectId; })[0] || null;
+  }
+  function summarySaves() {
+    var project = summaryProject();
+    if (!project || !summary.name) return [];
+    return (project.saves || []).filter(function (s) { return s.session === summary.name; });
+  }
+  function applySummaryName(next) {
+    if (!summary || !summary.name) return;
+    next = String(next || "").replace(/\s+/g, " ").trim();
+    if (!next || next === "This session") next = summary.name;
+    if (next === summary.name) return;
+    var project = summaryProject();
+    if (!project) return;
+    renameSession(project, summary.name, next);
+    summary.name = next;
+    persist();
+    var input = document.getElementById("summary-name");
+    if (input && input.value.trim() !== next) input.value = next;
+  }
+  function summaryItem(item) {
+    var who = accountLine(item);
+    var site = item.site || "Instagram";
+    var source = esc(who) + " · " + esc(site);
+    if (item.quote) {
+      return '<div class="saved-item"><div class="quote-tile" aria-hidden="true">“</div><div class="copy"><b>“' + esc(item.quote) + '”</b><span class="src">' + source + "</span></div></div>";
+    }
+    var title = item.title || item.caption || "Saved image";
+    return '<div class="saved-item"><img src="' + esc(item.crop || item.image) + '" alt=""><div class="copy"><b>' + esc(excerpt(title, 80)) + "</b><span class=\"src\">" + source + "</span></div></div>";
+  }
+  function renderSummary() {
+    var el = document.getElementById("summary");
+    if (!summary) { hideSummary(); return; }
+    var project = summaryProject();
+    var saves = summarySaves();
+    var length = formatLength(summary.started ? summary.ended - summary.started : 0);
+    var projectName = project ? project.name : "Project";
+    var body = fact("Length", "<p>" + esc(length) + "</p>") + fact("Project", "<p>" + esc(projectName) + "</p>");
+    if (!saves.length) {
+      body = '<p class="plain">Nothing was saved in this session.</p>' + body + fact("Saved", "<p>0 details</p>");
+    } else {
+      var tags = {};
+      var tagOrder = [];
+      var sites = [];
+      var accounts = [];
+      var notes = [];
+      saves.forEach(function (item) {
+        var tag = item.tag || "no tag";
+        if (!tags[tag]) { tags[tag] = 0; tagOrder.push(tag); }
+        tags[tag] += 1;
+        var site = item.site || "Instagram";
+        if (sites.indexOf(site) < 0) sites.push(site);
+        var account = accountKey(item);
+        if (accounts.indexOf(account) < 0) accounts.push(account);
+        if ((item.note || "").trim()) notes.push(item.note.trim());
+      });
+      var count = saves.length === 1 ? "1 detail" : saves.length + " details";
+      body = '<label class="fact"><span>Session name</span><input id="summary-name" class="name" type="text" maxlength="60" value="' + esc(summary.name) + '" aria-label="Session name"></label>' +
+        body +
+        fact("Saved", "<p>" + count + '</p><div class="saved">' + saves.map(summaryItem).join("") + "</div>") +
+        fact("Tags", '<div class="pills">' + tagOrder.map(function (tag) {
+          var bg = tag === "no tag" ? "#2a2a2a" : cardColor({ tag: tag, id: "tag:" + tag });
+          return '<span class="tag-pill" style="background:' + bg + ";color:" + tagInk(bg) + '">' + esc(tag) + " " + tags[tag] + "</span>";
+        }).join("") + "</div>") +
+        fact("Sites", "<p>" + esc(sites.join(", ")) + "</p>") +
+        fact("Accounts", "<p>" + esc(accounts.join(", ")) + "</p>") +
+        fact("Notes", notes.length ? notes.map(function (note) { return "<p>" + esc(note) + "</p>"; }).join("") : "<p>No notes.</p>");
+    }
+    el.innerHTML = '<div class="sheet" role="dialog" aria-label="Session summary"><h2>Session summary</h2>' + body +
+      '<div class="row"><button class="btn line" id="summary-close" type="button">Close</button><button class="btn pink" id="summary-map" type="button">Open map</button></div></div>';
+    showSummary();
+  }
+  function showSummary() {
+    var el = document.getElementById("summary");
+    summarySeq += 1;
+    el.hidden = false;
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { el.classList.add("on"); });
+    });
+  }
+  function hideSummary() {
+    var el = document.getElementById("summary");
+    if (!el || el.hidden) { summary = null; return; }
+    var gen = ++summarySeq;
+    el.classList.remove("on");
+    summary = null;
+    setTimeout(function () {
+      if (gen !== summarySeq || el.classList.contains("on")) return;
+      el.hidden = true;
+      el.innerHTML = "";
+    }, 260);
+  }
+  function endSession() {
+    if (!state.active) return;
+    var project = currentProject();
+    var started = state.startedAt || 0;
+    var ended = Date.now();
+    var named = "";
+    (state.projects || []).forEach(function (p) {
+      var has = (p.saves || []).some(function (s) { return s.session === "This session"; });
+      if (!has) {
+        p.sessions = (p.sessions || []).filter(function (s) { return s && s.name !== "This session"; });
+        return;
+      }
+      var name = uniqueSessionName(p, sessionStamp(new Date(ended)));
+      renameSession(p, "This session", name);
+      if (p.id === project.id) named = name;
+    });
+    state.active = false;
+    state.startedAt = 0;
+    state.dismissed = false;
+    makingProject = false;
+    newProjectDraft = "";
+    draft = null;
+    persist();
+    mode = "ask";
+    document.body.classList.remove("picking");
+    renderPopup();
+    if (view === "profile") renderCenter();
+    var map = document.getElementById("map");
+    if (map && !map.hidden) renderMap();
+    summary = { projectId: project.id, name: named, started: started, ended: ended };
+    renderSummary();
+  }
+  function openSummaryMap() {
+    var named = document.getElementById("summary-name");
+    if (named) applySummaryName(named.value);
+    var projectId = summary ? summary.projectId : state.projectId;
+    hideSummary();
+    if (projectId) state.projectId = projectId;
+    persist();
+    renderMap();
+  }
   function resetSample() {
     state = freshState();
     makingProject = false;
     newProjectDraft = "";
+    summary = null;
+    var sum = document.getElementById("summary");
+    if (sum) { sum.classList.remove("on"); sum.hidden = true; sum.innerHTML = ""; }
     mapTool = "select";
     linkFrom = null;
     selectedId = null;
@@ -1949,7 +2177,8 @@ body.picking,body.picking img.photo{cursor:crosshair}
   });
 
   document.getElementById("popup").addEventListener("click", function (e) {
-    if (e.target.id === "start-session") { if (!applyProjectChoice()) return; state.active = true; state.dismissed = false; persist(); mode = "live"; renderPopup(); return; }
+    if (e.target.id === "start-session") { if (!applyProjectChoice()) return; markSessionOn(); persist(); mode = "live"; renderPopup(); return; }
+    if (e.target.id === "end-session") { endSession(); return; }
     if (e.target.id === "create-project") { if (!applyProjectChoice()) return; renderPopup(); return; }
     if (e.target.id === "not-now") { state.dismissed = true; persist(); mode = "pill"; renderPopup(); return; }
     if (e.target.id === "reopen") { mode = state.active ? "live" : "ask"; renderPopup(); return; }
@@ -2231,6 +2460,17 @@ body.picking,body.picking img.photo{cursor:crosshair}
   document.getElementById("popup").addEventListener("mousedown", function (e) {
     if (e.target.id === "save-text") e.preventDefault();
   });
+  document.getElementById("summary").addEventListener("click", function (e) {
+    if (e.target.id === "summary-map") { openSummaryMap(); return; }
+    if (e.target.id === "summary-close" || e.target.id === "summary") {
+      var named = document.getElementById("summary-name");
+      if (named) applySummaryName(named.value);
+      hideSummary();
+    }
+  });
+  document.getElementById("summary").addEventListener("focusout", function (e) {
+    if (e.target.id === "summary-name") applySummaryName(e.target.value);
+  });
   document.getElementById("detail").addEventListener("click", function (e) {
     if (e.target.id === "open-source") { showSubPost(e.target.dataset.post); return; }
     if (e.target.id === "open-zoom" || e.target.closest("#open-zoom")) { openZoom(); return; }
@@ -2304,6 +2544,13 @@ body.picking,body.picking img.photo{cursor:crosshair}
       }
     }
     if (e.key === "Escape") {
+      var sum = document.getElementById("summary");
+      if (sum && !sum.hidden) {
+        var named = document.getElementById("summary-name");
+        if (named) applySummaryName(named.value);
+        hideSummary();
+        return;
+      }
       var editingHead = document.activeElement && document.activeElement.classList && document.activeElement.classList.contains("heading") && document.activeElement.isContentEditable;
       if (editingHead) { document.activeElement.blur(); return; }
       var zoom = document.getElementById("zoom");
