@@ -172,6 +172,32 @@ body.picking,body.picking img.photo{cursor:crosshair}
 .map-card .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin-top:8px}
 .map-card .tag,.map-card .site{display:inline-block;height:auto;background:#fff;color:#000;border:1px solid #000;border-radius:0;padding:2px 6px;font-size:11px;line-height:1.3}
 .map-card .note{display:block;margin-top:6px;font-size:12px;line-height:1.35;white-space:normal;color:#000}
+#map-links{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:0}
+#map-links .link-line{fill:none;stroke:#000;stroke-width:1;stroke-linecap:round}
+#map-links .link-hit{fill:none;stroke:transparent;stroke-width:14;pointer-events:none}
+#map[data-tool="remove"] #map-links .link-hit{pointer-events:stroke;cursor:pointer}
+.sticky{position:absolute;z-index:2;width:180px;min-height:96px;padding:10px 12px 12px;background:#fff;color:#000;border:1px solid #000;border-radius:2px;box-shadow:none;cursor:grab;touch-action:none;font-family:var(--ui)}
+.sticky.comment{width:168px;min-height:72px}
+.sticky.dragging{cursor:grabbing;z-index:4}
+.sticky-label{font-size:11px;font-weight:500;margin-bottom:6px}
+.sticky-text{min-height:48px;outline:none;font:400 14px/1.4 var(--ui);cursor:text;user-select:text;-webkit-user-select:text;white-space:pre-wrap;word-break:break-word}
+.sticky-text:empty::before{content:attr(data-ph);opacity:.45}
+.sticky.link-from,.map-card.link-from img{outline:2px solid #000;outline-offset:3px}
+#map[data-tool="note"] .map-viewport,#map[data-tool="connect"] .map-viewport,#map[data-tool="branch"] .map-viewport,#map[data-tool="comment"] .map-viewport,#map[data-tool="remove"] .map-viewport,
+#map[data-tool="note"] .map-card,#map[data-tool="connect"] .map-card,#map[data-tool="branch"] .map-card,#map[data-tool="comment"] .map-card,#map[data-tool="remove"] .map-card,
+#map[data-tool="note"] .sticky,#map[data-tool="connect"] .sticky,#map[data-tool="branch"] .sticky,#map[data-tool="comment"] .sticky,#map[data-tool="remove"] .sticky{cursor:crosshair}
+#map .tools-wrap{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:6;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;max-width:calc(100vw - 24px)}
+#map .tool-hint{margin:0;padding:6px 10px;background:#000;color:#fff;border:1px solid #000;border-radius:2px;box-shadow:none;font:400 12px/1.35 var(--ui);white-space:nowrap}
+#map .tools{pointer-events:auto;display:flex;align-items:center;justify-content:space-between;gap:2px;min-width:280px;height:50px;padding:6px;background:#fff;border:1px solid #000;border-radius:2px;box-shadow:none}
+#map .tools button{display:flex;align-items:center;justify-content:center;gap:6px;flex:none;width:36px;height:36px;border:0;border-radius:2px;background:#fff;color:#000;padding:0;box-shadow:none;font-family:var(--ui)}
+#map .tools button .tl{display:none;font:400 13px/1 var(--ui);letter-spacing:0}
+#map .tools button:hover{background:#000;color:#fff}
+#map .tools button[aria-pressed="true"]{width:auto;padding:0 12px 0 8px;background:#000;color:#fff}
+#map .tools button[aria-pressed="true"] .tl{display:block}
+@media (max-width:720px){
+  #map .tool-hint{white-space:normal;text-align:center}
+  #map .tools{min-width:0;width:100%}
+}
 .pinterest{height:100%;display:flex;flex-direction:column;background:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:#111}
 .pbar{display:flex;align-items:center;gap:8px;height:72px;padding:8px 16px;background:#fff;flex:none}
 .plogo{width:48px;height:48px;border:0;border-radius:50%;background:#e60023;color:#fff;font-weight:700;font-size:26px;line-height:1}
@@ -364,7 +390,10 @@ body.picking,body.picking img.photo{cursor:crosshair}
   var drag = null;
   var bubbleDrag = null;
   var mapPan = null;
+  var mapPress = null;
   var blockMapClick = false;
+  var mapTool = "select";
+  var linkFrom = null;
   var draft = null;
   var openCard = null;
   var seedReady = false;
@@ -697,7 +726,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     if (!canvas) return;
     var maxX = 1760;
     var maxY = 1280;
-    canvas.querySelectorAll(".map-card,.slab,.alab,.empty-hint").forEach(function (el) {
+    canvas.querySelectorAll(".map-card,.slab,.alab,.empty-hint,.sticky").forEach(function (el) {
       var x = parseFloat(el.style.left) || 0;
       var y = parseFloat(el.style.top) || 0;
       maxX = Math.max(maxX, x + el.offsetWidth + 96);
@@ -712,13 +741,185 @@ body.picking,body.picking img.photo{cursor:crosshair}
   function renderMap() {
     var map = document.getElementById("map");
     map.hidden = false;
-    map.innerHTML = '<div class="mapbar"><div class="logo">tangents</div><h1>Map</h1><button class="btn line" id="back-feed" type="button">Back to the feed</button><button class="btn line" id="copy-notes" type="button">Copy session notes</button><button class="btn text" id="reset-sample-map" type="button">Reset sample</button></div><div class="map-viewport"><div class="map-canvas" id="map-canvas">' +
+    map.innerHTML = '<div class="mapbar"><div class="logo">tangents</div><h1>Map</h1><button class="btn line" id="back-feed" type="button">Back to the feed</button><button class="btn line" id="copy-notes" type="button">Copy session notes</button><button class="btn text" id="reset-sample-map" type="button">Reset sample</button></div><div class="map-viewport"><div class="map-canvas" id="map-canvas"><svg id="map-links" aria-hidden="true"></svg>' +
       sessionMarkup("This session", state.saves) +
       sessionMarkup("Sunday study", SEEDS.filter(function (s) { return s.session === "Sunday study"; })) +
       sessionMarkup("Tuesday references", SEEDS.filter(function (s) { return s.session === "Tuesday references"; })) +
-      "</div></div>";
+      "</div></div>" + toolsMarkup();
     layoutLabels();
+    paintNotes();
     fitCanvas();
+    drawLinks();
+    setMapTool(mapTool);
+  }
+  var SEED_NOTES = [
+    { id: "seed-note-seam", x: 820, y: 300, text: "The seam is the part to keep.", kind: "note" },
+    { id: "seed-note-same", x: 300, y: 36, text: "Same gold, different ground.", kind: "note" }
+  ];
+  var SEED_LINKS = [
+    { a: "seed-studio.mending-Sunday study", b: "seed-blueground.studio-Sunday study" },
+    { a: "seed-goldseam-Sunday study", b: "seed-note-seam" },
+    { a: "seed-note-seam", b: "seed-note-same" }
+  ];
+  var TOOL_HINTS = {
+    note: "Click the canvas to place a note.",
+    connect: "Click the first item. Then click the item to connect.",
+    branch: "Click an item to add a linked note.",
+    comment: "Click the canvas to place a comment.",
+    remove: "Click a note or a line to remove it."
+  };
+  function boardNotes() { return Array.isArray(state.stickies) ? state.stickies : SEED_NOTES; }
+  function boardLinks() { return Array.isArray(state.links) ? state.links : SEED_LINKS; }
+  function ensureBoard() {
+    if (!Array.isArray(state.stickies)) state.stickies = SEED_NOTES.map(function (n) { return { id: n.id, x: n.x, y: n.y, text: n.text, kind: n.kind }; });
+    if (!Array.isArray(state.links)) state.links = SEED_LINKS.map(function (l) { return { a: l.a, b: l.b }; });
+  }
+  function toolsMarkup() {
+    function icon(path) { return '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.56" stroke-linecap="round" stroke-linejoin="round">' + path + "</svg>"; }
+    var noteIcon = '<svg width="22" height="18" viewBox="0 0 22 18" fill="#fff" stroke="currentColor" stroke-width="1.2"><rect x="1.2" y="4" width="9.5" height="12" rx="1.4" transform="rotate(-8 6 10)"/><rect x="11.2" y="3.2" width="9.5" height="12" rx="1.4" transform="rotate(8 16 9)"/><rect x="6" y="1.2" width="10" height="13" rx="1.4"/></svg>';
+    return '<div class="tools-wrap"><p class="tool-hint" id="tool-hint" hidden></p><div class="tools" role="toolbar" aria-label="Map tools">' +
+      '<button type="button" data-tool="select" aria-pressed="true" aria-label="Select" title="Select">' + icon('<path d="M2.7 3.1 13.8 7 8.7 9.1 7.7 13.8 2.7 3.1Z"/>') + '<span class="tl">Select</span></button>' +
+      '<button type="button" data-tool="note" aria-pressed="false" aria-label="Note" title="Note">' + noteIcon + '<span class="tl">Note</span></button>' +
+      '<button type="button" data-tool="connect" aria-pressed="false" aria-label="Connect" title="Connect">' + icon('<circle cx="12.7" cy="3.3" r="1.4"/><circle cx="3.3" cy="12.7" r="1.4"/><path d="M3.3 11.3C5.2 8.2 8.2 6 11.3 4.7"/>') + '<span class="tl">Connect</span></button>' +
+      '<button type="button" data-tool="branch" aria-pressed="false" aria-label="Branch off" title="Branch off">' + icon('<path d="M4 2v8"/><circle cx="12" cy="4" r="2"/><circle cx="4" cy="12" r="2"/><path d="M10 4C8.4 4 6.9 4.6 5.8 5.8 4.6 6.9 4 8.4 4 10"/><path d="M12 10v4M14 12H10"/>') + '<span class="tl">Branch off</span></button>' +
+      '<button type="button" data-tool="comment" aria-pressed="false" aria-label="Comment" title="Comment">' + icon('<path d="M4.9 3.8A5.3 5.3 0 0 1 12.2 11 5.3 5.3 0 0 1 5.6 12.6L2.6 13.4 3.4 11A5.3 5.3 0 0 1 4.9 3.8Z"/>') + '<span class="tl">Comment</span></button>' +
+      '<button type="button" data-tool="remove" aria-pressed="false" aria-label="Remove" title="Remove">' + icon('<path d="M2 4h12"/><path d="M12.7 4v9.3H3.3V4"/><path d="M5.3 4V2.7h5.4V4"/>') + '<span class="tl">Remove</span></button>' +
+      "</div></div>";
+  }
+  function setMapTool(t) {
+    mapTool = t || "select";
+    if (mapTool !== "connect") linkFrom = null;
+    document.querySelectorAll("#map .link-from").forEach(function (el) { el.classList.remove("link-from"); });
+    var map = document.getElementById("map");
+    if (map) map.dataset.tool = mapTool;
+    document.querySelectorAll("#map .tools button").forEach(function (btn) {
+      btn.setAttribute("aria-pressed", btn.dataset.tool === mapTool ? "true" : "false");
+    });
+    if (linkFrom) markLinkFrom();
+    var hint = document.getElementById("tool-hint");
+    if (!hint) return;
+    hint.textContent = TOOL_HINTS[mapTool] || "";
+    hint.hidden = !TOOL_HINTS[mapTool];
+  }
+  function markLinkFrom() {
+    document.querySelectorAll("#map .link-from").forEach(function (el) { el.classList.remove("link-from"); });
+    if (!linkFrom) return;
+    var el = itemEl(linkFrom);
+    if (el) el.classList.add("link-from");
+  }
+  function itemEl(id) {
+    if (!id || !window.CSS || !CSS.escape) return document.querySelector('[data-card="' + id + '"], [data-note="' + id + '"]');
+    var safe = CSS.escape(id);
+    return document.querySelector('.map-card[data-card="' + safe + '"], .sticky[data-note="' + safe + '"]');
+  }
+  function anchorOf(el) {
+    var x = parseFloat(el.style.left) || 0;
+    var y = parseFloat(el.style.top) || 0;
+    if (el.classList.contains("map-card")) return { x: x + 66, y: y + 56 };
+    return { x: x + el.offsetWidth / 2, y: y + el.offsetHeight / 2 };
+  }
+  function drawLinks() {
+    var svg = document.getElementById("map-links");
+    if (!svg) return;
+    svg.innerHTML = boardLinks().map(function (link, i) {
+      var a = itemEl(link.a);
+      var b = itemEl(link.b);
+      if (!a || !b) return "";
+      var p = anchorOf(a);
+      var q = anchorOf(b);
+      var d = "M" + p.x.toFixed(1) + " " + p.y.toFixed(1) + " L" + q.x.toFixed(1) + " " + q.y.toFixed(1);
+      return '<g class="link"><path class="link-hit" data-index="' + i + '" d="' + d + '"></path><path class="link-line" d="' + d + '"></path></g>';
+    }).join("");
+  }
+  function addNoteEl(note) {
+    var canvas = document.getElementById("map-canvas");
+    if (!canvas) return null;
+    var el = document.createElement("div");
+    el.className = "sticky" + (note.kind === "comment" ? " comment" : note.kind === "linked" ? " linked" : "");
+    el.dataset.note = note.id;
+    el.style.left = note.x + "px";
+    el.style.top = note.y + "px";
+    var label = note.kind === "comment" ? "Comment" : note.kind === "linked" ? "Linked note" : "";
+    var ph = note.kind === "comment" ? "Write a comment" : "Write a note";
+    el.innerHTML = (label ? '<div class="sticky-label">' + label + "</div>" : "") + '<div class="sticky-text" contenteditable="plaintext-only" data-ph="' + ph + '" role="textbox" aria-label="' + (label || "Note") + '"></div>';
+    var text = el.querySelector(".sticky-text");
+    if (text.contentEditable !== "plaintext-only") text.contentEditable = "true";
+    text.textContent = note.text || "";
+    canvas.appendChild(el);
+    return el;
+  }
+  function paintNotes() {
+    boardNotes().forEach(addNoteEl);
+  }
+  function canvasPoint(clientX, clientY) {
+    var canvas = document.getElementById("map-canvas");
+    var rect = canvas.getBoundingClientRect();
+    return { x: clientX - rect.left, y: clientY - rect.top };
+  }
+  function placeNote(x, y, kind, linkTo) {
+    ensureBoard();
+    var note = { id: "note-" + Date.now(), x: Math.max(16, Math.round(x)), y: Math.max(16, Math.round(y)), text: "", kind: kind || "note" };
+    state.stickies.push(note);
+    if (linkTo) state.links.push({ a: linkTo, b: note.id });
+    persist();
+    var el = addNoteEl(note);
+    fitCanvas();
+    drawLinks();
+    setMapTool("select");
+    var text = el && el.querySelector(".sticky-text");
+    if (el && el.scrollIntoView) el.scrollIntoView({ block: "center", inline: "nearest" });
+    if (text) text.focus();
+  }
+  function rememberNote(el) {
+    ensureBoard();
+    var note = state.stickies.filter(function (n) { return n.id === el.dataset.note; })[0];
+    if (!note) return;
+    note.x = Math.round(parseFloat(el.style.left) || 0);
+    note.y = Math.round(parseFloat(el.style.top) || 0);
+    persist();
+  }
+  function removeNote(id) {
+    ensureBoard();
+    state.stickies = state.stickies.filter(function (n) { return n.id !== id; });
+    state.links = state.links.filter(function (l) { return l.a !== id && l.b !== id; });
+    if (linkFrom === id) linkFrom = null;
+    persist();
+    var el = itemEl(id);
+    if (el) el.remove();
+    drawLinks();
+  }
+  function removeLink(index) {
+    ensureBoard();
+    if (index < 0 || index >= state.links.length) return;
+    state.links.splice(index, 1);
+    persist();
+    drawLinks();
+  }
+  function connectItem(el) {
+    var id = el.dataset.card || el.dataset.note;
+    if (!id) return;
+    if (!linkFrom) {
+      linkFrom = id;
+      markLinkFrom();
+      var hint = document.getElementById("tool-hint");
+      if (hint) { hint.hidden = false; hint.textContent = "Now click the item to connect."; }
+      return;
+    }
+    if (linkFrom === id) { linkFrom = null; markLinkFrom(); setMapTool("connect"); return; }
+    ensureBoard();
+    var dup = state.links.some(function (l) { return (l.a === linkFrom && l.b === id) || (l.a === id && l.b === linkFrom); });
+    if (!dup) state.links.push({ a: linkFrom, b: id });
+    linkFrom = null;
+    persist();
+    markLinkFrom();
+    drawLinks();
+    setMapTool("connect");
+  }
+  function moveNote(el, x, y) {
+    el.style.left = Math.max(16, Math.round(x)) + "px";
+    el.style.top = Math.max(16, Math.round(y)) + "px";
+    fitCanvas();
+    drawLinks();
   }
   function mapScroller() {
     return document.querySelector("#map .map-viewport");
@@ -737,6 +938,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     card.style.top = Math.max(56, Math.round(y)) + "px";
     layoutLabels();
     fitCanvas();
+    drawLinks();
   }
   function findCard(id) {
     return allCards().filter(function (c) { return c.id === id; })[0];
@@ -858,6 +1060,8 @@ body.picking,body.picking img.photo{cursor:crosshair}
   }
   function resetSample() {
     state = { active: false, dismissed: false, saves: [], spots: {} };
+    mapTool = "select";
+    linkFrom = null;
     persist();
     draft = null;
     openCard = null;
@@ -980,34 +1184,61 @@ body.picking,body.picking img.photo{cursor:crosshair}
     if (tag && draft) { draft.tag = tag.dataset.tag; draft.warn = ""; var note = document.getElementById("note"); if (note) draft.note = note.value; renderPopup(); }
   });
   document.getElementById("map").addEventListener("click", function (e) {
+    var toolBtn = e.target.closest(".tools button");
+    if (toolBtn) { setMapTool(toolBtn.dataset.tool); return; }
     if (e.target.id === "back-feed") { document.getElementById("map").hidden = true; return; }
     if (e.target.id === "copy-notes") { copyNotes(); return; }
     if (e.target.id === "reset-sample-map") { resetSample(); return; }
     if (blockMapClick) { blockMapClick = false; return; }
     var card = e.target.closest(".map-card");
-    if (card) { openCard = findCard(card.dataset.card); renderDetail(); }
+    if (card && mapTool === "select") { openCard = findCard(card.dataset.card); renderDetail(); }
+  });
+  document.getElementById("map").addEventListener("input", function (e) {
+    var text = e.target.closest(".sticky-text");
+    if (!text) return;
+    ensureBoard();
+    var note = state.stickies.filter(function (n) { return n.id === text.closest(".sticky").dataset.note; })[0];
+    if (!note) return;
+    note.text = text.textContent;
+    persist();
+    drawLinks();
   });
   document.getElementById("map").addEventListener("pointerdown", function (e) {
     if (e.button != null && e.button !== 0) return;
+    if (e.target.closest(".tools-wrap") || e.target.closest(".mapbar")) return;
+    var linkHit = e.target.closest(".link-hit");
+    if (linkHit && mapTool === "remove") {
+      mapPress = { kind: "link", index: Number(linkHit.dataset.index), pointerId: e.pointerId, x: e.clientX, y: e.clientY, moved: false };
+      e.preventDefault();
+      return;
+    }
     var card = e.target.closest(".map-card");
-    if (card) {
+    var note = e.target.closest(".sticky");
+    if (note && e.target.closest(".sticky-text") && mapTool === "select") return;
+    var item = card || note;
+    if (item && mapTool === "select") {
       bubbleDrag = {
-        card: card,
+        card: item,
         pointerId: e.pointerId,
         x: e.clientX,
         y: e.clientY,
-        origX: parseFloat(card.style.left) || 0,
-        origY: parseFloat(card.style.top) || 0,
+        origX: parseFloat(item.style.left) || 0,
+        origY: parseFloat(item.style.top) || 0,
         scrollX: mapScroller() ? mapScroller().scrollLeft : 0,
         scrollY: mapScroller() ? mapScroller().scrollTop : 0,
         moved: false
       };
-      try { card.setPointerCapture(e.pointerId); } catch (err) {}
+      try { item.setPointerCapture(e.pointerId); } catch (err) {}
       e.preventDefault();
       return;
     }
+    if (item || (e.target.closest(".map-canvas") && mapTool !== "select")) {
+      mapPress = { kind: item ? "item" : "empty", el: item, pointerId: e.pointerId, x: e.clientX, y: e.clientY, moved: false };
+      if (item) e.preventDefault();
+      return;
+    }
     if (e.pointerType !== "mouse") return;
-    if (e.target.closest(".mapbar") || e.target.closest("button")) return;
+    if (e.target.closest("button")) return;
     var scroller = mapScroller();
     if (!scroller || !e.target.closest(".map-canvas")) return;
     mapPan = { pointerId: e.pointerId, x: e.clientX, y: e.clientY, sl: scroller.scrollLeft, st: scroller.scrollTop };
@@ -1015,6 +1246,10 @@ body.picking,body.picking img.photo{cursor:crosshair}
     try { scroller.setPointerCapture(e.pointerId); } catch (err) {}
   });
   document.getElementById("map").addEventListener("pointermove", function (e) {
+    if (mapPress && e.pointerId === mapPress.pointerId) {
+      if (Math.hypot(e.clientX - mapPress.x, e.clientY - mapPress.y) >= 6) mapPress.moved = true;
+      return;
+    }
     if (bubbleDrag && e.pointerId === bubbleDrag.pointerId) {
       var scroller = mapScroller();
       var dx = e.clientX - bubbleDrag.x + ((scroller ? scroller.scrollLeft : 0) - bubbleDrag.scrollX);
@@ -1032,7 +1267,8 @@ body.picking,body.picking img.photo{cursor:crosshair}
         dx = e.clientX - bubbleDrag.x + (scroller.scrollLeft - bubbleDrag.scrollX);
         dy = e.clientY - bubbleDrag.y + (scroller.scrollTop - bubbleDrag.scrollY);
       }
-      moveBubble(bubbleDrag.card, bubbleDrag.origX + dx, bubbleDrag.origY + dy);
+      if (bubbleDrag.card.classList.contains("sticky")) moveNote(bubbleDrag.card, bubbleDrag.origX + dx, bubbleDrag.origY + dy);
+      else moveBubble(bubbleDrag.card, bubbleDrag.origX + dx, bubbleDrag.origY + dy);
       return;
     }
     if (!mapPan || e.pointerId !== mapPan.pointerId) return;
@@ -1048,8 +1284,49 @@ body.picking,body.picking img.photo{cursor:crosshair}
     card.classList.remove("dragging");
     bubbleDrag = null;
     blockMapClick = true;
-    if (moved && !cancel) rememberSpot(card);
-    else if (!moved && !cancel) { openCard = findCard(card.dataset.card); renderDetail(); }
+    if (moved && !cancel) {
+      if (card.classList.contains("sticky")) rememberNote(card);
+      else rememberSpot(card);
+    } else if (!moved && !cancel && card.classList.contains("map-card")) {
+      openCard = findCard(card.dataset.card);
+      renderDetail();
+    }
+  }
+  function endPress(e) {
+    if (!mapPress || e.pointerId !== mapPress.pointerId) return;
+    var press = mapPress;
+    mapPress = null;
+    blockMapClick = true;
+    if (press.moved) return;
+    if (press.kind === "link") { removeLink(press.index); return; }
+    var point = canvasPoint(e.clientX, e.clientY);
+    if (mapTool === "note" || mapTool === "comment") {
+      var hit = press.el;
+      var linkTo = hit ? (hit.dataset.card || hit.dataset.note) : "";
+      placeNote(point.x - 20, point.y - 16, mapTool === "comment" ? "comment" : "note", linkTo);
+      return;
+    }
+    if (!press.el) {
+      if (mapTool === "branch") setHintText("Click an item to add a linked note.");
+      else if (mapTool === "connect") setHintText("Click an item to start a line.");
+      else if (mapTool === "remove") setHintText("Click a note or a line to remove it.");
+      return;
+    }
+    if (mapTool === "connect") { connectItem(press.el); return; }
+    if (mapTool === "branch") {
+      placeNote((parseFloat(press.el.style.left) || 0) + press.el.offsetWidth + 24, parseFloat(press.el.style.top) || 0, "linked", press.el.dataset.card || press.el.dataset.note);
+      return;
+    }
+    if (mapTool === "remove") {
+      if (press.el.classList.contains("sticky")) removeNote(press.el.dataset.note);
+      else setHintText("Saved details stay on the map. Click a note or a line.");
+    }
+  }
+  function setHintText(text) {
+    var hint = document.getElementById("tool-hint");
+    if (!hint) return;
+    hint.hidden = !text;
+    hint.textContent = text || "";
   }
   document.getElementById("map").addEventListener("pointerup", function (e) {
     if (mapPan && e.pointerId === mapPan.pointerId) {
@@ -1058,6 +1335,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
       if (scroller) scroller.classList.remove("panning");
     }
     endBubble(e, false);
+    endPress(e);
   });
   document.getElementById("map").addEventListener("pointercancel", function (e) {
     if (mapPan && e.pointerId === mapPan.pointerId) {
@@ -1066,6 +1344,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
       if (scroller) scroller.classList.remove("panning");
     }
     endBubble(e, true);
+    mapPress = null;
   });
   document.getElementById("detail").addEventListener("click", function (e) {
     if (e.target.id === "close-detail" || e.target.id === "detail") { openCard = null; renderDetail(); }
