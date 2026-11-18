@@ -133,6 +133,7 @@ img{max-width:100%}
 #popup .btn.line{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1px #E2DEDF}
 #popup .btn.ghost{background:transparent;color:var(--muted);padding-inline:6px;box-shadow:none}
 #popup .btn.text{background:none;color:var(--faint);padding:0;font-size:12px;justify-self:start;border:0;border-radius:0;box-shadow:none}
+#popup .clip-hint{margin:0;font:400 12px/1.35 var(--ui);letter-spacing:var(--track);color:var(--faint)}
 #popup .dotp{width:8px;height:8px;border-radius:50%;background:#C6F08A;border:0;flex:none}
 #popup .count{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
 #popup.review img.crop{width:100%;height:160px;object-fit:cover;border-radius:14px;background:#fff;display:block;border:0}
@@ -681,7 +682,8 @@ body.picking,body.picking img.photo{cursor:crosshair}
           (draft.whole ? '<p class="hint">This is the whole post. You can crop it later on the map.</p>' : "") + tags + "</div>";
     } else {
       var textBtn = textSel ? '<div class="row"><button class="btn line" id="save-text" type="button">Save selected text</button></div>' : "";
-      html = '<div class="island"><div class="live"><i class="dotp"></i><p class="q">Session on</p><span class="count" id="save-count">' + n + " saved</span></div>" + textBtn + "<div class=\"row\"><button class=\"btn line\" id=\"save-detail\" type=\"button\">Save a detail</button><button class=\"btn pink\" id=\"open-map\" type=\"button\">Open map</button></div><button class=\"btn text\" id=\"reset-sample\" type=\"button\">Reset sample</button></div>";
+      var textHint = (!textSel && tab === "sub") ? '<p class="clip-hint">Highlight text to save it</p>' : "";
+      html = '<div class="island"><div class="live"><i class="dotp"></i><p class="q">Session on</p><span class="count" id="save-count">' + n + " saved</span></div>" + textHint + textBtn + "<div class=\"row\"><button class=\"btn line\" id=\"save-detail\" type=\"button\">Save a detail</button><button class=\"btn pink\" id=\"open-map\" type=\"button\">Open map</button></div><button class=\"btn text\" id=\"reset-sample\" type=\"button\">Reset sample</button></div>";
     }
     root.classList.toggle("review", mode === "review");
     root.innerHTML = html;
@@ -1754,7 +1756,8 @@ body.picking,body.picking img.photo{cursor:crosshair}
     renderPin();
     renderSub();
     paintChrome();
-    placePopup();
+    if (mode === "live") renderPopup();
+    else placePopup();
     applying = false;
   }
   function setTab(next) {
@@ -1762,7 +1765,8 @@ body.picking,body.picking img.photo{cursor:crosshair}
     tab = next;
     if (tab === "sub") renderSub();
     remember();
-    placePopup();
+    if (mode === "live") renderPopup();
+    else placePopup();
   }
 
   document.querySelectorAll(".tab").forEach(function (btn) {
