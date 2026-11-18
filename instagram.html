@@ -188,7 +188,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
 .map-canvas{position:absolute;left:0;top:0;min-width:1760px;min-height:1280px;background:#141414}
 .slab,.alab{position:absolute;margin:0;color:#fff;font-weight:500;pointer-events:none;white-space:nowrap;font-family:var(--ui)}
 .slab{font-size:32px;letter-spacing:0;line-height:1.1}
-.alab{font-size:13px;color:#e8e8e8}
+.alab{font-size:13px;color:#e8e8e8;line-height:1.2;z-index:7}
 .movable{pointer-events:auto;cursor:grab;z-index:2}
 .slab.heading{pointer-events:auto;cursor:grab;z-index:3;min-width:24px}
 .slab.heading:empty::before{content:"Heading";color:#c8c8c8}
@@ -1170,8 +1170,9 @@ body.picking,body.picking img.photo{cursor:crosshair}
       var group = sessions[lab.dataset.session];
       var account = group && group.accounts[lab.dataset.account];
       if (!account) return;
+      var labelHeight = lab.offsetHeight || 16;
       lab.style.left = account.minX + "px";
-      lab.style.top = Math.max(8, account.minY - 72) + "px";
+      lab.style.top = Math.max(8, account.minY - labelHeight - 16) + "px";
     });
     canvas.querySelectorAll(".slab").forEach(function (lab) {
       if (lab.classList.contains("heading")) return;
