@@ -195,9 +195,10 @@ body.picking,body.picking img.photo{cursor:crosshair}
 .heading.is-selected,.movable.is-selected{outline:2px solid #fff;outline-offset:4px}
 #map .hint{margin:0;font-size:12px;color:#c8c8c8;line-height:1.35}
 #map .empty-hint{position:absolute;width:220px;white-space:normal;pointer-events:none}
-.map-card{position:absolute;width:176px;height:236px;border:0;border-radius:0;background:transparent;padding:0;box-shadow:none;cursor:grab;color:#111;touch-action:none;user-select:none;-webkit-user-select:none;transform:rotate(var(--rot,0deg));transform-origin:50% 60%;z-index:1}
+.map-card{position:absolute;width:176px;height:236px;border:0;border-radius:0;background:transparent;padding:0;box-shadow:none;cursor:grab;color:#111;touch-action:none;user-select:none;-webkit-user-select:none;transform:rotate(var(--rot,0deg));transform-origin:50% 60%;z-index:1;transition:transform 260ms cubic-bezier(.16,1,.3,1),filter 260ms cubic-bezier(.16,1,.3,1)}
 .map-card .face{height:100%;border-radius:12px;background:var(--card,#F7D64A);display:flex;flex-direction:column;overflow:hidden;color:#111}
-.map-card:hover,.map-card.dragging{transform:rotate(0deg) translateY(-8px);z-index:6;cursor:grabbing}
+.map-card:hover{transform:rotate(var(--rot,0deg)) translateY(-3px) scale(1.025);filter:drop-shadow(0 8px 14px rgba(0,0,0,.28));z-index:6}
+.map-card.dragging{cursor:grabbing;z-index:6;transition:none;filter:drop-shadow(0 6px 12px rgba(0,0,0,.22))}
 .map-card .card-photo{flex:1;width:100%;min-height:0;object-fit:cover;border:0;border-radius:0;display:block;background:rgba(0,0,0,.08);pointer-events:none;-webkit-user-drag:none}
 .map-card .card-quote{flex:1;display:block;padding:16px 14px 8px;text-align:left;font:500 17px/1.25 var(--ui);color:#111}
 .map-card .card-foot{margin-top:auto;display:flex;align-items:center;gap:8px;padding:8px 10px 10px;border-top:1px solid rgba(0,0,0,.28)}
@@ -311,31 +312,40 @@ body.picking,body.picking img.photo{cursor:crosshair}
 .quote-bubble{width:112px;height:112px;box-sizing:border-box;border:1px solid #000;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;padding:16px;overflow:hidden;text-align:center;font:400 11px/1.25 var(--ui);color:#000}
 .sheet .quote-full{margin:0 0 8px;font-size:18px;line-height:1.45;color:#000}
 .grid .qtile{display:flex;align-items:center;justify-content:center;height:100%;padding:8px;font-size:11px;line-height:1.3;text-align:center;color:#000}
-#detail{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.55);display:grid;place-items:center;padding:24px}
+#detail{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.55);display:grid;place-items:center;padding:24px;opacity:0;transition:opacity 240ms cubic-bezier(.16,1,.3,1)}
+#detail.on{opacity:1}
 .sheet{width:min(560px,100%);background:#fff;border:1px solid #000;border-radius:2px;padding:12px;box-shadow:none;max-height:calc(100vh - 48px);overflow:auto;font-family:var(--ui);letter-spacing:0;color:#000}
-#detail .sheet{width:min(440px,100%);background:#111;border:0;border-radius:22px;padding:16px;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.28)}
-#detail .sheet h2{margin:12px 0 0;font:500 18px/1.3 var(--ui);letter-spacing:0}
-#detail .kv{display:grid;gap:10px;margin:12px 0 4px}
-#detail .kv-row{display:grid;gap:3px}
-#detail .kv-l{font-size:11px;color:#c8c8c8}
-#detail .kv-v{font-size:14px;line-height:1.35}
-#detail .kv-v a{color:#fff}
-#detail .pills{display:flex;flex-wrap:wrap;gap:6px}
-#detail .thumb{display:block;width:96px;height:96px;padding:0;border:0;border-radius:14px;overflow:hidden;background:#141414;cursor:pointer}
+#detail .sheet{width:min(720px,calc(100vw - 48px));background:#111;border:0;border-radius:22px;padding:28px;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.28);display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:28px;align-items:start;transform:translateY(10px) scale(.97);transition:transform 240ms cubic-bezier(.16,1,.3,1)}
+#detail.on .sheet{transform:none}
+#detail .sheet h2{margin:0;font:500 18px/1.3 var(--ui);letter-spacing:0}
+#detail .side{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+#detail .facts{display:grid;gap:2px;width:100%}
+#detail .facts p{margin:0;font-size:14px;line-height:1.35;color:#fff}
+#detail .facts a{color:#fff}
+#detail .pills{display:flex;flex-wrap:wrap;gap:8px}
+#detail .thumb{display:block;width:100%;aspect-ratio:3/4;height:auto;padding:0;border:0;border-radius:16px;overflow:hidden;background:#141414;cursor:pointer}
 #detail .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+#detail .quote-pane{border-radius:16px;background:#141414;min-height:220px;padding:18px;display:flex;align-items:flex-start}
+#detail .quote-pane .quote-full{margin:0}
 .sheet img.big{width:100%;max-height:280px;object-fit:contain;background:#fff;border:1px solid #000;border-radius:0;display:block}
 .sheet .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0}
 .sheet .tag,.sheet .meta .site{background:#fff;color:#000;border:1px solid #000;border-radius:0;padding:2px 6px;font-size:11px;line-height:1.3}
 #detail .sheet .tag,#detail .sheet .meta .site{background:transparent;color:#fff;border:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.45);border-radius:999px;padding:4px 8px}
 .sheet p{margin:0 0 8px;font-size:13px;line-height:1.4;color:#000}
 #detail .sheet p,#detail .sheet .quote-full,#detail .sheet strong,#zoom .hint{color:#fff}
-#detail .row,#zoom .row{display:flex;gap:8px;justify-content:flex-end;align-items:center}
+#detail .row,#zoom .row{display:flex;gap:8px;justify-content:flex-end;align-items:center;width:100%}
 #detail .btn.pink,#zoom .btn.pink{border:0;border-radius:999px;background:var(--pink);color:#fff;padding:8px 14px;font:400 14px/1 var(--ui);box-shadow:0 4px 18px rgba(255,45,111,.16)}
 #detail .btn.pink:hover,#zoom .btn.pink:hover{background:var(--pink);color:#fff;box-shadow:0 6px 22px rgba(255,45,111,.22)}
 #detail .btn.line{border:0;border-radius:999px;background:transparent;color:#fff;padding:8px 14px;font:400 14px/1 var(--ui);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
 #detail .btn.line:hover{background:#fff;color:#111}
-#zoom{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:24px}
-#zoom .zoom-card{width:min(720px,100%);max-height:calc(100vh - 48px);overflow:auto;background:#111;color:#fff;border-radius:22px;padding:16px;display:grid;gap:12px;box-shadow:0 10px 30px rgba(0,0,0,.28);font-family:var(--ui)}
+#zoom{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:24px;opacity:0;transition:opacity 240ms cubic-bezier(.16,1,.3,1)}
+#zoom.on{opacity:1}
+#zoom .zoom-card{width:min(720px,100%);max-height:calc(100vh - 48px);overflow:auto;background:#111;color:#fff;border-radius:22px;padding:16px;display:grid;gap:12px;box-shadow:0 10px 30px rgba(0,0,0,.28);font-family:var(--ui);transform:translateY(10px) scale(.97);transition:transform 240ms cubic-bezier(.16,1,.3,1)}
+#zoom.on .zoom-card{transform:none}
+@media (max-width:720px){
+  #detail .sheet{grid-template-columns:1fr;padding:20px}
+  #detail .thumb{aspect-ratio:4/3;max-height:240px}
+}
 #zoom img{width:100%;max-height:min(68vh,640px);object-fit:contain;border-radius:14px;background:#141414;display:block}
 .orig{margin-top:8px}
 .orig span{display:block;font-size:11px;color:#000;margin-bottom:6px}
@@ -352,6 +362,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
 }
 @media (prefers-reduced-motion:reduce){
   .reel.play img,.map-card{animation:none;transform:none}
+  #detail,#detail .sheet,#zoom,#zoom .zoom-card,.map-card{transition:none}
 }
 </style>
 </head>
@@ -1549,10 +1560,16 @@ body.picking,body.picking img.photo{cursor:crosshair}
   }
   function closeZoom() {
     var el = document.getElementById("zoom");
-    if (!el) return;
-    el.hidden = true;
-    el.innerHTML = "";
+    if (!el || el.hidden) return;
+    var gen = ++closeZoom.gen;
+    el.classList.remove("on");
+    setTimeout(function () {
+      if (gen !== closeZoom.gen || el.classList.contains("on")) return;
+      el.hidden = true;
+      el.innerHTML = "";
+    }, 260);
   }
+  closeZoom.gen = 0;
   function openZoom() {
     if (!openCard || openCard.quote) return;
     var el = document.getElementById("zoom");
@@ -1560,10 +1577,14 @@ body.picking,body.picking img.photo{cursor:crosshair}
     var img = c.whole
       ? '<img id="original" src="' + esc(c.image) + '" alt="' + esc(c.caption || "Saved image") + '" draggable="false">'
       : '<img src="' + esc(c.crop || c.image) + '" alt="Saved image" draggable="false">';
+    closeZoom.gen++;
     el.hidden = false;
     el.innerHTML = '<div class="zoom-card" role="dialog" aria-label="Larger image">' + img +
       (c.whole ? '<p class="hint">Drag a box on the original post to keep one detail.</p>' : "") +
       '<div class="row"><button class="btn pink" id="close-zoom" type="button">Close</button></div></div>';
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { el.classList.add("on"); });
+    });
   }
   function projectOf(item) {
     var found = null;
@@ -1604,40 +1625,55 @@ body.picking,body.picking img.photo{cursor:crosshair}
     });
     return out;
   }
-  function kvRow(label, valueHtml) {
-    return '<div class="kv-row"><span class="kv-l">' + esc(label) + '</span><div class="kv-v">' + valueHtml + "</div></div>";
-  }
-  function detailFacts(c) {
+  function detailBody(c) {
     var project = projectOf(c);
-    var tags = '<div class="pills">' + itemTags(c).map(tagPill).join("") + "</div>";
-    var connected = connectedNames(c);
-    var connectedHtml = connected.length ? connected.map(function (name) { return "<div>" + esc(name) + "</div>"; }).join("") : "None";
-    return '<div class="kv">' +
-      kvRow("Site", esc(c.site || "Instagram")) +
-      kvRow("Tag", tags) +
-      kvRow("Account", esc(accountLine(c))) +
-      kvRow("Saved", esc(savedWhen(c))) +
-      kvRow("Session", esc(c.session || "This session")) +
-      kvRow("Project", esc(project.name || "Project")) +
-      kvRow("Note", esc(c.note || "No note yet.")) +
-      kvRow("Link", linkHtml(c)) +
-      kvRow("Connected to", connectedHtml) +
-      "</div>";
+    var pills = '<div class="pills">' + tagPill(c.site || "Instagram") + itemTags(c).map(tagPill).join("") + "</div>";
+    var lines = [
+      accountLine(c),
+      savedWhen(c),
+      c.session || "This session",
+      project.name || "Project",
+      c.note || "No note yet."
+    ];
+    var text = lines.map(function (line) { return "<p>" + esc(line) + "</p>"; }).join("") + "<p>" + linkHtml(c) + "</p>";
+    connectedNames(c).forEach(function (name) { text += "<p>" + esc(name) + "</p>"; });
+    return pills + '<div class="facts">' + text + "</div>";
   }
+  function showDetail() {
+    var el = document.getElementById("detail");
+    detailSeq++;
+    el.hidden = false;
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { el.classList.add("on"); });
+    });
+  }
+  function hideDetail() {
+    var el = document.getElementById("detail");
+    if (!el || el.hidden) return;
+    var gen = ++detailSeq;
+    el.classList.remove("on");
+    setTimeout(function () {
+      if (gen !== detailSeq || el.classList.contains("on")) return;
+      el.hidden = true;
+      el.innerHTML = "";
+    }, 260);
+  }
+  var detailSeq = 0;
   function renderDetail() {
     closeZoom();
     var el = document.getElementById("detail");
-    if (!openCard) { el.hidden = true; el.innerHTML = ""; return; }
+    if (!openCard) { hideDetail(); return; }
     var c = openCard;
-    el.hidden = false;
     var title = esc(c.title || c.caption || "Saved detail");
-    if (c.quote) {
-      el.innerHTML = '<div class="sheet" role="dialog" aria-label="Saved text"><p class="quote-full">“' + esc(c.quote) + '”</p><h2>' + title + "</h2>" + detailFacts(c) + '<div class="row"><button class="btn line" id="open-source" type="button" data-post="' + esc(c.postId || "") + '">Show this post</button><button class="btn pink" id="close-detail" type="button">Close</button></div></div>';
-      return;
-    }
-    el.innerHTML = '<div class="sheet" role="dialog" aria-label="Saved detail"><button class="thumb" id="open-zoom" type="button" aria-label="Show larger image"><img src="' + esc(c.crop || c.image) + '" alt=""></button><h2>' + title + "</h2>" + detailFacts(c) +
+    var side = '<div class="side"><h2>' + title + "</h2>" + detailBody(c) +
       (c.whole ? '<p class="hint">Open the image to keep one detail.</p>' : "") +
-      '<div class="row"><button class="btn pink" id="close-detail" type="button">Close</button></div></div>';
+      '<div class="row">' +
+      (c.quote ? '<button class="btn line" id="open-source" type="button" data-post="' + esc(c.postId || "") + '">Show this post</button>' : "") +
+      '<button class="btn pink" id="close-detail" type="button">Close</button></div></div>';
+    el.innerHTML = c.quote
+      ? '<div class="sheet" role="dialog" aria-label="Saved text"><div class="quote-pane"><p class="quote-full">“' + esc(c.quote) + '”</p></div>' + side + "</div>"
+      : '<div class="sheet" role="dialog" aria-label="Saved detail"><button class="thumb" id="open-zoom" type="button" aria-label="Show larger image"><img src="' + esc(c.crop || c.image) + '" alt=""></button>' + side + "</div>";
+    showDetail();
   }
 
   function show(next) {
