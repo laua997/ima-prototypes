@@ -18,11 +18,25 @@
 }
 *{box-sizing:border-box}
 [hidden]{display:none !important}
-html,body{margin:0;height:100%;background:#fff;color:var(--ig);font-family:var(--igfont)}
+html,body{margin:0;height:100%;background:#dee1e6;color:var(--ig);font-family:var(--igfont)}
+.browser{display:flex;flex-direction:column;height:100%}
+.tabstrip{display:flex;align-items:flex-end;gap:2px;height:42px;padding:8px 12px 0;background:#dee1e6}
+.tab{display:flex;align-items:center;gap:8px;height:34px;max-width:220px;padding:0 14px;border:0;border-radius:8px 8px 0 0;background:transparent;color:#3c4043;font-size:13px}
+.tab:hover{background:rgba(255,255,255,.5)}
+.tab.on{background:#fff;color:#202124}
+.tab svg{flex:none}
+.toolbar{display:flex;align-items:center;gap:6px;height:48px;padding:0 10px 8px;background:#fff;border-bottom:1px solid #dadce0}
+.navbtn{width:32px;height:32px;border:0;border-radius:50%;background:none;color:#5f6368;display:grid;place-items:center}
+.navbtn:hover:not(:disabled){background:#f1f3f4}
+.navbtn:disabled{opacity:.38;cursor:default}
+.address{flex:1;display:flex;align-items:center;gap:8px;height:34px;margin:0 8px;padding:0 14px;border-radius:999px;background:#f1f3f4;color:#202124;font-size:14px;min-width:0}
+.address span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sites{flex:1;min-height:0;background:#fff}
+.site{height:100%;min-height:0}
 button,input,textarea{font-family:inherit;color:inherit}
 button{cursor:pointer}
 img{max-width:100%}
-.shell{display:grid;grid-template-columns:244px minmax(0,1fr) 319px;height:100vh}
+.shell{display:grid;grid-template-columns:244px minmax(0,1fr) 319px;height:100%}
 .nav{border-right:1px solid var(--line);padding:8px 12px 16px;display:flex;flex-direction:column;min-height:0}
 .word{display:block;margin:20px 12px 18px;padding:0;border:0;background:none;font-family:"Grand Hotel",cursive;font-size:34px;line-height:1;letter-spacing:-.03em;text-align:left}
 .item{display:flex;align-items:center;gap:16px;width:100%;height:50px;padding:0 12px;border:0;border-radius:8px;background:none;font-size:16px;text-align:left}
@@ -32,7 +46,7 @@ img{max-width:100%}
 .item .avatar{width:24px;height:24px;border-radius:50%;object-fit:cover}
 .item[aria-current="page"] .avatar{box-shadow:0 0 0 2px #000}
 .nav .grow{flex:1}
-.center{min-width:0;overflow:auto;height:100vh}
+.center{min-width:0;overflow:auto;height:100%}
 .col{width:470px;margin:0 auto;padding:16px 0 80px}
 .stories{display:flex;gap:18px;overflow:auto;padding:8px 0 18px;scrollbar-width:none}
 .stories::-webkit-scrollbar{display:none}
@@ -147,8 +161,40 @@ body.picking,body.picking img.photo{cursor:crosshair}
 .map-card{width:200px;border:0;border-radius:22px;background:#fff;padding:10px 10px 12px;text-align:left;box-shadow:0 1px 2px rgba(27,19,22,.04),0 8px 18px rgba(27,19,22,.06);cursor:pointer}
 .map-card:hover{transform:translateY(-2px)}
 .map-card img{width:100%;height:132px;object-fit:cover;border-radius:15px;display:block;background:var(--chip)}
-.map-card .tag{display:inline-block;margin-top:8px;background:var(--chip);border-radius:999px;padding:3px 8px;font-size:12px}
+.map-card .tag,.map-card .site{display:inline-block;margin-top:8px;margin-right:4px;background:var(--chip);border-radius:999px;padding:3px 8px;font-size:12px}
+.map-card .site{background:#fff;box-shadow:inset 0 0 0 1px #E2DEDF}
 .map-card p{margin:6px 0 0;font-size:13px;line-height:1.35}
+.pinterest{height:100%;display:flex;flex-direction:column;background:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:#111}
+.pbar{display:flex;align-items:center;gap:8px;height:72px;padding:8px 16px;background:#fff;flex:none}
+.plogo{width:48px;height:48px;border:0;border-radius:50%;background:#e60023;color:#fff;font-weight:700;font-size:26px;line-height:1}
+.pnav{display:flex;gap:4px}
+.pnav button,.picon{border:0;background:none;border-radius:24px;padding:10px 14px;font-weight:700;font-size:16px;color:#111}
+.pnav button[aria-current="page"]{background:#111;color:#fff}
+.pnav button:hover,.picon:hover{background:#efefef}
+.pnav button[aria-current="page"]:hover{background:#111}
+.psearch{flex:1;min-width:80px;height:48px;border:0;border-radius:24px;background:#e9e9e9;padding:0 18px;font-size:16px;outline:none}
+.picon{width:48px;height:48px;padding:0;display:grid;place-items:center}
+.picon img{width:28px;height:28px;border-radius:50%;object-fit:cover}
+.pbody{flex:1;min-height:0;overflow:auto}
+.masonry{column-count:2;column-gap:16px;padding:8px 16px 96px}
+.pin{break-inside:avoid;margin:0 0 16px;position:relative}
+.pin .photo{width:100%;height:auto;border-radius:16px;display:block;background:#efefef}
+.pin .hover{position:absolute;inset:0;border-radius:16px;background:rgba(0,0,0,.45);opacity:0;display:flex;justify-content:space-between;align-items:flex-start;padding:12px;pointer-events:none}
+.pin:hover .hover,.pin:focus-within .hover{opacity:1}
+.pin .hover button{pointer-events:auto}
+.psave{border:0;background:#e60023;color:#fff;border-radius:24px;padding:12px 16px;font-weight:700;font-size:16px}
+.psave[aria-pressed="true"]{background:#111}
+.pboard{border:0;background:rgba(255,255,255,.95);color:#111;border-radius:12px;padding:10px 12px;font-weight:600;font-size:14px;max-width:58%;text-align:left}
+.closeup{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(260px,.7fr);gap:28px;padding:20px 28px 80px;align-items:start}
+.closeup .photo{width:100%;border-radius:16px}
+.closeup h2{margin:12px 0 6px;font-size:28px;font-weight:600}
+.back{border:0;background:none;font-weight:700;font-size:16px;padding:8px 0}
+.boards{display:grid;gap:8px;max-width:520px}
+.boards button{display:flex;justify-content:space-between;border:0;background:#efefef;border-radius:16px;padding:16px;font-weight:700;font-size:16px}
+@media (min-width:900px){.masonry{column-count:3}}
+@media (min-width:1100px){.masonry{column-count:4}}
+@media (min-width:1400px){.masonry{column-count:5}}
+@media (max-width:800px){.closeup{grid-template-columns:1fr}}
 #detail{position:fixed;inset:0;z-index:100;background:rgba(27,19,22,.16);display:grid;place-items:center;padding:24px}
 .sheet{width:min(560px,100%);background:#fff;border-radius:22px;padding:16px;box-shadow:0 18px 44px rgba(27,19,22,.12);max-height:calc(100vh - 48px);overflow:auto}
 .sheet img.big{width:100%;max-height:280px;object-fit:contain;background:var(--paper);border-radius:16px;display:block}
@@ -158,7 +204,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
 .orig{margin-top:8px}
 .orig span{display:block;font-size:12px;color:var(--faint);margin-bottom:6px}
 .orig img{width:100%;border-radius:14px;display:block}
-#toast{position:fixed;left:50%;top:20px;transform:translateX(-50%);z-index:120;background:var(--ink);color:#fff;border-radius:999px;padding:10px 16px;font:400 14px var(--ui);letter-spacing:var(--track)}
+#toast{position:fixed;left:50%;top:100px;transform:translateX(-50%);z-index:120;background:var(--ink);color:#fff;border-radius:999px;padding:10px 16px;font:400 14px var(--ui);letter-spacing:var(--track)}
 #copybox{position:fixed;inset:0;z-index:110;background:rgba(27,19,22,.28);display:grid;place-items:center;padding:24px}
 #copybox textarea{width:min(520px,100%);min-height:220px;background:#fff}
 @media (max-width:1150px){
@@ -174,6 +220,19 @@ body.picking,body.picking img.photo{cursor:crosshair}
 </style>
 </head>
 <body>
+<div class="browser">
+<div class="tabstrip" role="tablist" aria-label="Browser tabs">
+  <button class="tab on" type="button" role="tab" data-tab="ig" aria-selected="true"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="4" fill="none" stroke="#111" stroke-width="1.4"/><circle cx="8" cy="8" r="3" fill="none" stroke="#111" stroke-width="1.4"/><circle cx="11.4" cy="4.6" r=".8" fill="#111"/></svg>Instagram</button>
+  <button class="tab" type="button" role="tab" data-tab="pin" aria-selected="false"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#e60023"/><path fill="#fff" d="M8 3.2c-2.4 0-3.7 1.6-3.7 3.4 0 1 .4 1.9 1.2 2.2.1.1.2 0 .2-.1l.2-.8c0-.1 0-.2-.1-.3-.3-.3-.4-.8-.4-1.2 0-1.6 1.2-3 3.2-3 1.7 0 2.7 1.1 2.7 2.5 0 1.9-.8 3.5-2.1 3.5-.7 0-1.2-.6-1-1.3.2-.8.6-1.7.6-2.3 0-.5-.3-.9-.8-.9-.7 0-1.2.7-1.2 1.6 0 .6.2 1 .2 1l-.8 3.4c-.2 1-.1 2.2 0 3.1.6-.2 1.2-.6 1.6-1.1l.1-.1c.3.5 1.1.9 1.8.9 2.4 0 4-2.2 4-5.1 0-2.2-1.8-4.2-4.6-4.2Z"/></svg>Pinterest</button>
+</div>
+<div class="toolbar">
+  <button class="navbtn" id="hist-back" type="button" aria-label="Back" disabled><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4 6 9l5 5"/></svg></button>
+  <button class="navbtn" id="hist-forward" type="button" aria-label="Forward" disabled><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m7 4 5 5-5 5"/></svg></button>
+  <button class="navbtn" id="hist-reload" type="button" aria-label="Reload"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M13.2 8A5.2 5.2 0 1 1 8 2.8c1.5 0 2.8.6 3.8 1.6"/><path d="M12 2.2v2.6H9.4"/></svg></button>
+  <div class="address"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#5f6368" stroke-width="1.4" aria-hidden="true"><rect x="3" y="6" width="8" height="6" rx="1"/><path d="M5 6V4.2a2 2 0 0 1 4 0V6"/></svg><span id="url">instagram.com</span></div>
+</div>
+<div class="sites">
+<div class="site" id="site-ig">
 <div class="shell">
   <nav class="nav" aria-label="Instagram">
     <button class="word" id="logo" type="button">Instagram</button>
@@ -190,6 +249,24 @@ body.picking,body.picking img.photo{cursor:crosshair}
   </nav>
   <main class="center" id="center"></main>
   <aside class="right" id="right" aria-label="Suggested for you"></aside>
+</div>
+</div>
+<div class="site pinterest" id="site-pin" hidden>
+  <header class="pbar">
+    <button class="plogo" id="p-logo" type="button" aria-label="Pinterest home">P</button>
+    <nav class="pnav" aria-label="Pinterest">
+      <button type="button" data-pview="home" aria-current="page">Home</button>
+      <button type="button" data-pview="explore">Explore</button>
+      <button type="button" data-pview="create">Create</button>
+    </nav>
+    <input class="psearch" id="psearch" placeholder="Search" aria-label="Search">
+    <button class="picon" id="p-notes" type="button" aria-label="Updates"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20s-6-3.6-6-8a3.5 3.5 0 0 1 6-2 3.5 3.5 0 0 1 6 2c0 4.4-6 8-6 8Z"/></svg></button>
+    <button class="picon" id="p-messages" type="button" aria-label="Messages"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 6h14v10H8l-3 3V6Z"/></svg></button>
+    <button class="picon" id="p-profile" type="button" aria-label="Profile"><img src="images/a1.jpg" alt=""></button>
+  </header>
+  <div class="pbody" id="pbody"></div>
+</div>
+</div>
 </div>
 
 <div id="popup"></div>
@@ -229,16 +306,48 @@ body.picking,body.picking img.photo{cursor:crosshair}
     { handle: "light.room", avatar: "images/lt_led.jpg", preview: "Which light?", lines: ["Which light?", "The small one on the left.", "I see it."] },
     { handle: "paper.press", avatar: "images/N14.jpg", preview: "Page 40 is the one.", lines: ["Page 40 is the one.", "The gold word.", "Saving that word only."] }
   ];
+  var PINS = [
+    { id: "n1", account: "kiln.studio", board: "Gold edges", image: "images/a2.jpg", title: "A bowl with a gold rim" },
+    { id: "n2", account: "paper.room", board: "Printed pages", image: "images/a4.jpg", title: "A printed page with wide margins" },
+    { id: "n3", account: "figure.room", board: "Drawn figures", image: "images/u1.jpg", title: "A figure study in pencil" },
+    { id: "n4", account: "figure.room", board: "Drawn figures", image: "images/u2.jpg", title: "Hands held still" },
+    { id: "n5", account: "light.notes", board: "Small lights", image: "images/u3.jpg", title: "A row of small lights" },
+    { id: "n6", account: "field.notes", board: "Line studies", image: "images/u4.jpg", title: "Lines crossing a page" },
+    { id: "n7", account: "field.notes", board: "Line studies", image: "images/u5.jpg", title: "A dense field of marks" },
+    { id: "n8", account: "blue.room", board: "Blue grounds", image: "images/u6.jpg", title: "Blue cloth with a pale edge" },
+    { id: "n9", account: "type.room", board: "Letters", image: "images/N1.jpg", title: "Letters used as a drawing" },
+    { id: "n10", account: "type.room", board: "Letters", image: "images/N2.jpg", title: "Type across a face" },
+    { id: "n11", account: "figure.room", board: "Drawn figures", image: "images/N3.jpg", title: "A figure traced in text" },
+    { id: "n12", account: "night.desk", board: "Dark studies", image: "images/N4.jpg", title: "A dark page of notes" },
+    { id: "n13", account: "type.room", board: "Letters", image: "images/N5.jpg", title: "Pixels in place of letters" },
+    { id: "n14", account: "paper.room", board: "Printed pages", image: "images/N8.jpg", title: "A sentence pulled apart" },
+    { id: "n15", account: "night.desk", board: "Dark studies", image: "images/N9.jpg", title: "A red network of notes" },
+    { id: "n16", account: "figure.room", board: "Drawn figures", image: "images/N10.jpg", title: "A smeared figure" },
+    { id: "n17", account: "linen.room", board: "Cloth", image: "images/N12.jpg", title: "A red thread through cloth" },
+    { id: "n18", account: "night.desk", board: "Dark studies", image: "images/N15.jpg", title: "Marks over a dark ground" },
+    { id: "n19", account: "paper.room", board: "Printed pages", image: "images/N17.jpg", title: "A page with a gold word" },
+    { id: "n20", account: "light.notes", board: "Small lights", image: "images/lt_ascii.jpg", title: "Light broken into letters" },
+    { id: "n21", account: "field.notes", board: "Line studies", image: "images/lt_ca.jpg", title: "A pattern of growing lines" },
+    { id: "n22", account: "figure.room", board: "Drawn figures", image: "images/lt_pose.jpg", title: "A pose held in outline" }
+  ];
   var SEEDS = [
-    { session: "Sunday study", handle: "studio.mending", image: "images/pin5.jpg", caption: "A repaired bowl. The gold follows the break.", box: { x: 0.22, y: 0.28, w: 0.36, h: 0.34 }, tag: "texture", note: "The gold line in the crack." },
-    { session: "Sunday study", handle: "goldseam", image: "images/pin6.jpg", caption: "A close view of the seams in the glaze.", box: { x: 0.4, y: 0.18, w: 0.28, h: 0.32 }, tag: "texture", note: "Where two seams meet." },
-    { session: "Sunday study", handle: "blueground.studio", image: "images/N16.jpg", caption: "Gold lines on a deep blue ground.", box: { x: 0.12, y: 0.2, w: 0.4, h: 0.36 }, tag: "color", note: "Gold on the deep blue." },
-    { session: "Tuesday references", handle: "field.lines", image: "images/lt_flow.jpg", caption: "A field of thin lines.", box: { x: 0.3, y: 0.35, w: 0.32, h: 0.28 }, tag: "shape", note: "The curve in the middle of the lines." },
-    { session: "Tuesday references", handle: "light.room", image: "images/lt_led.jpg", caption: "Small lights in a dark room.", box: { x: 0.46, y: 0.22, w: 0.22, h: 0.26 }, tag: "color", note: "One small bright point." }
+    { session: "Sunday study", site: "Instagram", handle: "studio.mending", board: "", image: "images/pin5.jpg", caption: "A repaired bowl. The gold follows the break.", box: { x: 0.22, y: 0.28, w: 0.36, h: 0.34 }, tag: "texture", note: "The gold line in the crack." },
+    { session: "Sunday study", site: "Instagram", handle: "goldseam", board: "", image: "images/pin6.jpg", caption: "A close view of the seams in the glaze.", box: { x: 0.4, y: 0.18, w: 0.28, h: 0.32 }, tag: "texture", note: "Where two seams meet." },
+    { session: "Sunday study", site: "Instagram", handle: "blueground.studio", board: "", image: "images/N16.jpg", caption: "Gold lines on a deep blue ground.", box: { x: 0.12, y: 0.2, w: 0.4, h: 0.36 }, tag: "color", note: "Gold on the deep blue." },
+    { session: "Tuesday references", site: "Instagram", handle: "field.lines", board: "", image: "images/lt_flow.jpg", caption: "A field of thin lines.", box: { x: 0.3, y: 0.35, w: 0.32, h: 0.28 }, tag: "shape", note: "The curve in the middle of the lines." },
+    { session: "Tuesday references", site: "Instagram", handle: "light.room", board: "", image: "images/lt_led.jpg", caption: "Small lights in a dark room.", box: { x: 0.46, y: 0.22, w: 0.22, h: 0.26 }, tag: "color", note: "One small bright point." }
   ];
   var TAGS = ["color", "shape", "texture", "pose", "type"];
   var KEY = "tangents-ig-sample-v1";
   var state = load();
+  var tab = "ig";
+  var pview = "home";
+  var openPinId = null;
+  var pquery = "";
+  var hist = [];
+  var histAt = -1;
+  var applying = false;
+  var skipClick = false;
   var view = "home";
   var openThread = null;
   var menu = null;
@@ -262,6 +371,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     });
   }
   function postById(id) { return POSTS.filter(function (p) { return p.id === id; })[0]; }
+  function pinById(id) { return PINS.filter(function (p) { return p.id === id; })[0]; }
   function postByHandle(h) { return POSTS.filter(function (p) { return p.handle === h; })[0]; }
   function ico(name, filled) {
     var a = {
@@ -353,7 +463,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
   }
   function postHtml(p) {
     var shown = p.commentsOpen ? p.comments : [];
-    return '<article class="post" id="' + esc(p.id) + '" data-handle="' + esc(p.handle) + '">' +
+    return '<article class="post" id="' + esc(p.id) + '" data-handle="' + esc(p.handle) + '" data-site="Instagram">' +
       '<header class="head"><img class="avatar" src="' + esc(p.avatar) + '" alt=""><div class="who"><strong>' + esc(p.handle) + '</strong><span class="dot">•</span><span class="time">' + esc(p.time) + '</span></div>' +
       '<button class="more" type="button" data-menu="' + esc(p.id) + '" aria-label="More about this post">' + ico("dots") + "</button></header>" +
       '<img class="photo" src="' + esc(p.image) + '" alt="' + esc(p.caption) + '" draggable="false">' +
@@ -429,7 +539,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     } else if (mode === "pick") {
       html = '<div class="island"><p class="hint">Drag a box over one detail. One click saves the whole post, and you can crop it later on the map.</p><div class="row"><button class="btn line" id="cancel-pick" type="button">Cancel</button></div></div>';
     } else if (mode === "review" && draft) {
-      html = '<div class="island"><img class="crop" id="draft-crop" alt="Selected detail" src="' + esc(draft.preview) + '"><p class="from">From <b>' + esc(draft.handle) + "</b></p>" +
+      html = '<div class="island"><img class="crop" id="draft-crop" alt="Selected detail" src="' + esc(draft.preview) + '"><p class="from">From <b>' + esc(draft.board ? draft.handle + " · " + draft.board : draft.handle) + "</b> on " + esc(draft.site || "Instagram") + "</p>" +
         (draft.whole ? '<p class="hint">This is the whole post. You can crop it later on the map.</p>' : "") +
         '<div class="tags" role="group" aria-label="Tags">' + TAGS.map(function (tag) {
           return '<button type="button" data-tag="' + tag + '" aria-pressed="' + (draft.tag === tag ? "true" : "false") + '">' + tag + "</button>";
@@ -445,6 +555,12 @@ body.picking,body.picking img.photo{cursor:crosshair}
   }
   function placePopup() {
     var pop = document.getElementById("popup");
+    if (tab === "pin") {
+      var pinWidth = pop.offsetWidth || 220;
+      pop.style.left = Math.max(12, window.innerWidth - pinWidth - 20) + "px";
+      pop.style.right = "auto";
+      return;
+    }
     var rail = document.getElementById("right");
     var railW = rail && getComputedStyle(rail).display !== "none" ? 319 : 0;
     var navW = document.querySelector(".nav").getBoundingClientRect().width;
@@ -461,8 +577,9 @@ body.picking,body.picking img.photo{cursor:crosshair}
   function groupsFor(sessionName, items) {
     var by = {};
     items.forEach(function (item) {
-      if (!by[item.handle]) by[item.handle] = [];
-      by[item.handle].push(item);
+      var key = item.board || item.handle;
+      if (!by[key]) by[key] = [];
+      by[key].push(item);
     });
     var html = '<section class="session" data-session="' + esc(sessionName) + '"><h2>' + esc(sessionName) + "</h2>";
     var handles = Object.keys(by);
@@ -471,7 +588,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     handles.forEach(function (handle) {
       html += '<div class="account" data-account="' + esc(handle) + '"><h3>' + esc(handle) + '</h3><div class="cards">' + by[handle].map(function (item) {
         var src = item.crop || item.image;
-        return '<button class="map-card" type="button" data-card="' + esc(item.id) + '"><img src="' + esc(src) + '" alt=""><span class="tag">' + esc(item.tag || "no tag") + "</span><p>" + esc(item.note || "No note") + "</p></button>";
+        return '<button class="map-card" type="button" data-card="' + esc(item.id) + '" data-site="' + esc(item.site || "Instagram") + '"><img src="' + esc(src) + '" alt=""><span class="site">' + esc(item.site || "Instagram") + '</span><span class="tag">' + esc(item.tag || "no tag") + "</span><p>" + esc(item.note || "No note") + "</p></button>";
       }).join("") + "</div></div>";
     });
     return html + "</div></section>";
@@ -495,7 +612,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     if (!openCard) { el.hidden = true; el.innerHTML = ""; return; }
     var c = openCard;
     el.hidden = false;
-    el.innerHTML = '<div class="sheet" role="dialog" aria-label="Saved detail"><img class="big" src="' + esc(c.crop || c.image) + '" alt=""><div class="meta"><span class="tag">' + esc(c.tag || "no tag") + "</span><strong>" + esc(c.handle) + "</strong></div><p>" + esc(c.note || "No note yet.") + '</p><div class="orig"><span>Original post</span><img id="original" src="' + esc(c.image) + '" alt="' + esc(c.caption || "") + '" draggable="false"></div>' +
+    el.innerHTML = '<div class="sheet" role="dialog" aria-label="Saved detail"><img class="big" src="' + esc(c.crop || c.image) + '" alt=""><div class="meta"><span class="site">' + esc(c.site || "Instagram") + '</span><span class="tag">' + esc(c.tag || "no tag") + "</span><strong>" + esc(c.board ? c.handle + " · " + c.board : c.handle) + "</strong></div><p>" + esc(c.note || "No note yet.") + '</p><div class="orig"><span>Original post</span><img id="original" src="' + esc(c.image) + '" alt="' + esc(c.caption || "") + '" draggable="false"></div>' +
       (c.whole ? '<p class="hint">Drag a box on the original post to keep one detail.</p>' : "") +
       '<div class="row"><button class="btn line" id="close-detail" type="button">Close</button></div></div>';
   }
@@ -506,6 +623,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     closeMenu();
     renderNav();
     renderCenter();
+    remember();
   }
   function closeMenu() {
     if (menu) { menu.remove(); menu = null; }
@@ -536,7 +654,12 @@ body.picking,body.picking img.photo{cursor:crosshair}
     document.getElementById("veil").hidden = true;
     document.getElementById("marquee").hidden = true;
     renderPopup();
-    if (view !== "home" && view !== "search") show("home");
+    if (tab === "ig" && view !== "home" && view !== "search") show("home");
+    if (tab === "pin" && pview !== "home" && pview !== "explore" && pview !== "pin") {
+      openPinId = null;
+      pview = "home";
+      renderPin();
+    }
   }
   function stopPick() {
     mode = state.active ? "live" : "ask";
@@ -552,11 +675,14 @@ body.picking,body.picking img.photo{cursor:crosshair}
     var box = whole ? { x: 0, y: 0, w: 1, h: 1 } : clientBoxToImage(img, rect);
     var preview;
     try { preview = cropImage(img, box); } catch (e) { preview = img.getAttribute("src"); }
+    var known = postById(article.id) || pinById(article.id);
     draft = {
+      site: article.dataset.site || "Instagram",
       handle: article.dataset.handle,
+      board: article.dataset.board || "",
       postId: article.id,
       image: img.getAttribute("src"),
-      caption: (postById(article.id) || {}).caption || "",
+      caption: (known && (known.caption || known.title)) || "",
       box: box,
       whole: whole,
       preview: preview,
@@ -576,7 +702,9 @@ body.picking,body.picking img.photo{cursor:crosshair}
     state.saves.push({
       id: "now-" + Date.now(),
       session: "This session",
+      site: draft.site || "Instagram",
       handle: draft.handle,
+      board: draft.board || "",
       postId: draft.postId,
       image: draft.image,
       caption: draft.caption,
@@ -615,7 +743,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
       chunks.push(title);
       if (!items.length) chunks.push("No details saved.");
       items.forEach(function (item) {
-        chunks.push(item.handle + "\n" + (item.tag || "no tag") + "\n" + (item.note || "No note") + "\n" + (item.whole ? "Whole post" : "Crop saved with this note") + "\n" + item.caption);
+        chunks.push((item.site || "Instagram") + "\n" + (item.board ? item.handle + " · " + item.board : item.handle) + "\n" + (item.tag || "no tag") + "\n" + (item.note || "No note") + "\n" + (item.whole ? "Whole post" : "Crop saved with this note") + "\n" + item.caption);
       });
       chunks.push("");
     }
@@ -766,6 +894,8 @@ body.picking,body.picking img.photo{cursor:crosshair}
     var h = Math.abs(e.clientY - drag.y);
     drag = null;
     document.getElementById("marquee").hidden = true;
+    skipClick = true;
+    setTimeout(function () { skipClick = false; }, 0);
     if (w < 8 || h < 8) openReview(img, null);
     else openReview(img, { x: x, y: y, w: w, h: h });
   });
@@ -821,10 +951,168 @@ body.picking,body.picking img.photo{cursor:crosshair}
     });
   })).then(function () { seedReady = true; }).catch(function () { seedReady = true; });
 
+  function visiblePins() {
+    var q = pquery.trim().toLowerCase();
+    return PINS.filter(function (p) {
+      if (pview === "board" && p.board !== state.boardFilter) return false;
+      if (!q) return true;
+      return (p.account + " " + p.board + " " + p.title).toLowerCase().indexOf(q) >= 0;
+    });
+  }
+  function pinCard(p) {
+    return '<article class="pin" id="' + esc(p.id) + '" data-handle="' + esc(p.account) + '" data-board="' + esc(p.board) + '" data-site="Pinterest" data-caption="' + esc(p.title) + '">' +
+      '<img class="photo" src="' + esc(p.image) + '" alt="' + esc(p.title) + '" draggable="false">' +
+      '<div class="hover"><button class="pboard" type="button" data-board-for="' + esc(p.id) + '">' + esc(p.board) + '</button><button class="psave" type="button" data-pin-save="' + esc(p.id) + '" aria-pressed="' + (p.saved ? "true" : "false") + '">' + (p.saved ? "Saved" : "Save") + "</button></div></article>";
+  }
+  function renderPin() {
+    document.querySelectorAll(".pnav button").forEach(function (btn) {
+      btn.setAttribute("aria-current", btn.dataset.pview === pview ? "page" : "false");
+    });
+    var el = document.getElementById("pbody");
+    if (pview === "pin" && openPinId) {
+      var p = pinById(openPinId);
+      el.innerHTML = '<article class="closeup" id="' + esc(p.id) + '" data-handle="' + esc(p.account) + '" data-board="' + esc(p.board) + '" data-site="Pinterest"><div><button class="back" id="pin-back" type="button">Back</button><img class="photo" src="' + esc(p.image) + '" alt="' + esc(p.title) + '" draggable="false"></div><div><p class="from">' + esc(p.account) + '</p><h2>' + esc(p.title) + '</h2><p>Board: ' + esc(p.board) + '</p><button class="psave" type="button" data-pin-save="' + esc(p.id) + '" aria-pressed="' + (p.saved ? "true" : "false") + '">' + (p.saved ? "Saved" : "Save") + "</button></div></article>";
+      paintChrome();
+      return;
+    }
+    if (pview === "create") {
+      var boards = {};
+      PINS.forEach(function (p) { boards[p.board] = (boards[p.board] || 0) + 1; });
+      el.innerHTML = '<div style="padding:24px 28px 80px"><h1>Your boards</h1><div class="boards">' + Object.keys(boards).map(function (name) {
+        return '<button type="button" data-open-board="' + esc(name) + '"><span>' + esc(name) + "</span><span>" + boards[name] + "</span></button>";
+      }).join("") + "</div></div>";
+      paintChrome();
+      return;
+    }
+    if (pview === "notes") {
+      el.innerHTML = '<div style="padding:24px 28px"><h1>Updates</h1>' + PINS.slice(0, 5).map(function (p) {
+        return '<button class="note-row" type="button" data-open-pin="' + esc(p.id) + '"><img src="' + esc(p.image) + '" alt=""><div><strong>' + esc(p.account) + '</strong><span>saved a pin to ' + esc(p.board) + "</span></div></button>";
+      }).join("") + "</div>";
+      paintChrome();
+      return;
+    }
+    var title = pview === "explore" ? "<h1 style=\"padding:8px 16px 0\">Explore</h1>" : (pview === "board" ? "<h1 style=\"padding:8px 16px 0\">" + esc(state.boardFilter || "") + "</h1>" : "");
+    var list = visiblePins();
+    el.innerHTML = title + '<div class="masonry">' + (list.length ? list.map(pinCard).join("") : '<p class="empty" style="padding:16px">No pins match that search.</p>') + "</div>";
+    paintChrome();
+  }
+  function snapshot() { return { tab: tab, view: view, pview: pview, pin: openPinId }; }
+  function sameSnap(a, b) { return a && b && a.tab === b.tab && a.view === b.view && a.pview === b.pview && a.pin === b.pin; }
+  function paintChrome() {
+    document.querySelectorAll(".tab").forEach(function (b) {
+      var on = b.dataset.tab === tab;
+      b.classList.toggle("on", on);
+      b.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    var url = "instagram.com";
+    if (tab === "pin") url = openPinId ? "pinterest.com/pin/" + openPinId : (pview === "explore" ? "pinterest.com/explore" : pview === "create" ? "pinterest.com/boards" : "pinterest.com");
+    else if (view && view !== "home") url = "instagram.com/" + view;
+    document.getElementById("url").textContent = url;
+    document.getElementById("site-ig").hidden = tab !== "ig";
+    document.getElementById("site-pin").hidden = tab !== "pin";
+    document.getElementById("hist-back").disabled = histAt <= 0;
+    document.getElementById("hist-forward").disabled = histAt < 0 || histAt >= hist.length - 1;
+  }
+  function remember() {
+    if (applying) return;
+    var snap = snapshot();
+    if (sameSnap(hist[histAt], snap)) { paintChrome(); return; }
+    hist = hist.slice(0, histAt + 1);
+    hist.push(snap);
+    histAt = hist.length - 1;
+    paintChrome();
+  }
+  function applySnap(snap) {
+    applying = true;
+    tab = snap.tab;
+    view = snap.view;
+    pview = snap.pview;
+    openPinId = snap.pin;
+    openThread = null;
+    renderNav();
+    renderCenter();
+    renderPin();
+    paintChrome();
+    placePopup();
+    applying = false;
+  }
+  function setTab(next) {
+    if (tab === next) return;
+    tab = next;
+    remember();
+    placePopup();
+  }
+
+  document.querySelectorAll(".tab").forEach(function (btn) {
+    btn.onclick = function () { setTab(btn.dataset.tab); };
+  });
+  document.getElementById("hist-back").onclick = function () {
+    if (histAt <= 0) return;
+    histAt -= 1;
+    applySnap(hist[histAt]);
+  };
+  document.getElementById("hist-forward").onclick = function () {
+    if (histAt >= hist.length - 1) return;
+    histAt += 1;
+    applySnap(hist[histAt]);
+  };
+  document.getElementById("hist-reload").onclick = function () {
+    if (tab === "ig") { view = "home"; openThread = null; renderNav(); renderCenter(); }
+    else { pview = "home"; openPinId = null; pquery = ""; var box = document.getElementById("psearch"); if (box) box.value = ""; renderPin(); }
+    remember();
+    toast("Page refreshed");
+  };
+  document.querySelector(".pnav").addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-pview]");
+    if (!btn) return;
+    pview = btn.dataset.pview;
+    openPinId = null;
+    renderPin();
+    remember();
+  });
+  document.getElementById("p-logo").onclick = function () { pview = "home"; openPinId = null; renderPin(); remember(); };
+  document.getElementById("p-notes").onclick = function () { pview = "notes"; openPinId = null; renderPin(); remember(); };
+  document.getElementById("p-messages").onclick = function () { pview = "notes"; openPinId = null; renderPin(); remember(); };
+  document.getElementById("p-profile").onclick = function () { pview = "create"; openPinId = null; renderPin(); remember(); };
+  document.getElementById("psearch").addEventListener("input", function (e) {
+    pquery = e.target.value;
+    if (pview === "pin" || pview === "create" || pview === "notes") pview = "home";
+    openPinId = null;
+    renderPin();
+  });
+  document.getElementById("pbody").addEventListener("click", function (e) {
+    if (skipClick) return;
+    var save = e.target.closest("[data-pin-save]");
+    if (save) {
+      var pin = pinById(save.dataset.pinSave);
+      pin.saved = !pin.saved;
+      renderPin();
+      return;
+    }
+    var boardBtn = e.target.closest("[data-board-for]");
+    if (boardBtn) {
+      var names = ["Gold edges", "Printed pages", "Drawn figures", "Small lights", "Line studies", "Blue grounds", "Letters", "Dark studies", "Cloth"];
+      var pin2 = pinById(boardBtn.dataset.boardFor);
+      pin2.board = names[(names.indexOf(pin2.board) + 1) % names.length];
+      renderPin();
+      return;
+    }
+    var openBoard = e.target.closest("[data-open-board]");
+    if (openBoard) { state.boardFilter = openBoard.dataset.openBoard; pview = "board"; renderPin(); remember(); return; }
+    var jump = e.target.closest("[data-open-pin]");
+    if (jump) { openPinId = jump.dataset.openPin; pview = "pin"; renderPin(); remember(); return; }
+    if (e.target.id === "pin-back") { openPinId = null; pview = "home"; renderPin(); remember(); return; }
+    if (mode === "pick") return;
+    var article = e.target.closest("article.pin");
+    if (article && e.target.closest("img.photo")) { openPinId = article.id; pview = "pin"; renderPin(); remember(); }
+  });
+
   renderNav();
   renderRight();
   renderCenter();
+  renderPin();
   renderPopup();
+  remember();
 })();
 </script>
 </body>
