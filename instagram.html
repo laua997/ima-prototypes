@@ -141,8 +141,8 @@ img{max-width:100%}
 #popup .from{margin:0;font-size:13px;color:#c8c8c8}
 #popup .from b{color:#fff;font-weight:500}
 #popup .tags{display:flex;flex-wrap:wrap;gap:6px}
-#popup .tags button{border:0;background:transparent;color:#fff;border-radius:999px;padding:6px 10px;font:400 13px/1 var(--ui);letter-spacing:var(--track);box-shadow:inset 0 0 0 1px rgba(255,255,255,.4)}
-#popup .tags button[aria-pressed="true"]{background:#fff;color:#111}
+#popup .tags button{border:0;border-radius:999px;padding:6px 10px;font:500 13px/1 var(--ui);letter-spacing:0;box-shadow:none}
+#popup .tags button[aria-pressed="true"]{outline:2px solid #fff;outline-offset:2px}
 #popup label.why{display:grid;gap:6px;font-size:12px;color:#c8c8c8}
 #popup textarea,#popup select,#popup input[type="text"]{width:100%;border:0;box-shadow:inset 0 0 0 1px #2a2a2a;border-radius:12px;padding:8px 10px;font:400 14px/1.4 var(--ui);letter-spacing:var(--track);background:#141414;color:#fff}
 #popup select{height:36px}
@@ -199,7 +199,8 @@ body.picking,body.picking img.photo{cursor:crosshair}
 .map-card .badge svg{display:block}
 .map-card .who{min-width:0;text-align:left}
 .map-card .who b{display:block;font-size:12px;font-weight:500;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.map-card .who span{display:block;margin-top:1px;font-size:9px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;line-height:1.2}
+.map-card .who span.tag-pill{display:inline-flex;margin-top:4px;padding:2px 7px;font-size:10px;font-weight:500;letter-spacing:0;text-transform:none;line-height:1.3;box-shadow:inset 0 0 0 1px rgba(17,17,17,.45)}
+.tag-pill{display:inline-flex;align-items:center;border:0;border-radius:999px;padding:4px 10px;font:500 12px/1.3 var(--ui);letter-spacing:0;text-transform:none}
 #map-links{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:0}
 #map-links .link-line{fill:none;stroke:rgba(255,255,255,.82);stroke-width:1.5;stroke-linecap:round}
 #map-links .link-hit{fill:none;stroke:transparent;stroke-width:14;pointer-events:none}
@@ -302,7 +303,14 @@ body.picking,body.picking img.photo{cursor:crosshair}
 .grid .qtile{display:flex;align-items:center;justify-content:center;height:100%;padding:8px;font-size:11px;line-height:1.3;text-align:center;color:#000}
 #detail{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.55);display:grid;place-items:center;padding:24px}
 .sheet{width:min(560px,100%);background:#fff;border:1px solid #000;border-radius:2px;padding:12px;box-shadow:none;max-height:calc(100vh - 48px);overflow:auto;font-family:var(--ui);letter-spacing:0;color:#000}
-#detail .sheet{width:min(420px,100%);background:#111;border:0;border-radius:22px;padding:16px;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.28)}
+#detail .sheet{width:min(440px,100%);background:#111;border:0;border-radius:22px;padding:16px;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.28)}
+#detail .sheet h2{margin:12px 0 0;font:500 18px/1.3 var(--ui);letter-spacing:0}
+#detail .kv{display:grid;gap:10px;margin:12px 0 4px}
+#detail .kv-row{display:grid;gap:3px}
+#detail .kv-l{font-size:11px;color:#c8c8c8}
+#detail .kv-v{font-size:14px;line-height:1.35}
+#detail .kv-v a{color:#fff}
+#detail .pills{display:flex;flex-wrap:wrap;gap:6px}
 #detail .thumb{display:block;width:96px;height:96px;padding:0;border:0;border-radius:14px;overflow:hidden;background:#141414;cursor:pointer}
 #detail .thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .sheet img.big{width:100%;max-height:280px;object-fit:contain;background:#fff;border:1px solid #000;border-radius:0;display:block}
@@ -467,7 +475,10 @@ body.picking,body.picking img.photo{cursor:crosshair}
         { a: "seed-gold-bowl", b: "seed-gold-blue" },
         { a: "seed-gold-seam", b: "seed-gold-note-line" },
         { a: "seed-gold-note-line", b: "seed-gold-note-ground" },
-        { a: "seed-gold-page", b: "seed-gold-quote" }
+        { a: "seed-gold-page", b: "seed-gold-quote" },
+        { a: "seed-gold-linen", b: "seed-gold-bowl" },
+        { a: "seed-gold-word", b: "seed-gold-page" },
+        { a: "seed-gold-quote2", b: "seed-gold-quote" }
       ],
       saves: [
         { id: "seed-gold-bowl", sample: true, session: "Bowl repairs", site: "Instagram", handle: "studio.mending", board: "", image: "images/pin5.jpg", caption: "A repaired bowl. The gold follows the break.", box: { x: 0.22, y: 0.28, w: 0.36, h: 0.34 }, tag: "texture", note: "The gold line in the crack.", x: 48, y: 100 },
@@ -493,7 +504,10 @@ body.picking,body.picking img.photo{cursor:crosshair}
         { a: "seed-light-flow", b: "seed-light-grad" },
         { a: "seed-light-part", b: "seed-light-note-curve" },
         { a: "seed-light-led", b: "seed-light-note-point" },
-        { a: "seed-light-note-point", b: "seed-light-quote" }
+        { a: "seed-light-note-point", b: "seed-light-quote" },
+        { a: "seed-light-fft", b: "seed-light-flow" },
+        { a: "seed-light-cym", b: "seed-light-led" },
+        { a: "seed-light-liss", b: "seed-light-cym" }
       ],
       saves: [
         { id: "seed-light-flow", sample: true, session: "Line pictures", site: "Instagram", handle: "field.lines", board: "", image: "images/lt_flow.jpg", caption: "A field of thin lines.", box: { x: 0.3, y: 0.35, w: 0.32, h: 0.28 }, tag: "shape", note: "The curve in the middle of the lines.", x: 48, y: 100 },
@@ -519,7 +533,10 @@ body.picking,body.picking img.photo{cursor:crosshair}
         { a: "seed-fig-hands", b: "seed-fig-note-gap" },
         { a: "seed-fig-note-gap", b: "seed-fig-letters" },
         { a: "seed-fig-words", b: "seed-fig-type" },
-        { a: "seed-fig-note-letters", b: "seed-fig-face" }
+        { a: "seed-fig-note-letters", b: "seed-fig-face" },
+        { a: "seed-fig-pencil", b: "seed-fig-hands" },
+        { a: "seed-fig-pose", b: "seed-fig-pencil" },
+        { a: "seed-fig-sentence", b: "seed-fig-type" }
       ],
       saves: [
         { id: "seed-fig-words", sample: true, session: "Drawn figures", site: "Instagram", handle: "figure.study", board: "", image: "images/pin1.jpg", caption: "A figure built out of words.", box: { x: 0.24, y: 0.16, w: 0.4, h: 0.46 }, tag: "pose", note: "The shoulder.", x: 48, y: 100 },
@@ -533,6 +550,41 @@ body.picking,body.picking img.photo{cursor:crosshair}
       ]
     }
   ];
+  var SEED_INFO = {
+    "seed-gold-bowl": { title: "Repaired bowl", link: "https://instagram.com/studio.mending", minutesAgo: 86 },
+    "seed-gold-seam": { title: "Glaze seams", link: "https://instagram.com/goldseam", minutesAgo: 74 },
+    "seed-gold-blue": { title: "Gold on blue", link: "https://instagram.com/blueground.studio", minutesAgo: 63 },
+    "seed-gold-linen": { title: "Gold beads on linen", link: "https://pinterest.com/linen.room/cloth", minutesAgo: 51 },
+    "seed-gold-page": { title: "Kintsugi book page", link: "https://instagram.com/paper.press", minutesAgo: 40 },
+    "seed-gold-word": { title: "Gold word", link: "https://pinterest.com/paper.room/printed-pages", minutesAgo: 33 },
+    "seed-gold-quote": { title: "The gold is the record", link: "https://substack.com/p/ss-gold", minutesAgo: 22 },
+    "seed-gold-quote2": { title: "A seam you can follow", link: "https://substack.com/p/ss-seam", minutesAgo: 16 },
+    "seed-light-flow": { title: "Field of thin lines", link: "https://instagram.com/field.lines", minutesAgo: 110 },
+    "seed-light-part": { title: "Bright particles", link: "https://pinterest.com/field.notes/line-studies", minutesAgo: 98 },
+    "seed-light-grad": { title: "Soft color change", link: "https://instagram.com/quiet.gradient", minutesAgo: 84 },
+    "seed-light-fft": { title: "Circle of lines", link: "https://pinterest.com/field.notes/line-studies", minutesAgo: 77 },
+    "seed-light-led": { title: "One small bright point", link: "https://instagram.com/light.room", minutesAgo: 46 },
+    "seed-light-cym": { title: "Rings of light", link: "https://instagram.com/shader.notes", minutesAgo: 38 },
+    "seed-light-liss": { title: "Bright line on black", link: "https://pinterest.com/light.notes/small-lights", minutesAgo: 29 },
+    "seed-light-quote": { title: "Keep the smallest light", link: "https://substack.com/p/ss-light", minutesAgo: 18 },
+    "seed-fig-words": { title: "Figure built from words", link: "https://instagram.com/figure.study", minutesAgo: 92 },
+    "seed-fig-hands": { title: "Lines between two hands", link: "https://instagram.com/hand.archive", minutesAgo: 81 },
+    "seed-fig-pencil": { title: "Pencil outline", link: "https://pinterest.com/figure.room/drawn-figures", minutesAgo: 70 },
+    "seed-fig-pose": { title: "Held pose", link: "https://pinterest.com/figure.room/drawn-figures", minutesAgo: 64 },
+    "seed-fig-type": { title: "Type off the page", link: "https://instagram.com/typeandthread", minutesAgo: 41 },
+    "seed-fig-letters": { title: "Letters as a drawing", link: "https://pinterest.com/type.room/letters", minutesAgo: 35 },
+    "seed-fig-face": { title: "Type across a face", link: "https://pinterest.com/type.room/letters", minutesAgo: 27 },
+    "seed-fig-sentence": { title: "Sentence pulled apart", link: "https://pinterest.com/paper.room/printed-pages", minutesAgo: 19 }
+  };
+  SEED_PROJECTS.forEach(function (project) {
+    project.saves.forEach(function (item) {
+      var info = SEED_INFO[item.id];
+      if (!info) return;
+      item.title = info.title;
+      item.link = info.link;
+      item.minutesAgo = info.minutesAgo;
+    });
+  });
   var SUB_POSTS = [
     {
       id: "ss-gold", publication: "The Mended Page", author: "Ada Keene", date: "12 Nov 2026",
@@ -574,7 +626,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
   var subFollow = {};
   var textSel = "";
   var TAGS = ["color", "shape", "texture", "pose", "type"];
-  var KEY = "tangents-ig-sample-v2";
+  var KEY = "tangents-ig-sample-v3";
   var state = load();
   var tab = "ig";
   var pview = "home";
@@ -849,7 +901,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     var n = liveSaves().length;
     var html = "";
     if (mode === "pill") {
-      html = '<button class="btn line" id="reopen" type="button">Tangents</button>';
+      html = '<button class="btn line" id="reopen" type="button">prototype</button>';
     } else if (mode === "ask") {
       html = '<div class="island"><div class="ask"><p class="q">Start a session?</p><button class="btn ghost" id="not-now" type="button">Not now</button><button class="btn pink" id="start-session" type="button">Start</button></div>' + projectField("project-pick") + '<button class="btn text" id="reset-sample" type="button">Reset sample</button></div>';
     } else if (mode === "pick") {
@@ -857,7 +909,8 @@ body.picking,body.picking img.photo{cursor:crosshair}
     } else if (mode === "review" && draft) {
       var fromWho = draft.author ? draft.handle + " · " + draft.author : (draft.board ? draft.handle + " · " + draft.board : draft.handle);
       var tags = projectField("review-project") + '<div class="tags" role="group" aria-label="Tags">' + TAGS.map(function (tag) {
-        return '<button type="button" data-tag="' + tag + '" aria-pressed="' + (draft.tag === tag ? "true" : "false") + '">' + tag + "</button>";
+        var bg = cardColor({ tag: tag, id: "tag:" + tag });
+        return '<button type="button" class="tag-pill" data-tag="' + tag + '" aria-pressed="' + (draft.tag === tag ? "true" : "false") + '" style="background:' + bg + ';color:' + tagInk(bg) + '">' + tag + "</button>";
       }).join("") + '</div><label class="why">why I saved this<textarea id="note" placeholder="Optional">' + esc(draft.note || "") + "</textarea></label>" +
         (draft.warn ? '<p class="warn">' + esc(draft.warn) + "</p>" : "") +
         '<div class="row"><button class="btn ghost" id="cancel-review" type="button">Cancel</button><button class="btn pink" id="commit-save" type="button">Save</button></div>';
@@ -967,6 +1020,18 @@ body.picking,body.picking img.photo{cursor:crosshair}
     var palette = ["#E5533D", "#F0883E", "#F7D64A", "#8FD19E", "#B8E986", "#BDE6F7"];
     return palette[hashStr(String(item.id || item.handle || "")) % palette.length];
   }
+  function tagInk(hex) {
+    var n = parseInt(String(hex || "").replace("#", ""), 16);
+    if (!isFinite(n)) return "#111";
+    var r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+    var y = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+    return y > 0.62 ? "#111" : "#fff";
+  }
+  function tagPill(tag) {
+    var name = tag || "no tag";
+    var bg = name === "no tag" ? "#2a2a2a" : cardColor({ tag: name, id: "tag:" + name });
+    return '<span class="tag-pill" style="background:' + bg + ';color:' + tagInk(bg) + '">' + esc(name) + "</span>";
+  }
   function cardTilt(id) {
     return ((hashStr(String(id || "")) % 17) - 8) + "deg";
   }
@@ -980,7 +1045,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     var body = item.quote
       ? '<span class="card-quote">“' + esc(excerpt(item.quote, 90)) + '”</span>'
       : '<img class="card-photo" src="' + esc(item.crop || item.image) + '" alt="" draggable="false">';
-    return '<button class="map-card' + (item.quote ? " text-clip" : "") + '" type="button" data-card="' + esc(item.id) + '" data-session="' + esc(item.session || "") + '" data-account="' + esc(accountKey(item)) + '" data-site="' + esc(site) + '" style="left:' + spot.x + 'px;top:' + spot.y + "px;--rot:" + cardTilt(item.id) + ";--card:" + cardColor(item) + '"><span class="face">' + body + '<span class="card-foot"><span class="badge">' + siteBadge(site) + '</span><span class="who"><b>' + esc(accountKey(item)) + "</b><span>" + esc(item.tag || "no tag") + "</span></span></span></span></button>";
+    return '<button class="map-card' + (item.quote ? " text-clip" : "") + '" type="button" data-card="' + esc(item.id) + '" data-session="' + esc(item.session || "") + '" data-account="' + esc(accountKey(item)) + '" data-site="' + esc(site) + '" style="left:' + spot.x + 'px;top:' + spot.y + "px;--rot:" + cardTilt(item.id) + ";--card:" + cardColor(item) + '"><span class="face">' + body + '<span class="card-foot"><span class="badge">' + siteBadge(site) + '</span><span class="who"><b>' + esc(accountKey(item)) + "</b>" + tagPill(item.tag) + "</span></span></span></button>";
   }
   function removedIds() { return Array.isArray(state.removed) ? state.removed : []; }
   function isRemoved(id) { return removedIds().indexOf(id) >= 0; }
@@ -1084,7 +1149,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     map.hidden = false;
     var cards = sessionNames(project).map(sessionMarkup).join("");
     if (!cards) cards = '<p class="hint empty-hint" style="left:48px;top:48px">No saves in this project yet.</p>';
-    map.innerHTML = '<div class="mapbar"><div class="logo">tangents</div><h1>Map · ' + esc(project.name) + '</h1><button class="btn line" id="back-feed" type="button">Back to the feed</button><button class="btn line" id="copy-notes" type="button">Copy session notes</button><button class="btn text" id="reset-sample-map" type="button">Reset sample</button></div><div class="map-layout">' + projectNav() + '<div class="map-viewport"><div class="map-canvas" id="map-canvas"><svg id="map-links" aria-hidden="true"></svg>' +
+    map.innerHTML = '<div class="mapbar"><div class="logo">prototype</div><h1>Map · ' + esc(project.name) + '</h1><button class="btn line" id="back-feed" type="button">Back to the feed</button><button class="btn line" id="copy-notes" type="button">Copy session notes</button><button class="btn text" id="reset-sample-map" type="button">Reset sample</button></div><div class="map-layout">' + projectNav() + '<div class="map-viewport"><div class="map-canvas" id="map-canvas"><svg id="map-links" aria-hidden="true"></svg>' +
       cards +
       "</div></div></div>" + toolsMarkup();
     layoutLabels();
@@ -1356,18 +1421,77 @@ body.picking,body.picking img.photo{cursor:crosshair}
       (c.whole ? '<p class="hint">Drag a box on the original post to keep one detail.</p>' : "") +
       '<div class="row"><button class="btn pink" id="close-zoom" type="button">Close</button></div></div>';
   }
+  function projectOf(item) {
+    var found = null;
+    (state.projects || []).forEach(function (p) {
+      (p.saves || []).forEach(function (s) { if (s.id === item.id) found = p; });
+    });
+    return found || currentProject();
+  }
+  function accountLine(c) {
+    var handle = c.handle || "Unknown account";
+    if (c.board) return handle + " · " + c.board;
+    if (c.author) return handle + " · " + c.author;
+    return handle;
+  }
+  function savedWhen(c) {
+    if (c.minutesAgo == null || c.minutesAgo === 0) return "Just now";
+    if (c.minutesAgo === 1) return "1 minute ago";
+    return c.minutesAgo + " minutes ago";
+  }
+  function itemTags(c) {
+    if (c.tags && c.tags.length) return c.tags;
+    return [c.tag || "no tag"];
+  }
+  function linkHtml(c) {
+    if (!c.link) return "No link";
+    var href = /^https?:\/\//.test(c.link) ? c.link : "https://" + c.link;
+    return '<a href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(String(c.link).replace(/^https?:\/\//, "")) + "</a>";
+  }
+  function connectedNames(c) {
+    var project = projectOf(c);
+    var names = {};
+    (project.saves || []).forEach(function (s) { names[s.id] = s.title || s.caption || s.handle || "Saved item"; });
+    (project.stickies || []).forEach(function (n) { names[n.id] = n.text || "Note"; });
+    var out = [];
+    (project.links || []).forEach(function (l) {
+      var other = l.a === c.id ? l.b : (l.b === c.id ? l.a : "");
+      if (other && names[other] && out.indexOf(names[other]) < 0) out.push(names[other]);
+    });
+    return out;
+  }
+  function kvRow(label, valueHtml) {
+    return '<div class="kv-row"><span class="kv-l">' + esc(label) + '</span><div class="kv-v">' + valueHtml + "</div></div>";
+  }
+  function detailFacts(c) {
+    var project = projectOf(c);
+    var tags = '<div class="pills">' + itemTags(c).map(tagPill).join("") + "</div>";
+    var connected = connectedNames(c);
+    var connectedHtml = connected.length ? connected.map(function (name) { return "<div>" + esc(name) + "</div>"; }).join("") : "None";
+    return '<div class="kv">' +
+      kvRow("Site", esc(c.site || "Instagram")) +
+      kvRow("Tag", tags) +
+      kvRow("Account", esc(accountLine(c))) +
+      kvRow("Saved", esc(savedWhen(c))) +
+      kvRow("Session", esc(c.session || "This session")) +
+      kvRow("Project", esc(project.name || "Project")) +
+      kvRow("Note", esc(c.note || "No note yet.")) +
+      kvRow("Link", linkHtml(c)) +
+      kvRow("Connected to", connectedHtml) +
+      "</div>";
+  }
   function renderDetail() {
     closeZoom();
     var el = document.getElementById("detail");
     if (!openCard) { el.hidden = true; el.innerHTML = ""; return; }
     var c = openCard;
     el.hidden = false;
-    var who = esc(c.author ? c.handle + " · " + c.author : (c.board ? c.handle + " · " + c.board : c.handle));
+    var title = esc(c.title || c.caption || "Saved detail");
     if (c.quote) {
-      el.innerHTML = '<div class="sheet" role="dialog" aria-label="Saved text"><p class="quote-full">“' + esc(c.quote) + '”</p><div class="meta"><span class="site">Substack</span><span class="tag">' + esc(c.tag || "no tag") + "</span><strong>" + who + "</strong></div><p>" + esc(c.note || "No note yet.") + '</p><p>' + esc(c.caption || "") + '</p><div class="row"><button class="btn line" id="open-source" type="button" data-post="' + esc(c.postId || "") + '">Show this post</button><button class="btn pink" id="close-detail" type="button">Close</button></div></div>';
+      el.innerHTML = '<div class="sheet" role="dialog" aria-label="Saved text"><p class="quote-full">“' + esc(c.quote) + '”</p><h2>' + title + "</h2>" + detailFacts(c) + '<div class="row"><button class="btn line" id="open-source" type="button" data-post="' + esc(c.postId || "") + '">Show this post</button><button class="btn pink" id="close-detail" type="button">Close</button></div></div>';
       return;
     }
-    el.innerHTML = '<div class="sheet" role="dialog" aria-label="Saved detail"><button class="thumb" id="open-zoom" type="button" aria-label="Show larger image"><img src="' + esc(c.crop || c.image) + '" alt=""></button><div class="meta"><span class="site">' + esc(c.site || "Instagram") + '</span><span class="tag">' + esc(c.tag || "no tag") + "</span><strong>" + who + "</strong></div><p>" + esc(c.note || "No note yet.") + "</p>" +
+    el.innerHTML = '<div class="sheet" role="dialog" aria-label="Saved detail"><button class="thumb" id="open-zoom" type="button" aria-label="Show larger image"><img src="' + esc(c.crop || c.image) + '" alt=""></button><h2>' + title + "</h2>" + detailFacts(c) +
       (c.whole ? '<p class="hint">Open the image to keep one detail.</p>' : "") +
       '<div class="row"><button class="btn pink" id="close-detail" type="button">Close</button></div></div>';
   }
@@ -1471,6 +1595,9 @@ body.picking,body.picking img.photo{cursor:crosshair}
         postId: draft.postId,
         quote: draft.quote,
         caption: draft.caption || "",
+        title: draft.caption || "Saved text",
+        link: "",
+        minutesAgo: 0,
         tag: draft.tag,
         note: draft.note
       });
@@ -1495,6 +1622,9 @@ body.picking,body.picking img.photo{cursor:crosshair}
       postId: draft.postId,
       image: draft.image,
       caption: draft.caption,
+      title: draft.caption || "Saved detail",
+      link: "",
+      minutesAgo: 0,
       box: draft.box,
       whole: draft.whole,
       crop: draft.whole ? "" : draft.preview,

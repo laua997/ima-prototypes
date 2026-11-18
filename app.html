@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tangents Desktop Prototype</title>
+<title>prototype</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 412 412'%3E%3Crect width='412' height='412' rx='92.5' fill='%23F7F7F7'/%3E%3Cg transform='translate(92.75 93.34) scale(.9456)'%3E%3Cpath d='M239.536 42.319C239.536 45.6793 236.812 48.4033 233.452 48.4033H167.43C164.07 48.4033 161.346 51.1273 161.346 54.4876V89.4821C161.346 92.8424 164.07 95.5664 167.43 95.5664H186.289C189.649 95.5664 192.373 98.2904 192.373 101.651V137.886C192.373 141.247 189.649 143.971 186.289 143.971H135.16C131.8 143.971 129.076 146.695 129.076 150.055V186.29C129.076 189.65 126.352 192.374 122.992 192.374H87.9983C84.6381 192.374 81.9141 195.098 81.9141 198.458V232.211C81.9141 235.571 79.19 238.295 75.8298 238.295H6.08428C2.72403 238.295 0 235.571 0 232.211V195.976C0 192.616 2.72402 189.892 6.08427 189.892H74.5886C77.9488 189.892 80.6729 187.168 80.6729 183.807V150.055C80.6729 146.695 77.9488 143.971 74.5886 143.971H53.2464C49.8861 143.971 47.1621 141.247 47.1621 137.886V101.651C47.1621 98.2904 49.8861 95.5664 53.2464 95.5664H106.857C110.217 95.5664 112.941 92.8424 112.941 89.4821V53.2474C112.941 49.8871 115.665 47.1631 119.026 47.1631H154.02C157.38 47.1631 160.104 44.4391 160.104 41.0788V6.08427C160.104 2.72402 162.829 0 166.189 0H233.452C236.812 0 239.536 2.72402 239.536 6.08427V42.319Z'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1797,7 +1797,7 @@ window.TANGENT_SESSIONS = {
   document.querySelector('#session .dot').dataset.c = S.dot;
   (function () {
     var m = document.createElement('div'); m.id = 'session-menu'; m.hidden = true; m.setAttribute('role', 'menu');
-    m.innerHTML = '<div class="sm-k">Your tangents</div>' + ORDER.map(function (k) { var t = SESSIONS[k]; return '<button role="menuitem" data-s="' + k + '"' + (k === SID ? ' aria-current="true"' : '') + '><i data-c="' + t.dot + '"></i><span><b>' + esc(t.title) + '</b><small>' + esc(t.role) + '</small></span></button>'; }).join('');
+    m.innerHTML = '<div class="sm-k">prototype</div>' + ORDER.map(function (k) { var t = SESSIONS[k]; return '<button role="menuitem" data-s="' + k + '"' + (k === SID ? ' aria-current="true"' : '') + '><i data-c="' + t.dot + '"></i><span><b>' + esc(t.title) + '</b><small>' + esc(t.role) + '</small></span></button>'; }).join('');
     $('session').appendChild(m);
     $('session-name').onclick = function (e) { e.stopPropagation(); m.hidden = !m.hidden; $('session-name').setAttribute('aria-expanded', String(!m.hidden)); };
     m.onclick = function (e) { var b = e.target.closest('[data-s]'); if (b) goSession(b.dataset.s); };
