@@ -183,10 +183,16 @@ body.picking,body.picking img.photo{cursor:crosshair}
 .proj-nav .new-proj button:hover{background:#fff;color:#111}
 .map-viewport{flex:1;min-height:0;overflow:auto;background:#111;cursor:grab}
 .map-viewport.panning{cursor:grabbing}
-.map-canvas{position:relative;min-width:1760px;min-height:1280px;background:#141414}
+.map-zoom{position:relative}
+.map-canvas{position:absolute;left:0;top:0;min-width:1760px;min-height:1280px;background:#141414}
 .slab,.alab{position:absolute;margin:0;color:#fff;font-weight:500;pointer-events:none;white-space:nowrap;font-family:var(--ui)}
 .slab{font-size:32px;letter-spacing:0;line-height:1.1}
 .alab{font-size:13px;color:#e8e8e8}
+.movable{pointer-events:auto;cursor:grab;z-index:2}
+.slab.heading{pointer-events:auto;cursor:grab;z-index:3;min-width:24px}
+.slab.heading:empty::before{content:"Heading";color:#c8c8c8}
+.slab.heading[contenteditable="true"]{cursor:text;outline:2px solid #fff;outline-offset:4px;user-select:text;-webkit-user-select:text}
+.heading.is-selected,.movable.is-selected{outline:2px solid #fff;outline-offset:4px}
 #map .hint{margin:0;font-size:12px;color:#c8c8c8;line-height:1.35}
 #map .empty-hint{position:absolute;width:220px;white-space:normal;pointer-events:none}
 .map-card{position:absolute;width:176px;height:236px;border:0;border-radius:0;background:transparent;padding:0;box-shadow:none;cursor:grab;color:#111;touch-action:none;user-select:none;-webkit-user-select:none;transform:rotate(var(--rot,0deg));transform-origin:50% 60%;z-index:1}
@@ -212,9 +218,12 @@ body.picking,body.picking img.photo{cursor:crosshair}
 .sticky-text{min-height:48px;outline:none;font:400 14px/1.4 var(--ui);cursor:text;user-select:text;-webkit-user-select:text;white-space:pre-wrap;word-break:break-word}
 .sticky-text:empty::before{content:attr(data-ph);opacity:.45}
 .sticky.link-from,.sticky.is-selected,.map-card.link-from .face,.map-card.is-selected .face{outline:2px solid #fff;outline-offset:3px}
-#map[data-tool="note"] .map-viewport,#map[data-tool="connect"] .map-viewport,#map[data-tool="branch"] .map-viewport,#map[data-tool="comment"] .map-viewport,#map[data-tool="remove"] .map-viewport,
-#map[data-tool="note"] .map-card,#map[data-tool="connect"] .map-card,#map[data-tool="branch"] .map-card,#map[data-tool="comment"] .map-card,#map[data-tool="remove"] .map-card,
-#map[data-tool="note"] .sticky,#map[data-tool="connect"] .sticky,#map[data-tool="branch"] .sticky,#map[data-tool="comment"] .sticky,#map[data-tool="remove"] .sticky{cursor:crosshair}
+#map[data-tool="note"] .map-viewport,#map[data-tool="connect"] .map-viewport,#map[data-tool="branch"] .map-viewport,#map[data-tool="comment"] .map-viewport,#map[data-tool="remove"] .map-viewport,#map[data-tool="text"] .map-viewport,
+#map[data-tool="note"] .map-card,#map[data-tool="connect"] .map-card,#map[data-tool="branch"] .map-card,#map[data-tool="comment"] .map-card,#map[data-tool="remove"] .map-card,#map[data-tool="text"] .map-card,
+#map[data-tool="note"] .sticky,#map[data-tool="connect"] .sticky,#map[data-tool="branch"] .sticky,#map[data-tool="comment"] .sticky,#map[data-tool="remove"] .sticky,#map[data-tool="text"] .sticky,
+#map[data-tool="text"] .heading,#map[data-tool="remove"] .heading,#map[data-tool="remove"] .movable{cursor:crosshair}
+.zoom-box{position:fixed;left:268px;bottom:16px;z-index:6;display:flex;align-items:center;gap:8px;padding:6px 6px 6px 12px;background:#111;color:#fff;border:1px solid #2a2a2a;border-radius:14px;font:400 13px/1 var(--ui)}
+.zoom-box button{border:0;border-radius:999px;background:var(--pink);color:#fff;padding:6px 10px;font:400 12px/1 var(--ui);cursor:pointer}
 #map .tools-wrap{position:fixed;left:calc(50% + 126px);bottom:16px;transform:translateX(-50%);z-index:6;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;max-width:calc(100vw - 276px)}
 #map .tool-hint{margin:0;padding:6px 10px;background:#2a2a2a;color:#fff;border:1px solid #3a3a3a;border-radius:2px;box-shadow:none;font:400 12px/1.35 var(--ui);white-space:nowrap}
 #map .tools{pointer-events:auto;display:flex;align-items:center;justify-content:space-between;gap:2px;min-width:280px;height:50px;padding:6px;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:2px;box-shadow:none}
@@ -229,6 +238,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
   #map .tool-hint{white-space:normal;text-align:center}
   #map .tools{min-width:0;width:100%}
   #map .tools-wrap{left:50%;max-width:calc(100vw - 24px)}
+  .zoom-box{left:16px}
 }
 .pinterest{height:100%;display:flex;flex-direction:column;background:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:#111}
 .pbar{display:flex;align-items:center;gap:8px;height:72px;padding:8px 16px;background:#fff;flex:none}
@@ -646,6 +656,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
   var mapPress = null;
   var blockMapClick = false;
   var mapTool = "select";
+  var mapZoom = 1;
   var linkFrom = null;
   var selectedId = null;
   var draft = null;
@@ -700,7 +711,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     return currentProject().saves.filter(function (s) { return s.session === "This session"; });
   }
   function createProject(name) {
-    var project = { id: "p-" + Date.now(), name: name, sessions: [], saves: [], stickies: [], links: [], spots: {} };
+    var project = { id: "p-" + Date.now(), name: name, sessions: [], saves: [], stickies: [], links: [], spots: {}, headings: [], labelPos: {}, zoom: 1 };
     state.projects.push(project);
     return project;
   }
@@ -1056,7 +1067,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     var items = visibleSession(sessionName);
     if (!items.length && (sessionName !== "This session" || !state.active)) return "";
     var anchor = sessionAnchor(sessionName);
-    var html = '<div class="slab" data-session="' + esc(sessionName) + '" style="left:' + anchor.x + 'px;top:' + anchor.y + 'px">' + esc(sessionName) + "</div>";
+    var html = '<div class="slab movable" data-session="' + esc(sessionName) + '" style="left:' + anchor.x + 'px;top:' + anchor.y + 'px">' + esc(sessionName) + "</div>";
     if (!items.length) {
       return html + '<p class="hint empty-hint" data-session="' + esc(sessionName) + '" style="left:' + anchor.x + 'px;top:' + (anchor.y + 48) + 'px">No details saved in this session yet.</p>';
     }
@@ -1068,7 +1079,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
       by[key].push(item);
     });
     order.forEach(function (account, ai) {
-      html += '<div class="alab" data-session="' + esc(sessionName) + '" data-account="' + esc(account) + '">' + esc(account) + "</div>";
+      html += '<div class="alab movable" data-session="' + esc(sessionName) + '" data-account="' + esc(account) + '">' + esc(account) + "</div>";
       by[account].forEach(function (item, ii) {
         html += cardButton(item, spotFor(item, ai, ii));
       });
@@ -1094,6 +1105,12 @@ body.picking,body.picking img.photo{cursor:crosshair}
       account.minY = Math.min(account.minY, y);
     });
     canvas.querySelectorAll(".alab").forEach(function (lab) {
+      var saved = savedLabelPos(labelKey("account", lab.dataset.session, lab.dataset.account));
+      if (saved) {
+        lab.style.left = saved.x + "px";
+        lab.style.top = saved.y + "px";
+        return;
+      }
       var group = sessions[lab.dataset.session];
       var account = group && group.accounts[lab.dataset.account];
       if (!account) return;
@@ -1101,16 +1118,31 @@ body.picking,body.picking img.photo{cursor:crosshair}
       lab.style.top = Math.max(8, account.minY - 26) + "px";
     });
     canvas.querySelectorAll(".slab").forEach(function (lab) {
-      var group = sessions[lab.dataset.session];
-      if (!group) return;
-      lab.style.left = group.topX + "px";
-      lab.style.top = Math.max(8, group.minY - 86) + "px";
+      if (lab.classList.contains("heading")) return;
+      var saved = savedLabelPos(labelKey("session", lab.dataset.session));
+      if (!saved) {
+        var group = sessions[lab.dataset.session];
+        if (!group) return;
+        lab.style.left = group.topX + "px";
+        lab.style.top = Math.max(8, group.minY - 86) + "px";
+      } else {
+        lab.style.left = saved.x + "px";
+        lab.style.top = saved.y + "px";
+      }
       var hint = canvas.querySelector('.empty-hint[data-session="' + lab.dataset.session + '"]');
       if (hint) {
         hint.style.left = lab.style.left;
-        hint.style.top = (parseFloat(lab.style.top) + 22) + "px";
+        hint.style.top = (parseFloat(lab.style.top) + 44) + "px";
       }
     });
+  }
+  function labelKey(kind, session, account) {
+    return kind + ":" + (session || "") + (account ? ":" + account : "");
+  }
+  function savedLabelPos(key) {
+    var pos = ensureBoard().labelPos[key];
+    if (pos && isFinite(pos.x) && isFinite(pos.y)) return pos;
+    return null;
   }
   function fitCanvas() {
     var canvas = document.getElementById("map-canvas");
@@ -1125,6 +1157,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     });
     canvas.style.width = Math.round(maxX) + "px";
     canvas.style.height = Math.round(maxY) + "px";
+    paintZoom();
   }
   function allCards() {
     return currentProject().saves.slice();
@@ -1146,14 +1179,17 @@ body.picking,body.picking img.photo{cursor:crosshair}
   function renderMap() {
     var map = document.getElementById("map");
     var project = currentProject();
+    mapZoom = isFinite(project.zoom) && project.zoom > 0 ? project.zoom : 1;
     map.hidden = false;
     var cards = sessionNames(project).map(sessionMarkup).join("");
     if (!cards) cards = '<p class="hint empty-hint" style="left:48px;top:48px">No saves in this project yet.</p>';
-    map.innerHTML = '<div class="mapbar"><div class="logo">prototype</div><h1>Map · ' + esc(project.name) + '</h1><button class="btn line" id="back-feed" type="button">Back to the feed</button><button class="btn line" id="copy-notes" type="button">Copy session notes</button><button class="btn text" id="reset-sample-map" type="button">Reset sample</button></div><div class="map-layout">' + projectNav() + '<div class="map-viewport"><div class="map-canvas" id="map-canvas"><svg id="map-links" aria-hidden="true"></svg>' +
+    map.innerHTML = '<div class="mapbar"><div class="logo">prototype</div><h1>Map · ' + esc(project.name) + '</h1><button class="btn line" id="back-feed" type="button">Back to the feed</button><button class="btn line" id="copy-notes" type="button">Copy session notes</button><button class="btn text" id="reset-sample-map" type="button">Reset sample</button></div><div class="map-layout">' + projectNav() + '<div class="map-viewport"><div class="map-zoom" id="map-zoom"><div class="map-canvas" id="map-canvas"><svg id="map-links" aria-hidden="true"></svg>' +
       cards +
-      "</div></div></div>" + toolsMarkup();
+      "</div></div></div></div>" + toolsMarkup() +
+      '<div class="zoom-box"><span id="zoom-level">' + Math.round(mapZoom * 100) + '%</span><button type="button" id="zoom-reset">Reset</button></div>';
     layoutLabels();
     paintNotes();
+    paintHeadings();
     fitCanvas();
     drawLinks();
     setMapTool(mapTool);
@@ -1164,6 +1200,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     }
   }
   var TOOL_HINTS = {
+    text: "Click the map to add a heading.",
     note: "Click the canvas to place a note.",
     connect: "Click the first item. Then click the item to connect.",
     branch: "Click an item to add a linked note.",
@@ -1174,7 +1211,10 @@ body.picking,body.picking img.photo{cursor:crosshair}
     var p = currentProject();
     if (!Array.isArray(p.stickies)) p.stickies = [];
     if (!Array.isArray(p.links)) p.links = [];
+    if (!Array.isArray(p.headings)) p.headings = [];
     if (!p.spots || typeof p.spots !== "object") p.spots = {};
+    if (!p.labelPos || typeof p.labelPos !== "object") p.labelPos = {};
+    if (!isFinite(p.zoom) || p.zoom <= 0) p.zoom = 1;
     return p;
   }
   function boardNotes() { return ensureBoard().stickies; }
@@ -1184,6 +1224,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     var noteIcon = '<svg width="22" height="18" viewBox="0 0 22 18" fill="#fff" stroke="currentColor" stroke-width="1.2"><rect x="1.2" y="4" width="9.5" height="12" rx="1.4" transform="rotate(-8 6 10)"/><rect x="11.2" y="3.2" width="9.5" height="12" rx="1.4" transform="rotate(8 16 9)"/><rect x="6" y="1.2" width="10" height="13" rx="1.4"/></svg>';
     return '<div class="tools-wrap"><p class="tool-hint" id="tool-hint" hidden></p><div class="tools" role="toolbar" aria-label="Map tools">' +
       '<button type="button" data-tool="select" aria-pressed="true" aria-label="Select" title="Select">' + icon('<path d="M2.7 3.1 13.8 7 8.7 9.1 7.7 13.8 2.7 3.1Z"/>') + '<span class="tl">Select</span></button>' +
+      '<button type="button" data-tool="text" aria-pressed="false" aria-label="Text" title="Text">' + icon('<path d="M3 3.2h10M8 3.2v9.6M5.2 12.8h5.6"/>') + '<span class="tl">Text</span></button>' +
       '<button type="button" data-tool="note" aria-pressed="false" aria-label="Note" title="Note">' + noteIcon + '<span class="tl">Note</span></button>' +
       '<button type="button" data-tool="connect" aria-pressed="false" aria-label="Connect" title="Connect">' + icon('<circle cx="12.7" cy="3.3" r="1.4"/><circle cx="3.3" cy="12.7" r="1.4"/><path d="M3.3 11.3C5.2 8.2 8.2 6 11.3 4.7"/>') + '<span class="tl">Connect</span></button>' +
       '<button type="button" data-tool="branch" aria-pressed="false" aria-label="Branch off" title="Branch off">' + icon('<path d="M4 2v8"/><circle cx="12" cy="4" r="2"/><circle cx="4" cy="12" r="2"/><path d="M10 4C8.4 4 6.9 4.6 5.8 5.8 4.6 6.9 4 8.4 4 10"/><path d="M12 10v4M14 12H10"/>') + '<span class="tl">Branch off</span></button>' +
@@ -1213,9 +1254,9 @@ body.picking,body.picking img.photo{cursor:crosshair}
     if (el) el.classList.add("link-from");
   }
   function itemEl(id) {
-    if (!id || !window.CSS || !CSS.escape) return document.querySelector('[data-card="' + id + '"], [data-note="' + id + '"]');
+    if (!id || !window.CSS || !CSS.escape) return document.querySelector('[data-card="' + id + '"], [data-note="' + id + '"], [data-heading="' + id + '"]');
     var safe = CSS.escape(id);
-    return document.querySelector('.map-card[data-card="' + safe + '"], .sticky[data-note="' + safe + '"]');
+    return document.querySelector('.map-card[data-card="' + safe + '"], .sticky[data-note="' + safe + '"], .heading[data-heading="' + safe + '"]');
   }
   function anchorOf(el) {
     var x = parseFloat(el.style.left) || 0;
@@ -1259,7 +1300,103 @@ body.picking,body.picking img.photo{cursor:crosshair}
   function canvasPoint(clientX, clientY) {
     var canvas = document.getElementById("map-canvas");
     var rect = canvas.getBoundingClientRect();
-    return { x: clientX - rect.left, y: clientY - rect.top };
+    var z = mapZoom || 1;
+    return { x: (clientX - rect.left) / z, y: (clientY - rect.top) / z };
+  }
+  function paintZoom() {
+    var canvas = document.getElementById("map-canvas");
+    var wrap = document.getElementById("map-zoom");
+    if (!canvas) return;
+    var z = mapZoom || 1;
+    canvas.style.transformOrigin = "0 0";
+    canvas.style.transform = "scale(" + z + ")";
+    if (wrap) {
+      wrap.style.width = Math.ceil((parseFloat(canvas.style.width) || canvas.offsetWidth) * z) + "px";
+      wrap.style.height = Math.ceil((parseFloat(canvas.style.height) || canvas.offsetHeight) * z) + "px";
+    }
+    var level = document.getElementById("zoom-level");
+    if (level) level.textContent = Math.round(z * 100) + "%";
+  }
+  function applyZoom(next, clientX, clientY) {
+    next = Math.max(0.3, Math.min(2.5, next));
+    var scroller = mapScroller();
+    var canvas = document.getElementById("map-canvas");
+    if (!scroller || !canvas) { mapZoom = next; return; }
+    var rect = canvas.getBoundingClientRect();
+    var z = mapZoom || 1;
+    var cx = (clientX - rect.left) / z;
+    var cy = (clientY - rect.top) / z;
+    mapZoom = next;
+    currentProject().zoom = next;
+    paintZoom();
+    var moved = canvas.getBoundingClientRect();
+    scroller.scrollLeft += (moved.left + cx * next) - clientX;
+    scroller.scrollTop += (moved.top + cy * next) - clientY;
+    clearTimeout(applyZoom._t);
+    applyZoom._t = setTimeout(persist, 180);
+  }
+  function addHeadingEl(heading) {
+    var canvas = document.getElementById("map-canvas");
+    if (!canvas) return null;
+    var el = document.createElement("div");
+    el.className = "slab heading";
+    el.dataset.heading = heading.id;
+    el.style.left = heading.x + "px";
+    el.style.top = heading.y + "px";
+    el.setAttribute("role", "textbox");
+    el.setAttribute("aria-label", "Heading");
+    el.contentEditable = "false";
+    el.textContent = heading.text || "";
+    canvas.appendChild(el);
+    return el;
+  }
+  function paintHeadings() {
+    ensureBoard().headings.forEach(addHeadingEl);
+  }
+  function placeHeading(x, y) {
+    var board = ensureBoard();
+    var heading = { id: "head-" + Date.now(), x: Math.max(8, Math.round(x)), y: Math.max(8, Math.round(y)), text: "" };
+    board.headings.push(heading);
+    persist();
+    var el = addHeadingEl(heading);
+    fitCanvas();
+    setMapTool("select");
+    if (!el) return;
+    el.contentEditable = "true";
+    el.focus();
+  }
+  function rememberHeading(el) {
+    var board = ensureBoard();
+    var heading = board.headings.filter(function (h) { return h.id === el.dataset.heading; })[0];
+    if (!heading) return;
+    heading.x = Math.round(parseFloat(el.style.left) || 0);
+    heading.y = Math.round(parseFloat(el.style.top) || 0);
+    heading.text = el.textContent || "";
+    persist();
+  }
+  function removeHeading(id) {
+    var board = ensureBoard();
+    board.headings = board.headings.filter(function (h) { return h.id !== id; });
+    if (selectedId === id) selectedId = null;
+    persist();
+    var el = itemEl(id);
+    if (el) el.remove();
+  }
+  function rememberLabel(el) {
+    var board = ensureBoard();
+    var key = el.classList.contains("alab")
+      ? labelKey("account", el.dataset.session, el.dataset.account)
+      : labelKey("session", el.dataset.session);
+    board.labelPos[key] = {
+      x: Math.round(parseFloat(el.style.left) || 0),
+      y: Math.round(parseFloat(el.style.top) || 0)
+    };
+    persist();
+  }
+  function moveLabel(el, x, y) {
+    el.style.left = Math.max(8, Math.round(x)) + "px";
+    el.style.top = Math.max(8, Math.round(y)) + "px";
+    fitCanvas();
   }
   function placeNote(x, y, kind, linkTo) {
     var board = ensureBoard();
@@ -1301,7 +1438,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
   function selectItem(el) {
     document.querySelectorAll("#map .is-selected").forEach(function (node) { node.classList.remove("is-selected"); });
     if (!el) { selectedId = null; return; }
-    selectedId = el.dataset.card || el.dataset.note || null;
+    selectedId = el.dataset.card || el.dataset.note || el.dataset.heading || null;
     if (selectedId) el.classList.add("is-selected");
   }
   function dropLinks(id) {
@@ -1804,7 +1941,12 @@ body.picking,body.picking img.photo{cursor:crosshair}
     if (toolBtn) { setMapTool(toolBtn.dataset.tool); return; }
     if (e.target.id === "back-feed") { document.getElementById("map").hidden = true; return; }
     if (e.target.id === "copy-notes") { copyNotes(); return; }
-    if (e.target.id === "reset-sample-map") { resetSample(); return; }
+    if (e.target.id === "zoom-reset") {
+      var scroller = mapScroller();
+      var rect = scroller ? scroller.getBoundingClientRect() : { left: 0, top: 0, width: 0, height: 0 };
+      applyZoom(1, rect.left + rect.width / 2, rect.top + rect.height / 2);
+      return;
+    }
     if (blockMapClick) { blockMapClick = false; return; }
     var card = e.target.closest(".map-card");
     if (card && mapTool === "select") { openCard = findCard(card.dataset.card); renderDetail(); }
@@ -1820,17 +1962,21 @@ body.picking,body.picking img.photo{cursor:crosshair}
   });
   document.getElementById("map").addEventListener("input", function (e) {
     var text = e.target.closest(".sticky-text");
-    if (!text) return;
-    var board = ensureBoard();
-    var note = board.stickies.filter(function (n) { return n.id === text.closest(".sticky").dataset.note; })[0];
-    if (!note) return;
-    note.text = text.textContent;
-    persist();
-    drawLinks();
+    if (text) {
+      var board = ensureBoard();
+      var note = board.stickies.filter(function (n) { return n.id === text.closest(".sticky").dataset.note; })[0];
+      if (!note) return;
+      note.text = text.textContent;
+      persist();
+      drawLinks();
+      return;
+    }
+    var head = e.target.closest(".heading");
+    if (head) rememberHeading(head);
   });
   document.getElementById("map").addEventListener("pointerdown", function (e) {
     if (e.button != null && e.button !== 0) return;
-    if (e.target.closest(".tools-wrap") || e.target.closest(".mapbar") || e.target.closest(".proj-nav")) return;
+    if (e.target.closest(".tools-wrap") || e.target.closest(".mapbar") || e.target.closest(".proj-nav") || e.target.closest(".zoom-box")) return;
     var linkHit = e.target.closest(".link-hit");
     if (linkHit && mapTool === "remove") {
       mapPress = { kind: "link", index: Number(linkHit.dataset.index), pointerId: e.pointerId, x: e.clientX, y: e.clientY, moved: false };
@@ -1839,28 +1985,33 @@ body.picking,body.picking img.photo{cursor:crosshair}
     }
     var card = e.target.closest(".map-card");
     var note = e.target.closest(".sticky");
+    var head = e.target.closest(".heading");
+    var auto = e.target.closest(".movable");
     if (note && e.target.closest(".sticky-text") && mapTool === "select") return;
-    var item = card || note;
-    if (item && mapTool === "select") {
-      selectItem(item);
+    if (head && head.isContentEditable) return;
+    var dragTarget = null;
+    if (mapTool === "select") dragTarget = card || note || head || auto;
+    if (dragTarget && mapTool === "select") {
+      selectItem(dragTarget);
       bubbleDrag = {
-        card: item,
+        card: dragTarget,
         pointerId: e.pointerId,
         x: e.clientX,
         y: e.clientY,
-        origX: parseFloat(item.style.left) || 0,
-        origY: parseFloat(item.style.top) || 0,
+        origX: parseFloat(dragTarget.style.left) || 0,
+        origY: parseFloat(dragTarget.style.top) || 0,
         scrollX: mapScroller() ? mapScroller().scrollLeft : 0,
         scrollY: mapScroller() ? mapScroller().scrollTop : 0,
         moved: false
       };
-      try { item.setPointerCapture(e.pointerId); } catch (err) {}
+      try { dragTarget.setPointerCapture(e.pointerId); } catch (err) {}
       e.preventDefault();
       return;
     }
-    if (item || (e.target.closest(".map-canvas") && mapTool !== "select")) {
-      mapPress = { kind: item ? "item" : "empty", el: item, pointerId: e.pointerId, x: e.clientX, y: e.clientY, moved: false };
-      if (item) e.preventDefault();
+    var pressEl = card || note || head;
+    if (pressEl || (e.target.closest(".map-canvas") && mapTool !== "select")) {
+      mapPress = { kind: pressEl ? "item" : "empty", el: pressEl, pointerId: e.pointerId, x: e.clientX, y: e.clientY, moved: false };
+      if (pressEl) e.preventDefault();
       return;
     }
     if (mapTool === "select") selectItem(null);
@@ -1879,8 +2030,9 @@ body.picking,body.picking img.photo{cursor:crosshair}
     }
     if (bubbleDrag && e.pointerId === bubbleDrag.pointerId) {
       var scroller = mapScroller();
-      var dx = e.clientX - bubbleDrag.x + ((scroller ? scroller.scrollLeft : 0) - bubbleDrag.scrollX);
-      var dy = e.clientY - bubbleDrag.y + ((scroller ? scroller.scrollTop : 0) - bubbleDrag.scrollY);
+      var z = mapZoom || 1;
+      var dx = (e.clientX - bubbleDrag.x + ((scroller ? scroller.scrollLeft : 0) - bubbleDrag.scrollX)) / z;
+      var dy = (e.clientY - bubbleDrag.y + ((scroller ? scroller.scrollTop : 0) - bubbleDrag.scrollY)) / z;
       if (!bubbleDrag.moved && Math.hypot(e.clientX - bubbleDrag.x, e.clientY - bubbleDrag.y) < 6) return;
       bubbleDrag.moved = true;
       bubbleDrag.card.classList.add("dragging");
@@ -1891,10 +2043,11 @@ body.picking,body.picking img.photo{cursor:crosshair}
         else if (e.clientX > bounds.right - edge) scroller.scrollLeft += 14;
         if (e.clientY < bounds.top + edge) scroller.scrollTop -= 14;
         else if (e.clientY > bounds.bottom - edge) scroller.scrollTop += 14;
-        dx = e.clientX - bubbleDrag.x + (scroller.scrollLeft - bubbleDrag.scrollX);
-        dy = e.clientY - bubbleDrag.y + (scroller.scrollTop - bubbleDrag.scrollY);
+        dx = (e.clientX - bubbleDrag.x + (scroller.scrollLeft - bubbleDrag.scrollX)) / z;
+        dy = (e.clientY - bubbleDrag.y + (scroller.scrollTop - bubbleDrag.scrollY)) / z;
       }
       if (bubbleDrag.card.classList.contains("sticky")) moveNote(bubbleDrag.card, bubbleDrag.origX + dx, bubbleDrag.origY + dy);
+      else if (bubbleDrag.card.classList.contains("heading") || bubbleDrag.card.classList.contains("movable")) moveLabel(bubbleDrag.card, bubbleDrag.origX + dx, bubbleDrag.origY + dy);
       else moveBubble(bubbleDrag.card, bubbleDrag.origX + dx, bubbleDrag.origY + dy);
       return;
     }
@@ -1912,7 +2065,9 @@ body.picking,body.picking img.photo{cursor:crosshair}
     bubbleDrag = null;
     blockMapClick = true;
     if (moved && !cancel) {
-      if (card.classList.contains("sticky")) rememberNote(card);
+      if (card.classList.contains("heading")) rememberHeading(card);
+      else if (card.classList.contains("sticky")) rememberNote(card);
+      else if (card.classList.contains("movable")) rememberLabel(card);
       else rememberSpot(card);
     } else if (!moved && !cancel && card.classList.contains("map-card")) {
       selectItem(card);
@@ -1930,6 +2085,15 @@ body.picking,body.picking img.photo{cursor:crosshair}
     if (press.moved) return;
     if (press.kind === "link") { removeLink(press.index); return; }
     var point = canvasPoint(e.clientX, e.clientY);
+    if (mapTool === "text") {
+      if (press.el && press.el.classList.contains("heading")) {
+        press.el.contentEditable = "true";
+        press.el.focus();
+        return;
+      }
+      placeHeading(point.x, point.y);
+      return;
+    }
     if (mapTool === "note" || mapTool === "comment") {
       var hit = press.el;
       var linkTo = hit ? (hit.dataset.card || hit.dataset.note) : "";
@@ -1948,8 +2112,10 @@ body.picking,body.picking img.photo{cursor:crosshair}
       return;
     }
     if (mapTool === "remove") {
-      if (press.el.classList.contains("sticky")) removeNote(press.el.dataset.note);
-      else removeCard(press.el.dataset.card);
+      if (!press.el) return;
+      if (press.el.classList.contains("heading")) removeHeading(press.el.dataset.heading);
+      else if (press.el.classList.contains("sticky")) removeNote(press.el.dataset.note);
+      else if (press.el.classList.contains("map-card")) removeCard(press.el.dataset.card);
     }
   }
   function setHintText(text) {
@@ -1958,6 +2124,38 @@ body.picking,body.picking img.photo{cursor:crosshair}
     hint.hidden = !text;
     hint.textContent = text || "";
   }
+  document.getElementById("map").addEventListener("dblclick", function (e) {
+    var head = e.target.closest(".heading");
+    if (!head || document.getElementById("map").hidden) return;
+    e.preventDefault();
+    head.contentEditable = "true";
+    head.focus();
+  });
+  document.getElementById("map").addEventListener("focusout", function (e) {
+    var head = e.target.closest && e.target.closest(".heading");
+    if (!head) return;
+    head.contentEditable = "false";
+    rememberHeading(head);
+  });
+  document.getElementById("map").addEventListener("wheel", function (e) {
+    if (document.getElementById("map").hidden) return;
+    if (!e.target.closest(".map-viewport")) return;
+    e.preventDefault();
+    var dy = e.deltaY;
+    if (e.deltaMode === 1) dy *= 16;
+    else if (e.deltaMode === 2) dy *= 400;
+    var factor = Math.exp(-dy * (e.ctrlKey ? 0.01 : 0.0015));
+    applyZoom(mapZoom * factor, e.clientX, e.clientY);
+  }, { passive: false });
+  var pinchZoom = 1;
+  document.getElementById("map").addEventListener("gesturestart", function (e) {
+    e.preventDefault();
+    pinchZoom = mapZoom;
+  }, { passive: false });
+  document.getElementById("map").addEventListener("gesturechange", function (e) {
+    e.preventDefault();
+    applyZoom(pinchZoom * e.scale, e.clientX, e.clientY);
+  }, { passive: false });
   document.getElementById("map").addEventListener("pointerup", function (e) {
     if (mapPan && e.pointerId === mapPan.pointerId) {
       mapPan = null;
@@ -2039,10 +2237,21 @@ body.picking,body.picking img.photo{cursor:crosshair}
         e.preventDefault();
         var chosen = itemEl(selectedId);
         if (chosen && chosen.classList.contains("sticky")) removeNote(selectedId);
-        else removeCard(selectedId);
+        else if (chosen && chosen.classList.contains("heading")) removeHeading(selectedId);
+        else if (chosen && chosen.classList.contains("map-card")) removeCard(selectedId);
+      }
+    }
+    if (e.key === "Enter") {
+      var typingHead = document.activeElement && document.activeElement.classList && document.activeElement.classList.contains("heading");
+      if (typingHead && document.activeElement.isContentEditable) {
+        e.preventDefault();
+        document.activeElement.blur();
+        return;
       }
     }
     if (e.key === "Escape") {
+      var editingHead = document.activeElement && document.activeElement.classList && document.activeElement.classList.contains("heading") && document.activeElement.isContentEditable;
+      if (editingHead) { document.activeElement.blur(); return; }
       var zoom = document.getElementById("zoom");
       if (mode === "pick" || mode === "review") { draft = null; stopPick(); }
       else if (zoom && !zoom.hidden) closeZoom();
