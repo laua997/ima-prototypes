@@ -302,14 +302,23 @@ body.picking,body.picking img.photo{cursor:crosshair}
 .grid .qtile{display:flex;align-items:center;justify-content:center;height:100%;padding:8px;font-size:11px;line-height:1.3;text-align:center;color:#000}
 #detail{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.55);display:grid;place-items:center;padding:24px}
 .sheet{width:min(560px,100%);background:#fff;border:1px solid #000;border-radius:2px;padding:12px;box-shadow:none;max-height:calc(100vh - 48px);overflow:auto;font-family:var(--ui);letter-spacing:0;color:#000}
-#detail .sheet{background:#161616;border-color:#333;color:#fff}
+#detail .sheet{width:min(420px,100%);background:#111;border:0;border-radius:22px;padding:16px;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.28)}
+#detail .thumb{display:block;width:96px;height:96px;padding:0;border:0;border-radius:14px;overflow:hidden;background:#141414;cursor:pointer}
+#detail .thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .sheet img.big{width:100%;max-height:280px;object-fit:contain;background:#fff;border:1px solid #000;border-radius:0;display:block}
-#detail .sheet img.big,#detail .orig img{background:#111;border-color:#333}
 .sheet .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0}
 .sheet .tag,.sheet .meta .site{background:#fff;color:#000;border:1px solid #000;border-radius:0;padding:2px 6px;font-size:11px;line-height:1.3}
-#detail .sheet .tag,#detail .sheet .meta .site{background:transparent;color:#fff;border-color:#fff}
+#detail .sheet .tag,#detail .sheet .meta .site{background:transparent;color:#fff;border:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.45);border-radius:999px;padding:4px 8px}
 .sheet p{margin:0 0 8px;font-size:13px;line-height:1.4;color:#000}
-#detail .sheet p,#detail .sheet .quote-full,#detail .sheet strong{color:#fff}
+#detail .sheet p,#detail .sheet .quote-full,#detail .sheet strong,#zoom .hint{color:#fff}
+#detail .row,#zoom .row{display:flex;gap:8px;justify-content:flex-end;align-items:center}
+#detail .btn.pink,#zoom .btn.pink{border:0;border-radius:999px;background:var(--pink);color:#fff;padding:8px 14px;font:400 14px/1 var(--ui);box-shadow:0 4px 18px rgba(255,45,111,.16)}
+#detail .btn.pink:hover,#zoom .btn.pink:hover{background:var(--pink);color:#fff;box-shadow:0 6px 22px rgba(255,45,111,.22)}
+#detail .btn.line{border:0;border-radius:999px;background:transparent;color:#fff;padding:8px 14px;font:400 14px/1 var(--ui);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
+#detail .btn.line:hover{background:#fff;color:#111}
+#zoom{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:24px}
+#zoom .zoom-card{width:min(720px,100%);max-height:calc(100vh - 48px);overflow:auto;background:#111;color:#fff;border-radius:22px;padding:16px;display:grid;gap:12px;box-shadow:0 10px 30px rgba(0,0,0,.28);font-family:var(--ui)}
+#zoom img{width:100%;max-height:min(68vh,640px);object-fit:contain;border-radius:14px;background:#141414;display:block}
 .orig{margin-top:8px}
 .orig span{display:block;font-size:11px;color:#000;margin-bottom:6px}
 .orig img{width:100%;border:1px solid #000;border-radius:0;display:block}
@@ -387,6 +396,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
 <div id="marquee" hidden></div>
 <div id="map" hidden></div>
 <div id="detail" hidden></div>
+<div id="zoom" hidden></div>
 <div id="toast" hidden role="status"></div>
 <div id="copybox" hidden></div>
 
@@ -1328,19 +1338,38 @@ body.picking,body.picking img.photo{cursor:crosshair}
     renderDetail();
     renderMap();
   }
+  function closeZoom() {
+    var el = document.getElementById("zoom");
+    if (!el) return;
+    el.hidden = true;
+    el.innerHTML = "";
+  }
+  function openZoom() {
+    if (!openCard || openCard.quote) return;
+    var el = document.getElementById("zoom");
+    var c = openCard;
+    var img = c.whole
+      ? '<img id="original" src="' + esc(c.image) + '" alt="' + esc(c.caption || "Saved image") + '" draggable="false">'
+      : '<img src="' + esc(c.crop || c.image) + '" alt="Saved image" draggable="false">';
+    el.hidden = false;
+    el.innerHTML = '<div class="zoom-card" role="dialog" aria-label="Larger image">' + img +
+      (c.whole ? '<p class="hint">Drag a box on the original post to keep one detail.</p>' : "") +
+      '<div class="row"><button class="btn pink" id="close-zoom" type="button">Close</button></div></div>';
+  }
   function renderDetail() {
+    closeZoom();
     var el = document.getElementById("detail");
     if (!openCard) { el.hidden = true; el.innerHTML = ""; return; }
     var c = openCard;
     el.hidden = false;
     var who = esc(c.author ? c.handle + " · " + c.author : (c.board ? c.handle + " · " + c.board : c.handle));
     if (c.quote) {
-      el.innerHTML = '<div class="sheet" role="dialog" aria-label="Saved text"><p class="quote-full">“' + esc(c.quote) + '”</p><div class="meta"><span class="site">Substack</span><span class="tag">' + esc(c.tag || "no tag") + "</span><strong>" + who + "</strong></div><p>" + esc(c.note || "No note yet.") + '</p><p>' + esc(c.caption || "") + '</p><div class="row"><button class="btn line" id="open-source" type="button" data-post="' + esc(c.postId || "") + '">Show this post</button><button class="btn line" id="close-detail" type="button">Close</button></div></div>';
+      el.innerHTML = '<div class="sheet" role="dialog" aria-label="Saved text"><p class="quote-full">“' + esc(c.quote) + '”</p><div class="meta"><span class="site">Substack</span><span class="tag">' + esc(c.tag || "no tag") + "</span><strong>" + who + "</strong></div><p>" + esc(c.note || "No note yet.") + '</p><p>' + esc(c.caption || "") + '</p><div class="row"><button class="btn line" id="open-source" type="button" data-post="' + esc(c.postId || "") + '">Show this post</button><button class="btn pink" id="close-detail" type="button">Close</button></div></div>';
       return;
     }
-    el.innerHTML = '<div class="sheet" role="dialog" aria-label="Saved detail"><img class="big" src="' + esc(c.crop || c.image) + '" alt=""><div class="meta"><span class="site">' + esc(c.site || "Instagram") + '</span><span class="tag">' + esc(c.tag || "no tag") + "</span><strong>" + who + "</strong></div><p>" + esc(c.note || "No note yet.") + '</p><div class="orig"><span>Original post</span><img id="original" src="' + esc(c.image) + '" alt="' + esc(c.caption || "") + '" draggable="false"></div>' +
-      (c.whole ? '<p class="hint">Drag a box on the original post to keep one detail.</p>' : "") +
-      '<div class="row"><button class="btn line" id="close-detail" type="button">Close</button></div></div>';
+    el.innerHTML = '<div class="sheet" role="dialog" aria-label="Saved detail"><button class="thumb" id="open-zoom" type="button" aria-label="Show larger image"><img src="' + esc(c.crop || c.image) + '" alt=""></button><div class="meta"><span class="site">' + esc(c.site || "Instagram") + '</span><span class="tag">' + esc(c.tag || "no tag") + "</span><strong>" + who + "</strong></div><p>" + esc(c.note || "No note yet.") + "</p>" +
+      (c.whole ? '<p class="hint">Open the image to keep one detail.</p>' : "") +
+      '<div class="row"><button class="btn pink" id="close-detail" type="button">Close</button></div></div>';
   }
 
   function show(next) {
@@ -1822,7 +1851,11 @@ body.picking,body.picking img.photo{cursor:crosshair}
   });
   document.getElementById("detail").addEventListener("click", function (e) {
     if (e.target.id === "open-source") { showSubPost(e.target.dataset.post); return; }
+    if (e.target.id === "open-zoom" || e.target.closest("#open-zoom")) { openZoom(); return; }
     if (e.target.id === "close-detail" || e.target.id === "detail") { openCard = null; renderDetail(); }
+  });
+  document.getElementById("zoom").addEventListener("click", function (e) {
+    if (e.target.id === "close-zoom" || e.target.id === "zoom") closeZoom();
   });
   document.getElementById("copybox").addEventListener("click", function (e) {
     if (e.target.id === "close-copy" || e.target.id === "copybox") document.getElementById("copybox").hidden = true;
@@ -1880,7 +1913,9 @@ body.picking,body.picking img.photo{cursor:crosshair}
       }
     }
     if (e.key === "Escape") {
+      var zoom = document.getElementById("zoom");
       if (mode === "pick" || mode === "review") { draft = null; stopPick(); }
+      else if (zoom && !zoom.hidden) closeZoom();
       else if (openCard) { openCard = null; renderDetail(); }
       else if (!document.getElementById("map").hidden) document.getElementById("map").hidden = true;
       closeMenu();
@@ -1888,11 +1923,12 @@ body.picking,body.picking img.photo{cursor:crosshair}
   });
   window.addEventListener("resize", placePopup);
 
-  document.getElementById("detail").addEventListener("pointerdown", function (e) {
+  window.addEventListener("pointerdown", function (e) {
     if (!openCard || !openCard.whole) return;
     var img = e.target.closest("#original");
     if (!img) return;
     openCard._drag = { x: e.clientX, y: e.clientY, pointerId: e.pointerId, img: img };
+    document.getElementById("marquee").style.zIndex = "140";
     e.preventDefault();
   });
   window.addEventListener("pointermove", function (e) {
@@ -1909,7 +1945,9 @@ body.picking,body.picking img.photo{cursor:crosshair}
     var d = openCard._drag;
     var img = d.img;
     openCard._drag = null;
-    document.getElementById("marquee").hidden = true;
+    var marquee = document.getElementById("marquee");
+    marquee.hidden = true;
+    marquee.style.zIndex = "";
     var w = Math.abs(e.clientX - d.x), h = Math.abs(e.clientY - d.y);
     if (w < 8 || h < 8) return;
     var box = clientBoxToImage(img, { x: Math.min(d.x, e.clientX), y: Math.min(d.y, e.clientY), w: w, h: h });
