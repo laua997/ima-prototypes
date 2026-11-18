@@ -878,7 +878,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     });
   }
   function renderRight() {
-    var html = '<div class="me"><img src="images/a1.jpg" alt=""><div><strong>nita.studio</strong><span>Nita</span></div><button class="linkish" id="switch-account" type="button">Switch</button></div>';
+    var html = '<div class="me"><img src="images/a1.jpg" alt=""><div><strong>angles.studio</strong><span>Angela</span></div><button class="linkish" id="switch-account" type="button">Switch</button></div>';
     html += '<div class="sug-h"><span>Suggested for you</span><button class="linkish" id="see-all" type="button" style="color:#000">See all</button></div>';
     SUGGEST.forEach(function (s, i) {
       html += '<div class="sug"><img src="' + esc(s.avatar) + '" alt=""><div><strong>' + esc(s.handle) + '</strong><span>' + esc(s.why) + '</span></div><button class="linkish follow" type="button" data-i="' + i + '" aria-pressed="' + (s.following ? "true" : "false") + '">' + (s.following ? "Following" : "Follow") + "</button></div>";
@@ -951,7 +951,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
       }).join("") + "</div>";
     } else if (view === "profile") {
       var mine = liveSaves();
-      html = '<div class="panel"><div class="me"><img src="images/a1.jpg" alt=""><div><strong>nita.studio</strong><span>Nita · ' + mine.length + " saved details</span></div></div><p>Saving one detail from pictures in the feed.</p>" +
+      html = '<div class="panel"><div class="me"><img src="images/a1.jpg" alt=""><div><strong>angles.studio</strong><span>Angela · ' + mine.length + " saved details</span></div></div><p>Saving one detail from pictures in the feed.</p>" +
         (mine.length ? '<div class="grid">' + mine.map(function (s) {
           if (s.quote) return '<button type="button" data-card="' + esc(s.id) + '"><span class="qtile">' + esc(excerpt(s.quote)) + "</span></button>";
           return '<button type="button" data-card="' + esc(s.id) + '"><img src="' + esc(s.crop || s.image) + '" alt=""></button>';
@@ -2257,13 +2257,13 @@ body.picking,body.picking img.photo{cursor:crosshair}
     e.preventDefault();
     var text = form.text.value.trim();
     if (!text) return;
-    postById(form.dataset.comment).comments.push({ u: "nita.studio", t: text });
+    postById(form.dataset.comment).comments.push({ u: "angles.studio", t: text });
     postById(form.dataset.comment).commentsOpen = true;
     renderCenter();
   });
   document.getElementById("right").addEventListener("click", function (e) {
     if (e.target.id === "see-all") { show("explore"); return; }
-    if (e.target.id === "switch-account") { toast("nita.studio"); return; }
+    if (e.target.id === "switch-account") { toast("angles.studio"); return; }
     var follow = e.target.closest(".follow");
     if (follow) { SUGGEST[Number(follow.dataset.i)].following = !SUGGEST[Number(follow.dataset.i)].following; renderRight(); }
   });
@@ -3061,7 +3061,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     var post = subPost(subPostId);
     var text = e.target.text.value.trim();
     if (!post || !text) return;
-    post.comments.push({ u: "nita.studio", t: text });
+    post.comments.push({ u: "angles.studio", t: text });
     renderSub();
   });
   document.addEventListener("selectionchange", function () {
