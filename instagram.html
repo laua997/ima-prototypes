@@ -1089,7 +1089,9 @@ body.picking,body.picking img.photo{cursor:crosshair}
   function layoutLabels() {
     var canvas = document.getElementById("map-canvas");
     if (!canvas) return;
+    var board = ensureBoard();
     var sessions = {};
+    var pinned = false;
     canvas.querySelectorAll(".map-card").forEach(function (card) {
       var s = card.dataset.session;
       var a = card.dataset.account;
@@ -1104,37 +1106,43 @@ body.picking,body.picking img.photo{cursor:crosshair}
       account.minX = Math.min(account.minX, x);
       account.minY = Math.min(account.minY, y);
     });
+    function pin(key, x, y) {
+      board.labelPos[key] = { x: Math.round(x), y: Math.round(y) };
+      pinned = true;
+      return board.labelPos[key];
+    }
     canvas.querySelectorAll(".alab").forEach(function (lab) {
-      var saved = savedLabelPos(labelKey("account", lab.dataset.session, lab.dataset.account));
-      if (saved) {
-        lab.style.left = saved.x + "px";
-        lab.style.top = saved.y + "px";
-        return;
+      var key = labelKey("account", lab.dataset.session, lab.dataset.account);
+      var saved = savedLabelPos(key);
+      if (!saved) {
+        var group = sessions[lab.dataset.session];
+        var account = group && group.accounts[lab.dataset.account];
+        saved = account
+          ? pin(key, account.minX, Math.max(8, account.minY - 26))
+          : pin(key, parseFloat(lab.style.left) || 8, parseFloat(lab.style.top) || 8);
       }
-      var group = sessions[lab.dataset.session];
-      var account = group && group.accounts[lab.dataset.account];
-      if (!account) return;
-      lab.style.left = account.minX + "px";
-      lab.style.top = Math.max(8, account.minY - 26) + "px";
+      lab.style.left = saved.x + "px";
+      lab.style.top = saved.y + "px";
     });
     canvas.querySelectorAll(".slab").forEach(function (lab) {
       if (lab.classList.contains("heading")) return;
-      var saved = savedLabelPos(labelKey("session", lab.dataset.session));
+      var key = labelKey("session", lab.dataset.session);
+      var saved = savedLabelPos(key);
       if (!saved) {
         var group = sessions[lab.dataset.session];
-        if (!group) return;
-        lab.style.left = group.topX + "px";
-        lab.style.top = Math.max(8, group.minY - 86) + "px";
-      } else {
-        lab.style.left = saved.x + "px";
-        lab.style.top = saved.y + "px";
+        saved = group
+          ? pin(key, group.topX, Math.max(8, group.minY - 86))
+          : pin(key, parseFloat(lab.style.left) || 8, parseFloat(lab.style.top) || 8);
       }
+      lab.style.left = saved.x + "px";
+      lab.style.top = saved.y + "px";
       var hint = canvas.querySelector('.empty-hint[data-session="' + lab.dataset.session + '"]');
       if (hint) {
         hint.style.left = lab.style.left;
         hint.style.top = (parseFloat(lab.style.top) + 44) + "px";
       }
     });
+    if (pinned) persist();
   }
   function labelKey(kind, session, account) {
     return kind + ":" + (session || "") + (account ? ":" + account : "");
@@ -1519,7 +1527,6 @@ body.picking,body.picking img.photo{cursor:crosshair}
   function moveBubble(card, x, y) {
     card.style.left = Math.max(16, Math.round(x)) + "px";
     card.style.top = Math.max(56, Math.round(y)) + "px";
-    layoutLabels();
     fitCanvas();
     drawLinks();
   }
