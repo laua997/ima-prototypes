@@ -182,7 +182,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
 .sticky-label{font-size:11px;font-weight:500;margin-bottom:6px}
 .sticky-text{min-height:48px;outline:none;font:400 14px/1.4 var(--ui);cursor:text;user-select:text;-webkit-user-select:text;white-space:pre-wrap;word-break:break-word}
 .sticky-text:empty::before{content:attr(data-ph);opacity:.45}
-.sticky.link-from,.map-card.link-from img{outline:2px solid #000;outline-offset:3px}
+.sticky.link-from,.sticky.is-selected,.map-card.link-from img,.map-card.link-from .quote-bubble,.map-card.is-selected img,.map-card.is-selected .quote-bubble{outline:2px solid #000;outline-offset:3px}
 #map[data-tool="note"] .map-viewport,#map[data-tool="connect"] .map-viewport,#map[data-tool="branch"] .map-viewport,#map[data-tool="comment"] .map-viewport,#map[data-tool="remove"] .map-viewport,
 #map[data-tool="note"] .map-card,#map[data-tool="connect"] .map-card,#map[data-tool="branch"] .map-card,#map[data-tool="comment"] .map-card,#map[data-tool="remove"] .map-card,
 #map[data-tool="note"] .sticky,#map[data-tool="connect"] .sticky,#map[data-tool="branch"] .sticky,#map[data-tool="comment"] .sticky,#map[data-tool="remove"] .sticky{cursor:crosshair}
@@ -481,6 +481,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
   var blockMapClick = false;
   var mapTool = "select";
   var linkFrom = null;
+  var selectedId = null;
   var draft = null;
   var openCard = null;
   var seedReady = false;
@@ -763,7 +764,19 @@ body.picking,body.picking img.photo{cursor:crosshair}
       : '<img src="' + esc(item.crop || item.image) + '" alt="" draggable="false">';
     return '<button class="map-card' + (item.quote ? " text-clip" : "") + '" type="button" data-card="' + esc(item.id) + '" data-session="' + esc(item.session || "") + '" data-account="' + esc(accountKey(item)) + '" data-site="' + esc(item.site || "Instagram") + '" style="left:' + spot.x + 'px;top:' + spot.y + 'px">' + body + '<span class="chips"><span class="site">' + esc(item.site || "Instagram") + '</span><span class="tag">' + esc(item.tag || "no tag") + '</span></span><span class="note">' + esc(item.note || "No note") + "</span></button>";
   }
-  function sessionMarkup(sessionName, items) {
+  function removedIds() { return Array.isArray(state.removed) ? state.removed : []; }
+  function isRemoved(id) { return removedIds().indexOf(id) >= 0; }
+  function sessionSource(sessionName) {
+    if (sessionName === "This session") return state.saves.slice();
+    return SEEDS.concat(TEXT_SEEDS).filter(function (s) { return s.session === sessionName; });
+  }
+  function visibleSession(sessionName) {
+    return sessionSource(sessionName).filter(function (s) { return !isRemoved(s.id); });
+  }
+  function sessionMarkup(sessionName) {
+    var source = sessionSource(sessionName);
+    var items = source.filter(function (s) { return !isRemoved(s.id); });
+    if (!items.length && (source.length || (Array.isArray(state.cleared) && state.cleared.indexOf(sessionName) >= 0))) return "";
     var anchor = SESSION_ANCHORS[sessionName] || { x: 80, y: 80 };
     var html = '<div class="slab" data-session="' + esc(sessionName) + '" style="left:' + anchor.x + 'px;top:' + anchor.y + 'px">' + esc(sessionName) + "</div>";
     if (!items.length) {
@@ -836,21 +849,26 @@ body.picking,body.picking img.photo{cursor:crosshair}
     canvas.style.height = Math.round(maxY) + "px";
   }
   function allCards() {
-    return SEEDS.concat(TEXT_SEEDS).concat(state.saves);
+    return SEEDS.concat(TEXT_SEEDS).concat(state.saves).filter(function (s) { return !isRemoved(s.id); });
   }
   function renderMap() {
     var map = document.getElementById("map");
     map.hidden = false;
     map.innerHTML = '<div class="mapbar"><div class="logo">tangents</div><h1>Map</h1><button class="btn line" id="back-feed" type="button">Back to the feed</button><button class="btn line" id="copy-notes" type="button">Copy session notes</button><button class="btn text" id="reset-sample-map" type="button">Reset sample</button></div><div class="map-viewport"><div class="map-canvas" id="map-canvas"><svg id="map-links" aria-hidden="true"></svg>' +
-      sessionMarkup("This session", state.saves) +
-      sessionMarkup("Sunday study", SEEDS.concat(TEXT_SEEDS).filter(function (s) { return s.session === "Sunday study"; })) +
-      sessionMarkup("Tuesday references", SEEDS.concat(TEXT_SEEDS).filter(function (s) { return s.session === "Tuesday references"; })) +
+      sessionMarkup("This session") +
+      sessionMarkup("Sunday study") +
+      sessionMarkup("Tuesday references") +
       "</div></div>" + toolsMarkup();
     layoutLabels();
     paintNotes();
     fitCanvas();
     drawLinks();
     setMapTool(mapTool);
+    if (selectedId) {
+      var again = itemEl(selectedId);
+      if (again) again.classList.add("is-selected");
+      else selectedId = null;
+    }
   }
   var SEED_NOTES = [
     { id: "seed-note-seam", x: 820, y: 300, text: "The seam is the part to keep.", kind: "note" },
@@ -866,7 +884,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     connect: "Click the first item. Then click the item to connect.",
     branch: "Click an item to add a linked note.",
     comment: "Click the canvas to place a comment.",
-    remove: "Click a note or a line to remove it."
+    remove: "Click an item or a line to remove it."
   };
   function boardNotes() { return Array.isArray(state.stickies) ? state.stickies : SEED_NOTES; }
   function boardLinks() { return Array.isArray(state.links) ? state.links : SEED_LINKS; }
@@ -978,15 +996,64 @@ body.picking,body.picking img.photo{cursor:crosshair}
     note.y = Math.round(parseFloat(el.style.top) || 0);
     persist();
   }
-  function removeNote(id) {
+  function hideEmptyGroups() {
+    var canvas = document.getElementById("map-canvas");
+    if (!canvas || !window.CSS || !CSS.escape) return;
+    canvas.querySelectorAll(".alab").forEach(function (lab) {
+      var q = '.map-card[data-session="' + CSS.escape(lab.dataset.session) + '"][data-account="' + CSS.escape(lab.dataset.account) + '"]';
+      if (!canvas.querySelector(q)) lab.remove();
+    });
+    canvas.querySelectorAll(".slab").forEach(function (lab) {
+      var q = '.map-card[data-session="' + CSS.escape(lab.dataset.session) + '"]';
+      if (canvas.querySelector(q)) return;
+      var hint = canvas.querySelector('.empty-hint[data-session="' + CSS.escape(lab.dataset.session) + '"]');
+      if (hint) return;
+      lab.remove();
+    });
+  }
+  function selectItem(el) {
+    document.querySelectorAll("#map .is-selected").forEach(function (node) { node.classList.remove("is-selected"); });
+    if (!el) { selectedId = null; return; }
+    selectedId = el.dataset.card || el.dataset.note || null;
+    if (selectedId) el.classList.add("is-selected");
+  }
+  function dropLinks(id) {
     ensureBoard();
-    state.stickies = state.stickies.filter(function (n) { return n.id !== id; });
     state.links = state.links.filter(function (l) { return l.a !== id && l.b !== id; });
     if (linkFrom === id) linkFrom = null;
+  }
+  function removeNote(id) {
+    dropLinks(id);
+    state.stickies = state.stickies.filter(function (n) { return n.id !== id; });
+    if (selectedId === id) selectedId = null;
     persist();
     var el = itemEl(id);
     if (el) el.remove();
+    hideEmptyGroups();
     drawLinks();
+  }
+  function removeCard(id) {
+    if (!id) return;
+    var sample = SEEDS.concat(TEXT_SEEDS).some(function (s) { return s.id === id; });
+    if (sample) {
+      if (!Array.isArray(state.removed)) state.removed = [];
+      if (state.removed.indexOf(id) < 0) state.removed.push(id);
+    } else {
+      state.saves = state.saves.filter(function (s) { return s.id !== id; });
+      if (!state.saves.length) {
+        if (!Array.isArray(state.cleared)) state.cleared = [];
+        if (state.cleared.indexOf("This session") < 0) state.cleared.push("This session");
+      }
+    }
+    dropLinks(id);
+    if (selectedId === id) selectedId = null;
+    if (openCard && openCard.id === id) { openCard = null; renderDetail(); }
+    persist();
+    var el = itemEl(id);
+    if (el) el.remove();
+    hideEmptyGroups();
+    drawLinks();
+    if (view === "profile") renderCenter();
   }
   function removeLink(index) {
     ensureBoard();
@@ -1141,6 +1208,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     var note = document.getElementById("note");
     draft.note = note ? note.value.trim() : "";
     if (!draft.tag) { draft.warn = "Choose a tag."; renderPopup(); var area = document.getElementById("note"); if (area) area.value = draft.note; return; }
+    if (Array.isArray(state.cleared)) state.cleared = state.cleared.filter(function (name) { return name !== "This session"; });
     if (draft.kind === "text") {
       state.saves.push({
         id: "now-" + Date.now(),
@@ -1195,6 +1263,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     state = { active: false, dismissed: false, saves: [], spots: {} };
     mapTool = "select";
     linkFrom = null;
+    selectedId = null;
     persist();
     draft = null;
     openCard = null;
@@ -1218,8 +1287,8 @@ body.picking,body.picking img.photo{cursor:crosshair}
       });
       chunks.push("");
     }
-    add("Sunday study", SEEDS.concat(TEXT_SEEDS).filter(function (s) { return s.session === "Sunday study"; }));
-    add("Tuesday references", SEEDS.concat(TEXT_SEEDS).filter(function (s) { return s.session === "Tuesday references"; }));
+    add("Sunday study", visibleSession("Sunday study"));
+    add("Tuesday references", visibleSession("Tuesday references"));
     add("This session", state.saves);
     return chunks.join("\n");
   }
@@ -1352,6 +1421,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     if (note && e.target.closest(".sticky-text") && mapTool === "select") return;
     var item = card || note;
     if (item && mapTool === "select") {
+      selectItem(item);
       bubbleDrag = {
         card: item,
         pointerId: e.pointerId,
@@ -1372,6 +1442,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
       if (item) e.preventDefault();
       return;
     }
+    if (mapTool === "select") selectItem(null);
     if (e.pointerType !== "mouse") return;
     if (e.target.closest("button")) return;
     var scroller = mapScroller();
@@ -1423,8 +1494,11 @@ body.picking,body.picking img.photo{cursor:crosshair}
       if (card.classList.contains("sticky")) rememberNote(card);
       else rememberSpot(card);
     } else if (!moved && !cancel && card.classList.contains("map-card")) {
+      selectItem(card);
       openCard = findCard(card.dataset.card);
       renderDetail();
+    } else if (!moved && !cancel) {
+      selectItem(card);
     }
   }
   function endPress(e) {
@@ -1444,7 +1518,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     if (!press.el) {
       if (mapTool === "branch") setHintText("Click an item to add a linked note.");
       else if (mapTool === "connect") setHintText("Click an item to start a line.");
-      else if (mapTool === "remove") setHintText("Click a note or a line to remove it.");
+      else if (mapTool === "remove") setHintText("Click an item or a line to remove it.");
       return;
     }
     if (mapTool === "connect") { connectItem(press.el); return; }
@@ -1454,7 +1528,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     }
     if (mapTool === "remove") {
       if (press.el.classList.contains("sticky")) removeNote(press.el.dataset.note);
-      else setHintText("Saved details stay on the map. Click a note or a line.");
+      else removeCard(press.el.dataset.card);
     }
   }
   function setHintText(text) {
@@ -1533,6 +1607,16 @@ body.picking,body.picking img.photo{cursor:crosshair}
     else openReview(img, { x: x, y: y, w: w, h: h });
   });
   window.addEventListener("keydown", function (e) {
+    if ((e.key === "Delete" || e.key === "Backspace") && !document.getElementById("map").hidden && selectedId) {
+      var active = document.activeElement;
+      var typing = active && (active.isContentEditable || active.tagName === "TEXTAREA" || active.tagName === "INPUT");
+      if (!typing) {
+        e.preventDefault();
+        var chosen = itemEl(selectedId);
+        if (chosen && chosen.classList.contains("sticky")) removeNote(selectedId);
+        else removeCard(selectedId);
+      }
+    }
     if (e.key === "Escape") {
       if (mode === "pick" || mode === "review") { draft = null; stopPick(); }
       else if (openCard) { openCard = null; renderDetail(); }
