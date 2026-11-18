@@ -153,20 +153,22 @@ img{max-width:100%}
 #veil{display:none !important}
 body.picking,body.picking img.photo{cursor:crosshair}
 #marquee{position:fixed;z-index:50;border:1px solid #000;box-shadow:0 0 0 9999px rgba(0,0,0,.2);pointer-events:none}
-#map{position:fixed;inset:0;z-index:90;overflow:auto;background:#fff;font-family:var(--ui);font-size:13px;letter-spacing:0;color:#000}
-.mapbar{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;padding:12px 18px;background:#fff;border-bottom:1px solid #000}
+#map{position:fixed;inset:0;z-index:90;overflow:hidden;display:flex;flex-direction:column;background:#fff;font-family:var(--ui);font-size:13px;letter-spacing:0;color:#000}
+.mapbar{position:relative;z-index:2;flex:none;display:flex;align-items:center;gap:12px;padding:12px 18px;background:#fff;border-bottom:1px solid #000}
 .logo{font-weight:500;font-size:22px;letter-spacing:-.05em;margin-right:8px;font-family:var(--ui);color:#000}
 .mapbar h1{font-size:14px;font-weight:400;margin:0;color:#000;flex:1;letter-spacing:-.05em}
-.board{padding:12px 28px 80px;display:grid;gap:28px}
-.session h2{margin:0 0 10px;font-size:12px;font-weight:500;color:#000}
+.map-viewport{flex:1;min-height:0;overflow:auto;background:#fff;cursor:grab}
+.map-viewport.panning{cursor:grabbing}
+.map-canvas{position:relative;min-width:1760px;min-height:1280px;background:#fff}
+.slab,.alab{position:absolute;margin:0;color:#000;font-weight:500;pointer-events:none;white-space:nowrap}
+.slab{font-size:12px}
+.alab{font-size:13px}
 #map .hint{margin:0;font-size:12px;color:#000;line-height:1.35}
-.accounts{display:flex;flex-wrap:wrap;gap:28px 40px;align-items:flex-start}
-.account{display:grid;gap:8px;align-content:start}
-.account h3{margin:0;font-size:13px;font-weight:500;color:#000}
-.cards{display:flex;flex-wrap:wrap;gap:18px}
-.map-card{width:132px;border:0;border-radius:0;background:transparent;padding:0;text-align:center;box-shadow:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;color:#000}
+#map .empty-hint{position:absolute;width:220px;white-space:normal;pointer-events:none}
+.map-card{position:absolute;width:132px;border:0;border-radius:0;background:transparent;padding:0;text-align:center;box-shadow:none;cursor:grab;display:flex;flex-direction:column;align-items:center;color:#000;touch-action:none;user-select:none;-webkit-user-select:none}
+.map-card.dragging{cursor:grabbing;z-index:3}
 .map-card:hover{background:transparent}
-.map-card img{width:112px;height:112px;object-fit:cover;border-radius:50%;border:1px solid #000;display:block;background:#fff}
+.map-card img{width:112px;height:112px;object-fit:cover;border-radius:50%;border:1px solid #000;display:block;background:#fff;pointer-events:none;-webkit-user-drag:none}
 .map-card .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin-top:8px}
 .map-card .tag,.map-card .site{display:inline-block;height:auto;background:#fff;color:#000;border:1px solid #000;border-radius:0;padding:2px 6px;font-size:11px;line-height:1.3}
 .map-card .note{display:block;margin-top:6px;font-size:12px;line-height:1.35;white-space:normal;color:#000}
@@ -343,6 +345,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     { session: "Tuesday references", site: "Instagram", handle: "field.lines", board: "", image: "images/lt_flow.jpg", caption: "A field of thin lines.", box: { x: 0.3, y: 0.35, w: 0.32, h: 0.28 }, tag: "shape", note: "The curve in the middle of the lines." },
     { session: "Tuesday references", site: "Instagram", handle: "light.room", board: "", image: "images/lt_led.jpg", caption: "Small lights in a dark room.", box: { x: 0.46, y: 0.22, w: 0.22, h: 0.26 }, tag: "color", note: "One small bright point." }
   ];
+  SEEDS.forEach(function (seed) { seed.id = "seed-" + seed.handle + "-" + seed.session; });
   var TAGS = ["color", "shape", "texture", "pose", "type"];
   var KEY = "tangents-ig-sample-v1";
   var state = load();
@@ -359,6 +362,9 @@ body.picking,body.picking img.photo{cursor:crosshair}
   var menu = null;
   var mode = state.active ? "live" : (state.dismissed ? "pill" : "ask");
   var drag = null;
+  var bubbleDrag = null;
+  var mapPan = null;
+  var blockMapClick = false;
   var draft = null;
   var openCard = null;
   var seedReady = false;
@@ -368,7 +374,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
       var raw = JSON.parse(localStorage.getItem(KEY) || "");
       if (raw && Array.isArray(raw.saves)) return raw;
     } catch (e) {}
-    return { active: false, dismissed: false, saves: [] };
+    return { active: false, dismissed: false, saves: [], spots: {} };
   }
   function persist() { localStorage.setItem(KEY, JSON.stringify(state)); }
   function esc(s) {
@@ -571,24 +577,134 @@ body.picking,body.picking img.photo{cursor:crosshair}
     pop.style.bottom = margin + "px";
   }
 
-  function groupsFor(sessionName, items) {
+  var SESSION_ANCHORS = {
+    "This session": { x: 48, y: 28 },
+    "Sunday study": { x: 340, y: 70 },
+    "Tuesday references": { x: 180, y: 690 }
+  };
+  var DEFAULT_SPOTS = {
+    "seed-studio.mending-Sunday study": { x: 340, y: 230 },
+    "seed-goldseam-Sunday study": { x: 800, y: 72 },
+    "seed-blueground.studio-Sunday study": { x: 560, y: 450 },
+    "seed-field.lines-Tuesday references": { x: 500, y: 980 },
+    "seed-light.room-Tuesday references": { x: 180, y: 730 }
+  };
+  var ACCOUNT_SLOTS = [
+    { x: 36, y: 210 },
+    { x: 390, y: 36 },
+    { x: 150, y: 490 },
+    { x: 520, y: 280 },
+    { x: 80, y: 560 },
+    { x: 360, y: 500 }
+  ];
+  var ITEM_CLOUD = [
+    { x: 0, y: 0 },
+    { x: 156, y: 128 },
+    { x: -36, y: 214 },
+    { x: 188, y: -24 },
+    { x: 72, y: 268 }
+  ];
+  function hashStr(s) {
+    var h = 2166136261;
+    for (var i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+  function jitter(id, axis) {
+    return (hashStr(String(id || "") + ":" + axis) % 37) - 18;
+  }
+  function accountKey(item) { return item.board || item.handle || "account"; }
+  function spotFor(item, accountIndex, itemIndex) {
+    var saved = state.spots && state.spots[item.id];
+    if (saved && isFinite(saved.x) && isFinite(saved.y)) return { x: saved.x, y: saved.y };
+    if (DEFAULT_SPOTS[item.id]) return DEFAULT_SPOTS[item.id];
+    var origin = SESSION_ANCHORS[item.session] || { x: 80, y: 80 };
+    var slot = ACCOUNT_SLOTS[accountIndex % ACCOUNT_SLOTS.length];
+    var lap = Math.floor(accountIndex / ACCOUNT_SLOTS.length);
+    var cloud = ITEM_CLOUD[itemIndex % ITEM_CLOUD.length];
+    var ring = Math.floor(itemIndex / ITEM_CLOUD.length);
+    return {
+      x: Math.round(origin.x + slot.x + lap * 240 + cloud.x + ring * 36 + jitter(item.id, "x")),
+      y: Math.round(origin.y + slot.y + lap * 90 + cloud.y + ring * 28 + jitter(item.id, "y"))
+    };
+  }
+  function cardButton(item, spot) {
+    var src = item.crop || item.image;
+    return '<button class="map-card" type="button" data-card="' + esc(item.id) + '" data-session="' + esc(item.session || "") + '" data-account="' + esc(accountKey(item)) + '" data-site="' + esc(item.site || "Instagram") + '" style="left:' + spot.x + 'px;top:' + spot.y + 'px"><img src="' + esc(src) + '" alt="" draggable="false"><span class="chips"><span class="site">' + esc(item.site || "Instagram") + '</span><span class="tag">' + esc(item.tag || "no tag") + '</span></span><span class="note">' + esc(item.note || "No note") + "</span></button>";
+  }
+  function sessionMarkup(sessionName, items) {
+    var anchor = SESSION_ANCHORS[sessionName] || { x: 80, y: 80 };
+    var html = '<div class="slab" data-session="' + esc(sessionName) + '" style="left:' + anchor.x + 'px;top:' + anchor.y + 'px">' + esc(sessionName) + "</div>";
+    if (!items.length) {
+      return html + '<p class="hint empty-hint" data-session="' + esc(sessionName) + '" style="left:' + anchor.x + 'px;top:' + (anchor.y + 22) + 'px">No details saved in this session yet.</p>';
+    }
     var by = {};
+    var order = [];
     items.forEach(function (item) {
-      var key = item.board || item.handle;
-      if (!by[key]) by[key] = [];
+      var key = accountKey(item);
+      if (!by[key]) { by[key] = []; order.push(key); }
       by[key].push(item);
     });
-    var html = '<section class="session" data-session="' + esc(sessionName) + '"><h2>' + esc(sessionName) + "</h2>";
-    var handles = Object.keys(by);
-    if (!handles.length) html += '<p class="hint">No details saved in this session yet.</p>';
-    html += '<div class="accounts">';
-    handles.forEach(function (handle) {
-      html += '<div class="account" data-account="' + esc(handle) + '"><h3>' + esc(handle) + '</h3><div class="cards">' + by[handle].map(function (item) {
-        var src = item.crop || item.image;
-        return '<button class="map-card" type="button" data-card="' + esc(item.id) + '" data-site="' + esc(item.site || "Instagram") + '"><img src="' + esc(src) + '" alt=""><span class="chips"><span class="site">' + esc(item.site || "Instagram") + '</span><span class="tag">' + esc(item.tag || "no tag") + '</span></span><span class="note">' + esc(item.note || "No note") + "</span></button>";
-      }).join("") + "</div></div>";
+    order.forEach(function (account, ai) {
+      html += '<div class="alab" data-session="' + esc(sessionName) + '" data-account="' + esc(account) + '">' + esc(account) + "</div>";
+      by[account].forEach(function (item, ii) {
+        html += cardButton(item, spotFor(item, ai, ii));
+      });
     });
-    return html + "</div></section>";
+    return html;
+  }
+  function layoutLabels() {
+    var canvas = document.getElementById("map-canvas");
+    if (!canvas) return;
+    var sessions = {};
+    canvas.querySelectorAll(".map-card").forEach(function (card) {
+      var s = card.dataset.session;
+      var a = card.dataset.account;
+      var x = parseFloat(card.style.left) || 0;
+      var y = parseFloat(card.style.top) || 0;
+      if (!sessions[s]) sessions[s] = { minX: x, minY: y, topX: x, accounts: {} };
+      var group = sessions[s];
+      group.minX = Math.min(group.minX, x);
+      if (y < group.minY) { group.minY = y; group.topX = x; }
+      if (!group.accounts[a]) group.accounts[a] = { minX: x, minY: y };
+      var account = group.accounts[a];
+      account.minX = Math.min(account.minX, x);
+      account.minY = Math.min(account.minY, y);
+    });
+    canvas.querySelectorAll(".alab").forEach(function (lab) {
+      var group = sessions[lab.dataset.session];
+      var account = group && group.accounts[lab.dataset.account];
+      if (!account) return;
+      lab.style.left = account.minX + "px";
+      lab.style.top = Math.max(8, account.minY - 22) + "px";
+    });
+    canvas.querySelectorAll(".slab").forEach(function (lab) {
+      var group = sessions[lab.dataset.session];
+      if (!group) return;
+      lab.style.left = group.topX + "px";
+      lab.style.top = Math.max(8, group.minY - 46) + "px";
+      var hint = canvas.querySelector('.empty-hint[data-session="' + lab.dataset.session + '"]');
+      if (hint) {
+        hint.style.left = lab.style.left;
+        hint.style.top = (parseFloat(lab.style.top) + 22) + "px";
+      }
+    });
+  }
+  function fitCanvas() {
+    var canvas = document.getElementById("map-canvas");
+    if (!canvas) return;
+    var maxX = 1760;
+    var maxY = 1280;
+    canvas.querySelectorAll(".map-card,.slab,.alab,.empty-hint").forEach(function (el) {
+      var x = parseFloat(el.style.left) || 0;
+      var y = parseFloat(el.style.top) || 0;
+      maxX = Math.max(maxX, x + el.offsetWidth + 96);
+      maxY = Math.max(maxY, y + el.offsetHeight + 96);
+    });
+    canvas.style.width = Math.round(maxX) + "px";
+    canvas.style.height = Math.round(maxY) + "px";
   }
   function allCards() {
     return SEEDS.concat(state.saves);
@@ -596,10 +712,31 @@ body.picking,body.picking img.photo{cursor:crosshair}
   function renderMap() {
     var map = document.getElementById("map");
     map.hidden = false;
-    map.innerHTML = '<div class="mapbar"><div class="logo">tangents</div><h1>Map</h1><button class="btn line" id="back-feed" type="button">Back to the feed</button><button class="btn line" id="copy-notes" type="button">Copy session notes</button><button class="btn text" id="reset-sample-map" type="button">Reset sample</button></div><div class="board">' +
-      groupsFor("This session", state.saves) +
-      groupsFor("Sunday study", SEEDS.filter(function (s) { return s.session === "Sunday study"; })) +
-      groupsFor("Tuesday references", SEEDS.filter(function (s) { return s.session === "Tuesday references"; })) + "</div>";
+    map.innerHTML = '<div class="mapbar"><div class="logo">tangents</div><h1>Map</h1><button class="btn line" id="back-feed" type="button">Back to the feed</button><button class="btn line" id="copy-notes" type="button">Copy session notes</button><button class="btn text" id="reset-sample-map" type="button">Reset sample</button></div><div class="map-viewport"><div class="map-canvas" id="map-canvas">' +
+      sessionMarkup("This session", state.saves) +
+      sessionMarkup("Sunday study", SEEDS.filter(function (s) { return s.session === "Sunday study"; })) +
+      sessionMarkup("Tuesday references", SEEDS.filter(function (s) { return s.session === "Tuesday references"; })) +
+      "</div></div>";
+    layoutLabels();
+    fitCanvas();
+  }
+  function mapScroller() {
+    return document.querySelector("#map .map-viewport");
+  }
+  function rememberSpot(card) {
+    if (!card || !card.dataset.card) return;
+    if (!state.spots || typeof state.spots !== "object") state.spots = {};
+    state.spots[card.dataset.card] = {
+      x: Math.round(parseFloat(card.style.left) || 0),
+      y: Math.round(parseFloat(card.style.top) || 0)
+    };
+    persist();
+  }
+  function moveBubble(card, x, y) {
+    card.style.left = Math.max(16, Math.round(x)) + "px";
+    card.style.top = Math.max(56, Math.round(y)) + "px";
+    layoutLabels();
+    fitCanvas();
   }
   function findCard(id) {
     return allCards().filter(function (c) { return c.id === id; })[0];
@@ -720,7 +857,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     if (view === "profile") renderCenter();
   }
   function resetSample() {
-    state = { active: false, dismissed: false, saves: [] };
+    state = { active: false, dismissed: false, saves: [], spots: {} };
     persist();
     draft = null;
     openCard = null;
@@ -846,8 +983,89 @@ body.picking,body.picking img.photo{cursor:crosshair}
     if (e.target.id === "back-feed") { document.getElementById("map").hidden = true; return; }
     if (e.target.id === "copy-notes") { copyNotes(); return; }
     if (e.target.id === "reset-sample-map") { resetSample(); return; }
-    var card = e.target.closest("[data-card]");
+    if (blockMapClick) { blockMapClick = false; return; }
+    var card = e.target.closest(".map-card");
     if (card) { openCard = findCard(card.dataset.card); renderDetail(); }
+  });
+  document.getElementById("map").addEventListener("pointerdown", function (e) {
+    if (e.button != null && e.button !== 0) return;
+    var card = e.target.closest(".map-card");
+    if (card) {
+      bubbleDrag = {
+        card: card,
+        pointerId: e.pointerId,
+        x: e.clientX,
+        y: e.clientY,
+        origX: parseFloat(card.style.left) || 0,
+        origY: parseFloat(card.style.top) || 0,
+        scrollX: mapScroller() ? mapScroller().scrollLeft : 0,
+        scrollY: mapScroller() ? mapScroller().scrollTop : 0,
+        moved: false
+      };
+      try { card.setPointerCapture(e.pointerId); } catch (err) {}
+      e.preventDefault();
+      return;
+    }
+    if (e.pointerType !== "mouse") return;
+    if (e.target.closest(".mapbar") || e.target.closest("button")) return;
+    var scroller = mapScroller();
+    if (!scroller || !e.target.closest(".map-canvas")) return;
+    mapPan = { pointerId: e.pointerId, x: e.clientX, y: e.clientY, sl: scroller.scrollLeft, st: scroller.scrollTop };
+    scroller.classList.add("panning");
+    try { scroller.setPointerCapture(e.pointerId); } catch (err) {}
+  });
+  document.getElementById("map").addEventListener("pointermove", function (e) {
+    if (bubbleDrag && e.pointerId === bubbleDrag.pointerId) {
+      var scroller = mapScroller();
+      var dx = e.clientX - bubbleDrag.x + ((scroller ? scroller.scrollLeft : 0) - bubbleDrag.scrollX);
+      var dy = e.clientY - bubbleDrag.y + ((scroller ? scroller.scrollTop : 0) - bubbleDrag.scrollY);
+      if (!bubbleDrag.moved && Math.hypot(e.clientX - bubbleDrag.x, e.clientY - bubbleDrag.y) < 6) return;
+      bubbleDrag.moved = true;
+      bubbleDrag.card.classList.add("dragging");
+      if (scroller) {
+        var edge = 36;
+        var bounds = scroller.getBoundingClientRect();
+        if (e.clientX < bounds.left + edge) scroller.scrollLeft -= 14;
+        else if (e.clientX > bounds.right - edge) scroller.scrollLeft += 14;
+        if (e.clientY < bounds.top + edge) scroller.scrollTop -= 14;
+        else if (e.clientY > bounds.bottom - edge) scroller.scrollTop += 14;
+        dx = e.clientX - bubbleDrag.x + (scroller.scrollLeft - bubbleDrag.scrollX);
+        dy = e.clientY - bubbleDrag.y + (scroller.scrollTop - bubbleDrag.scrollY);
+      }
+      moveBubble(bubbleDrag.card, bubbleDrag.origX + dx, bubbleDrag.origY + dy);
+      return;
+    }
+    if (!mapPan || e.pointerId !== mapPan.pointerId) return;
+    var panScroller = mapScroller();
+    if (!panScroller) return;
+    panScroller.scrollLeft = mapPan.sl - (e.clientX - mapPan.x);
+    panScroller.scrollTop = mapPan.st - (e.clientY - mapPan.y);
+  });
+  function endBubble(e, cancel) {
+    if (!bubbleDrag || e.pointerId !== bubbleDrag.pointerId) return;
+    var card = bubbleDrag.card;
+    var moved = bubbleDrag.moved;
+    card.classList.remove("dragging");
+    bubbleDrag = null;
+    blockMapClick = true;
+    if (moved && !cancel) rememberSpot(card);
+    else if (!moved && !cancel) { openCard = findCard(card.dataset.card); renderDetail(); }
+  }
+  document.getElementById("map").addEventListener("pointerup", function (e) {
+    if (mapPan && e.pointerId === mapPan.pointerId) {
+      mapPan = null;
+      var scroller = mapScroller();
+      if (scroller) scroller.classList.remove("panning");
+    }
+    endBubble(e, false);
+  });
+  document.getElementById("map").addEventListener("pointercancel", function (e) {
+    if (mapPan && e.pointerId === mapPan.pointerId) {
+      mapPan = null;
+      var scroller = mapScroller();
+      if (scroller) scroller.classList.remove("panning");
+    }
+    endBubble(e, true);
   });
   document.getElementById("detail").addEventListener("click", function (e) {
     if (e.target.id === "close-detail" || e.target.id === "detail") { openCard = null; renderDetail(); }
