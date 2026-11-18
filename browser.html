@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tangents Desktop Demo</title>
+<title>prototype</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -827,7 +827,7 @@ var THUMBS = {"Kintsugi bowl": "/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEB
       BEFORE.map(function(b){return '<div class="bf"><div class="thumbs">'+b.items.map(function(x,i){return '<img alt="" style="--i:'+i+'" src="'+img(x)+'">'}).join('')+'</div><div><h2>'+b.lab+'</h2><p>'+b.p+'</p><div class="terms">'+b.terms.map(function(t){return '<button class="term" data-t="'+t+'" aria-label="Copy '+t+'"><span>'+t+'</span>'+CPI+'</button>'}).join('<span class="cm">, </span>')+'</div></div></div>'}).join('')+
       '<div class="bfoot"><button class="btn ink pinkb" id="keepExploring">Keep exploring</button><button class="anyway" id="endAnyway">End session anyway</button></div>'}
   var bt=$('desk').querySelector('.btabs .btab').cloneNode(true);bt.dataset.p='before';bt.setAttribute('aria-selected','false');bt.hidden=true;
-  bt.querySelector('.fav').innerHTML='<svg viewBox="0 0 240 239" style="width:12px;height:12px;stroke:none;fill:var(--ink)">'+MK+'</svg>';bt.querySelector('.tt').textContent='Before you go';bt.querySelector('.td').textContent='tangents';
+  bt.querySelector('.fav').innerHTML='<svg viewBox="0 0 240 239" style="width:12px;height:12px;stroke:none;fill:var(--ink)">'+MK+'</svg>';bt.querySelector('.tt').textContent='Before you go';bt.querySelector('.td').textContent='prototype';
   $('desk').querySelector('.btabs').insertBefore(bt,$('desk').querySelector('.btabs .btab'));
   var lastPane='board';
   $('endBtn').onclick=function(){var on=$('desk').querySelector('.btab[aria-selected="true"]');if(on&&on.dataset.p!=='before')lastPane=on.dataset.p;hoverOpen=false;setView('dot');renderBefore();bt.hidden=false;showPane('before');$('desk').querySelector('.pane[data-p="before"]').scrollTop=0};
