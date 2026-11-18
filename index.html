@@ -1,0 +1,86 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1B1316;--pink:#FF2D6F;--g400:#A6A29A;--g700:#6B675F;--track:-.05em;
+  --glass:rgba(255,241,230,.5);--glass-on:rgba(255,250,247,.92);--glass-blur:blur(10px) saturate(1.6);
+  --lift:0 1px 3px rgba(90,50,40,.08),0 10px 30px rgba(90,50,40,.14);
+  --outq:cubic-bezier(.16,1,.3,1);--spring:cubic-bezier(.34,1.28,.64,1);--even:cubic-bezier(.45,0,.55,1);--morph:cubic-bezier(.32,.72,0,1)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden}
+/* the same warm wallpaper as the browser demo, kept still behind both views */
+body{font-family:Inter,system-ui,-apple-system,sans-serif;color:var(--ink);letter-spacing:var(--track);
+  background:radial-gradient(120% 90% at 0% 0%,#F8DCC6 0%,rgba(248,220,198,0) 60%),radial-gradient(90% 90% at 100% 100%,#EFC7D6 0%,rgba(239,199,214,0) 65%),linear-gradient(135deg,#F6D6C8,#F2CFD3 55%,#EED9E6)}
+/* view switcher */
+#switch{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:2px;padding:3px;border-radius:999px;
+  background:var(--glass);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.75),var(--lift)}
+#switch button{display:flex;align-items:center;gap:7px;padding:6px 14px 6px 11px;border:0;border-radius:999px;background:none;font:inherit;font-size:13px;letter-spacing:var(--track);color:var(--g700);cursor:pointer;transition:background 200ms var(--even),color 200ms var(--even),box-shadow 200ms var(--even)}
+#switch button:hover{color:var(--ink)}
+#switch button[aria-pressed="true"]{background:var(--glass-on);color:var(--ink);box-shadow:0 1px 4px rgba(27,19,22,.1)}
+#switch a{display:flex;align-items:center;gap:7px;padding:6px 14px 6px 11px;border-radius:999px;background:none;font:inherit;font-size:13px;letter-spacing:var(--track);color:var(--g700);text-decoration:none}
+#switch a:hover{color:var(--ink);background:var(--glass-on)}
+#switch svg{flex:none}
+/* views */
+.view{position:fixed;left:0;right:0;bottom:0;top:38px;opacity:0;visibility:hidden;transform:scale(.985);filter:blur(4px);
+  transition:opacity 420ms var(--even),transform 620ms var(--morph),filter 420ms var(--even),visibility 0s linear 420ms}
+.view.on{opacity:1;visibility:visible;transform:none;filter:none;transition:opacity 420ms var(--even),transform 620ms var(--morph),filter 420ms var(--even),visibility 0s}
+iframe{border:0;display:block;width:100%;height:100%;background:transparent}
+/* the Tangents app sits in its own window, the same size and shadow as the browser window */
+.win{position:absolute;inset:22px 26px 24px;border-radius:18px;overflow:hidden;background:#F6F4EF;
+  box-shadow:inset 0 0 0 .5px rgba(255,255,255,.7),0 0 0 .5px rgba(120,60,70,.08),0 30px 70px rgba(150,70,80,.18)}
+@media (prefers-reduced-motion:reduce){.view{transition:none!important;transform:none;filter:none}}
+</style>
+</head>
+<body>
+<nav id="switch" aria-label="Choose a view">
+  <button data-v="overlay" aria-pressed="true">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><rect x="1.5" y="2.5" width="13" height="11" rx="2.5"/><path d="M1.5 5.5h13"/><rect x="9" y="7.5" width="4" height="2" rx="1" fill="currentColor" stroke="none"/></svg>
+    prototype companion</button>
+  <button data-v="desktop" aria-pressed="false">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="3.5" cy="8" r="1.6"/><circle cx="12.5" cy="4.5" r="1.6"/><circle cx="12.5" cy="11.5" r="1.6"/><path d="M5 8c3 0 3-3.5 6-3.5M5 8c3 0 3 3.5 6 3.5"/></svg>
+    prototype desktop</button>
+  <a href="instagram.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2.2" y="2.2" width="11.6" height="11.6" rx="3.2"/><circle cx="8" cy="8" r="2.6"/><circle cx="11.35" cy="4.7" r=".7" fill="currentColor" stroke="none"/></svg>
+    Instagram feed</a>
+</nav>
+
+<div class="view on" id="v-overlay"><iframe id="f-overlay" src="browser.html" title="prototype companion over the browser" allowtransparency="true"></iframe></div>
+<div class="view" id="v-desktop"><div class="win"><iframe id="f-desktop" src="app.html" title="prototype desktop"></iframe></div></div>
+
+<script>
+(function () {
+  /* let the shared wallpaper show through the browser demo, so it stays put when you switch */
+  var f = document.getElementById('f-overlay');
+  f.addEventListener('load', function () {
+    try {
+      var d = f.contentDocument, st = d.createElement('style');
+      st.textContent = 'html,body,.stage{background:transparent!important}';
+      d.head.appendChild(st);
+    } catch (e) {}
+  });
+  var btns = document.querySelectorAll('#switch button');
+  function show(v) {
+    if (v !== 'desktop') v = 'overlay';
+    document.getElementById('v-overlay').classList.toggle('on', v === 'overlay');
+    document.getElementById('v-desktop').classList.toggle('on', v === 'desktop');
+    Array.prototype.forEach.call(btns, function (b) { b.setAttribute('aria-pressed', String(b.dataset.v === v)); });
+    try { history.replaceState(null, '', '#' + v); } catch (e) {}
+    var fr = document.getElementById(v === 'desktop' ? 'f-desktop' : 'f-overlay');
+    setTimeout(function () { try { fr.contentWindow.focus(); } catch (e) {} }, 50);
+  }
+  Array.prototype.forEach.call(btns, function (b) { b.onclick = function () { show(b.dataset.v); }; });
+  /* the browser demo asks for the desktop app when you map by hand or end the session */
+  window.addEventListener('message', function (e) { if (e.data && e.data.tangents === 'open-desktop') show('desktop'); });
+  show((location.hash || '').slice(1));
+})();
+</script>
+</body>
+</html>
+
+</body></html>
