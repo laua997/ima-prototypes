@@ -1,0 +1,1961 @@
+{
+  "light": {
+    "title": "Light that listens",
+    "role": "Creative technologist · an installation that reacts to sound and bodies",
+    "started": "7:40 PM",
+    "duration": "1:52:30",
+    "start": "Opened Are.na",
+    "stages": [
+      {
+        "id": "l1",
+        "name": "Generative light",
+        "branch": "lime"
+      },
+      {
+        "id": "l2",
+        "name": "Sound you can see",
+        "branch": "butter"
+      },
+      {
+        "id": "l3",
+        "name": "Bodies as input",
+        "branch": "blush"
+      },
+      {
+        "id": "l4",
+        "name": "Making it physical",
+        "branch": "lime"
+      }
+    ],
+    "shifts": [
+      {
+        "from": "Sound",
+        "to": "bodies",
+        "into": "lt_pose"
+      },
+      {
+        "from": "Screen",
+        "to": "room",
+        "into": "lt_led"
+      }
+    ],
+    "turn": "sound turned into bodies, then the screen became a room",
+    "mcpShifts": [
+      {
+        "from": "Sound you can see",
+        "to": "Bodies as input",
+        "note": "From reacting to sound to reacting to people."
+      },
+      {
+        "from": "Bodies as input",
+        "to": "Making it physical",
+        "note": "Off the screen and into the room: LEDs and projection."
+      }
+    ],
+    "nudge": {
+      "like": "light that reacts",
+      "explore": "cymatics in water",
+      "branch": "Cymatics in water"
+    },
+    "cards": [
+      {
+        "id": "lt_flow",
+        "image": "images/lt_flow.jpg",
+        "branch": "lime",
+        "title": "Flow field, ten thousand lines",
+        "minutesAgo": 110,
+        "stage": "l1",
+        "size": "l",
+        "source": "are.na",
+        "link": "www.are.na/search/flow%20field",
+        "group": "Generative light",
+        "keywords": [
+          "flow field",
+          "perlin noise",
+          "line",
+          "motion"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_part",
+        "image": "images/lt_part.jpg",
+        "branch": "lime",
+        "title": "Particles that leave light behind",
+        "minutesAgo": 104,
+        "stage": "l1",
+        "size": null,
+        "source": "are.na",
+        "link": "www.are.na/search/particle%20system",
+        "group": "Generative light",
+        "keywords": [
+          "particles",
+          "trails",
+          "glow",
+          "motion"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_grad",
+        "image": "images/lt_grad.jpg",
+        "branch": "lime",
+        "title": "A shader that breathes",
+        "minutesAgo": 99,
+        "stage": "l1",
+        "size": "s",
+        "source": "pinterest.com",
+        "link": "www.pinterest.com/search/pins/?q=shader%20gradient",
+        "group": "Generative light",
+        "keywords": [
+          "shader",
+          "gradient",
+          "glow",
+          "colour"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_nature",
+        "image": "images/lt_nature.jpg",
+        "branch": "detour",
+        "title": "The Nature of Code: particle systems",
+        "minutesAgo": 101,
+        "stage": "l1",
+        "size": "s",
+        "source": "natureofcode.com",
+        "link": "natureofcode.com/particles/",
+        "group": "Reading · Particle systems",
+        "keywords": [
+          "particles",
+          "forces",
+          "code"
+        ],
+        "author": "Daniel Shiffman"
+      },
+      {
+        "id": "lt_bos",
+        "image": "images/lt_bos.jpg",
+        "branch": "detour",
+        "title": "The Book of Shaders",
+        "minutesAgo": 96,
+        "stage": "l1",
+        "size": "s",
+        "source": "thebookofshaders.com",
+        "link": "thebookofshaders.com",
+        "group": "Reading · Shaders",
+        "keywords": [
+          "shader",
+          "fragment",
+          "code"
+        ],
+        "author": "Patricio Gonzalez Vivo, Jen Lowe"
+      },
+      {
+        "id": "lt_arena",
+        "image": "images/lt_arena.jpg",
+        "branch": "detour",
+        "title": "“A room that responds is a room that listens”",
+        "minutesAgo": 93,
+        "stage": "l1",
+        "size": "s",
+        "source": "are.na",
+        "link": "www.are.na/search/responsive%20space",
+        "group": "Reading · Shaders",
+        "keywords": [
+          "light",
+          "room",
+          "listening"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_liss",
+        "image": "images/lt_liss.jpg",
+        "branch": "butter",
+        "title": "Oscilloscope music, drawn in sound",
+        "minutesAgo": 90,
+        "stage": "l2",
+        "size": "l",
+        "source": "pinterest.com",
+        "link": "www.pinterest.com/search/pins/?q=oscilloscope%20music",
+        "group": "Sound you can see",
+        "keywords": [
+          "oscilloscope",
+          "sound",
+          "line",
+          "glow"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_fft",
+        "image": "images/lt_fft.jpg",
+        "branch": "butter",
+        "title": "A spectrum bent into a circle",
+        "minutesAgo": 84,
+        "stage": "l2",
+        "size": null,
+        "source": "pinterest.com",
+        "link": "www.pinterest.com/search/pins/?q=audio%20visualizer",
+        "group": "Sound you can see",
+        "keywords": [
+          "spectrum",
+          "sound",
+          "colour",
+          "circle"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_cym",
+        "image": "images/lt_cym.jpg",
+        "branch": "butter",
+        "title": "Chladni figures from a speaker",
+        "minutesAgo": 79,
+        "stage": "l2",
+        "size": "s",
+        "source": "are.na",
+        "link": "www.are.na/search/chladni",
+        "group": "Sound you can see",
+        "keywords": [
+          "cymatics",
+          "sound",
+          "pattern"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_x1",
+        "image": "images/lt_x1.jpg",
+        "branch": "butter",
+        "title": "A lamp that flickers when the kettle boils",
+        "minutesAgo": 75,
+        "stage": "l2",
+        "size": null,
+        "source": "x.com",
+        "link": "x.com/search?q=lamp%20listens",
+        "group": "Sound you can see",
+        "keywords": [
+          "lamp",
+          "sound",
+          "light",
+          "glow"
+        ],
+        "author": "@softcircuitry"
+      },
+      {
+        "id": "lt_ascii",
+        "image": "images/lt_ascii.jpg",
+        "branch": "detour",
+        "title": "ASCII as light",
+        "minutesAgo": 82,
+        "stage": "l2",
+        "size": "s",
+        "source": "are.na",
+        "link": "www.are.na/search/ascii%20art",
+        "group": "Detour · Text as light",
+        "keywords": [
+          "ascii",
+          "text",
+          "light"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_ca",
+        "image": "images/lt_ca.jpg",
+        "branch": "detour",
+        "title": "Rule 30, growing",
+        "minutesAgo": 80,
+        "stage": "l2",
+        "size": "s",
+        "source": "are.na",
+        "link": "www.are.na/search/cellular%20automata",
+        "group": "Detour · Text as light",
+        "keywords": [
+          "rules",
+          "pattern",
+          "growth",
+          "code"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_pose",
+        "image": "images/lt_pose.jpg",
+        "branch": "blush",
+        "title": "Pose tracking, 33 points",
+        "minutesAgo": 68,
+        "stage": "l3",
+        "size": "l",
+        "source": "are.na",
+        "link": "www.are.na/search/pose%20tracking",
+        "group": "Bodies as input",
+        "keywords": [
+          "body",
+          "tracking",
+          "points",
+          "input"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_depth",
+        "image": "images/lt_depth.jpg",
+        "branch": "blush",
+        "title": "A body as a depth map",
+        "minutesAgo": 62,
+        "stage": "l3",
+        "size": null,
+        "source": "pinterest.com",
+        "link": "www.pinterest.com/search/pins/?q=depth%20map",
+        "group": "Bodies as input",
+        "keywords": [
+          "body",
+          "depth",
+          "colour",
+          "sensor"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_cloud",
+        "image": "images/lt_cloud.jpg",
+        "branch": "blush",
+        "title": "A dancer as a point cloud",
+        "minutesAgo": 57,
+        "stage": "l3",
+        "size": "s",
+        "source": "are.na",
+        "link": "www.are.na/search/point%20cloud",
+        "group": "Bodies as input",
+        "keywords": [
+          "body",
+          "points",
+          "motion",
+          "dance"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_slit",
+        "image": "images/lt_slit.jpg",
+        "branch": "blush",
+        "title": "Slit-scan: time as a shape",
+        "minutesAgo": 66,
+        "stage": "l3",
+        "size": null,
+        "source": "are.na",
+        "link": "www.are.na/search/slit%20scan",
+        "group": "Bodies, in time",
+        "keywords": [
+          "time",
+          "motion",
+          "colour",
+          "body"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_mp",
+        "image": "images/lt_mp.jpg",
+        "branch": "blush",
+        "title": "MediaPipe pose landmarks",
+        "minutesAgo": 60,
+        "stage": "l3",
+        "size": "s",
+        "source": "developers.google.com",
+        "link": "developers.google.com/mediapipe/solutions/vision/pose_landmarker",
+        "group": "Bodies, in time",
+        "keywords": [
+          "tracking",
+          "body",
+          "code",
+          "points"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_dither",
+        "image": "images/lt_dither.jpg",
+        "branch": "detour",
+        "title": "One-bit light",
+        "minutesAgo": 63,
+        "stage": "l3",
+        "size": "s",
+        "source": "are.na",
+        "link": "www.are.na/search/dithering",
+        "group": "Detour · One-bit light",
+        "keywords": [
+          "dither",
+          "light",
+          "pattern"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_led",
+        "image": "images/lt_led.jpg",
+        "branch": "lime",
+        "title": "16 × 12 LEDs, one pixel each",
+        "minutesAgo": 40,
+        "stage": "l4",
+        "size": "l",
+        "source": "pinterest.com",
+        "link": "www.pinterest.com/search/pins/?q=led%20matrix",
+        "group": "Making it physical",
+        "keywords": [
+          "led",
+          "light",
+          "grid",
+          "pixels",
+          "particles"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_proj",
+        "image": "images/lt_proj.jpg",
+        "branch": "lime",
+        "title": "Projection on stacked boxes",
+        "minutesAgo": 33,
+        "stage": "l4",
+        "size": null,
+        "source": "pinterest.com",
+        "link": "www.pinterest.com/search/pins/?q=projection%20mapping",
+        "group": "Making it physical",
+        "keywords": [
+          "projection",
+          "light",
+          "room",
+          "colour"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_wled",
+        "image": "images/lt_wled.jpg",
+        "branch": "lime",
+        "title": "WLED, sound reactive",
+        "minutesAgo": 27,
+        "stage": "l4",
+        "size": "s",
+        "source": "kno.wled.ge",
+        "link": "kno.wled.ge",
+        "group": "Making it physical",
+        "keywords": [
+          "led",
+          "sound",
+          "code",
+          "light"
+        ],
+        "author": null
+      },
+      {
+        "id": "lt_x2",
+        "image": "images/lt_x2.jpg",
+        "branch": "lime",
+        "title": "600 LEDs, one microphone",
+        "minutesAgo": 15,
+        "stage": "l4",
+        "size": null,
+        "source": "x.com",
+        "link": "x.com/search?q=600%20leds",
+        "group": "Making it physical",
+        "keywords": [
+          "led",
+          "sound",
+          "wall",
+          "light"
+        ],
+        "author": "@ines.makes"
+      },
+      {
+        "id": "lt_last",
+        "image": "images/lt_last.jpg",
+        "branch": "lime",
+        "title": "The room glows back",
+        "minutesAgo": 4,
+        "stage": "l4",
+        "size": "l",
+        "source": "are.na",
+        "link": "www.are.na/search/light%20installation",
+        "group": "Making it physical",
+        "keywords": [
+          "room",
+          "light",
+          "glow",
+          "body"
+        ],
+        "author": null
+      }
+    ],
+    "connections": [
+      {
+        "from": "start",
+        "to": "lt_flow",
+        "type": "trail"
+      },
+      {
+        "from": "lt_flow",
+        "to": "lt_part",
+        "type": "trail"
+      },
+      {
+        "from": "lt_part",
+        "to": "lt_grad",
+        "type": "trail"
+      },
+      {
+        "from": "lt_part",
+        "to": "lt_nature",
+        "type": "detour"
+      },
+      {
+        "from": "lt_grad",
+        "to": "lt_bos",
+        "type": "detour"
+      },
+      {
+        "from": "lt_bos",
+        "to": "lt_arena",
+        "type": "trail"
+      },
+      {
+        "from": "lt_grad",
+        "to": "lt_liss",
+        "type": "trail"
+      },
+      {
+        "from": "lt_liss",
+        "to": "lt_fft",
+        "type": "trail"
+      },
+      {
+        "from": "lt_fft",
+        "to": "lt_cym",
+        "type": "trail"
+      },
+      {
+        "from": "lt_cym",
+        "to": "lt_x1",
+        "type": "trail"
+      },
+      {
+        "from": "lt_fft",
+        "to": "lt_ascii",
+        "type": "detour"
+      },
+      {
+        "from": "lt_ascii",
+        "to": "lt_ca",
+        "type": "trail"
+      },
+      {
+        "from": "lt_x1",
+        "to": "shift",
+        "type": "shift"
+      },
+      {
+        "from": "shift",
+        "to": "lt_pose",
+        "type": "shift"
+      },
+      {
+        "from": "shift",
+        "to": "lt_slit",
+        "type": "shift"
+      },
+      {
+        "from": "lt_pose",
+        "to": "lt_depth",
+        "type": "trail"
+      },
+      {
+        "from": "lt_depth",
+        "to": "lt_cloud",
+        "type": "trail"
+      },
+      {
+        "from": "lt_slit",
+        "to": "lt_mp",
+        "type": "trail"
+      },
+      {
+        "from": "lt_slit",
+        "to": "lt_dither",
+        "type": "detour"
+      },
+      {
+        "from": "lt_cloud",
+        "to": "shift2",
+        "type": "shift"
+      },
+      {
+        "from": "lt_mp",
+        "to": "shift2",
+        "type": "shift"
+      },
+      {
+        "from": "shift2",
+        "to": "lt_led",
+        "type": "shift"
+      },
+      {
+        "from": "lt_led",
+        "to": "lt_proj",
+        "type": "trail"
+      },
+      {
+        "from": "lt_proj",
+        "to": "lt_wled",
+        "type": "trail"
+      },
+      {
+        "from": "lt_wled",
+        "to": "lt_x2",
+        "type": "trail"
+      },
+      {
+        "from": "lt_x2",
+        "to": "lt_last",
+        "type": "trail"
+      },
+      {
+        "from": "lt_led",
+        "to": "lt_part",
+        "type": "return"
+      }
+    ]
+  },
+  "onboard": {
+    "title": "First five minutes",
+    "role": "UI/UX designer · rethinking a note app’s onboarding",
+    "started": "10:05 AM",
+    "duration": "1:36:12",
+    "start": "Opened nngroup.com",
+    "stages": [
+      {
+        "id": "o1",
+        "name": "How others onboard",
+        "branch": "lime"
+      },
+      {
+        "id": "o2",
+        "name": "What the research says",
+        "branch": "butter"
+      },
+      {
+        "id": "o3",
+        "name": "Learning by doing",
+        "branch": "blush"
+      },
+      {
+        "id": "o4",
+        "name": "Proving it",
+        "branch": "lime"
+      }
+    ],
+    "shifts": [
+      {
+        "from": "Teaching",
+        "to": "playing",
+        "into": "ob_sandbox"
+      },
+      {
+        "from": "Ideas",
+        "to": "evidence",
+        "into": "ob_affinity"
+      }
+    ],
+    "turn": "teaching turned into letting people play, then ideas into evidence",
+    "mcpShifts": [
+      {
+        "from": "What the research says",
+        "to": "Learning by doing",
+        "note": "Stop explaining the app; let people use it with sample data."
+      },
+      {
+        "from": "Learning by doing",
+        "to": "Proving it",
+        "note": "Interviews and retention to show it worked."
+      }
+    ],
+    "nudge": {
+      "like": "learning by doing",
+      "explore": "empty states that teach",
+      "branch": "Empty states that teach"
+    },
+    "cards": [
+      {
+        "id": "ob_check",
+        "image": "images/ob_check.jpg",
+        "branch": "lime",
+        "title": "Getting started, 2 of 5",
+        "minutesAgo": 94,
+        "stage": "o1",
+        "size": null,
+        "source": "pinterest.com",
+        "link": "www.pinterest.com/search/pins/?q=onboarding%20checklist",
+        "group": "How others onboard",
+        "keywords": [
+          "checklist",
+          "progress",
+          "onboarding",
+          "tasks"
+        ],
+        "author": null
+      },
+      {
+        "id": "ob_empty",
+        "image": "images/ob_empty.jpg",
+        "branch": "lime",
+        "title": "An empty state that asks for one thing",
+        "minutesAgo": 90,
+        "stage": "o1",
+        "size": "l",
+        "source": "pinterest.com",
+        "link": "www.pinterest.com/search/pins/?q=empty%20state",
+        "group": "How others onboard",
+        "keywords": [
+          "empty state",
+          "first step",
+          "onboarding",
+          "illustration"
+        ],
+        "author": null
+      },
+      {
+        "id": "ob_tour",
+        "image": "images/ob_tour.jpg",
+        "branch": "lime",
+        "title": "Step 1 of 6",
+        "minutesAgo": 86,
+        "stage": "o1",
+        "size": "s",
+        "source": "pinterest.com",
+        "link": "www.pinterest.com/search/pins/?q=product%20tour",
+        "group": "How others onboard",
+        "keywords": [
+          "tour",
+          "tooltip",
+          "onboarding",
+          "friction"
+        ],
+        "author": null
+      },
+      {
+        "id": "ob_x1",
+        "image": "images/ob_x1.jpg",
+        "branch": "lime",
+        "title": "“The tour isn’t the problem”",
+        "minutesAgo": 83,
+        "stage": "o1",
+        "size": null,
+        "source": "x.com",
+        "link": "x.com/search?q=onboarding%20tour",
+        "group": "How others onboard",
+        "keywords": [
+          "tour",
+          "onboarding",
+          "friction"
+        ],
+        "author": "@mira.designs"
+      },
+      {
+        "id": "ob_krug",
+        "image": "images/ob_krug.jpg",
+        "branch": "detour",
+        "title": "Don’t Make Me Think",
+        "minutesAgo": 85,
+        "stage": "o1",
+        "size": "s",
+        "source": "wikipedia.org",
+        "link": "en.wikipedia.org/wiki/Don%27t_Make_Me_Think",
+        "group": "Reading · Usability",
+        "keywords": [
+          "usability",
+          "clarity",
+          "book"
+        ],
+        "author": "Steve Krug"
+      },
+      {
+        "id": "ob_nng",
+        "image": "images/ob_nng.jpg",
+        "branch": "butter",
+        "title": "Progressive Disclosure",
+        "minutesAgo": 79,
+        "stage": "o2",
+        "size": "l",
+        "source": "nngroup.com",
+        "link": "www.nngroup.com/articles/progressive-disclosure/",
+        "group": "What the research says",
+        "keywords": [
+          "progressive disclosure",
+          "learning",
+          "complexity",
+          "research"
+        ],
+        "author": "Nielsen Norman Group"
+      },
+      {
+        "id": "ob_hick",
+        "image": "images/ob_hick.jpg",
+        "branch": "butter",
+        "title": "Hick’s Law",
+        "minutesAgo": 75,
+        "stage": "o2",
+        "size": "s",
+        "source": "lawsofux.com",
+        "link": "lawsofux.com/hicks-law/",
+        "group": "What the research says",
+        "keywords": [
+          "choices",
+          "decision",
+          "complexity",
+          "research"
+        ],
+        "author": null
+      },
+      {
+        "id": "ob_zeig",
+        "image": "images/ob_zeig.jpg",
+        "branch": "butter",
+        "title": "Zeigarnik Effect",
+        "minutesAgo": 73,
+        "stage": "o2",
+        "size": "s",
+        "source": "lawsofux.com",
+        "link": "lawsofux.com/zeigarnik-effect/",
+        "group": "What the research says",
+        "keywords": [
+          "memory",
+          "progress",
+          "unfinished tasks",
+          "research"
+        ],
+        "author": null
+      },
+      {
+        "id": "ob_mom",
+        "image": "images/ob_mom.jpg",
+        "branch": "butter",
+        "title": "The Mom Test",
+        "minutesAgo": 69,
+        "stage": "o2",
+        "size": null,
+        "source": "momtestbook.com",
+        "link": "www.momtestbook.com",
+        "group": "What the research says",
+        "keywords": [
+          "interviews",
+          "research",
+          "questions"
+        ],
+        "author": "Rob Fitzpatrick"
+      },
+      {
+        "id": "ob_chart",
+        "image": "images/ob_chart.jpg",
+        "branch": "butter",
+        "title": "Where people drop off",
+        "minutesAgo": 64,
+        "stage": "o2",
+        "size": "l",
+        "source": "figma.com",
+        "link": "www.figma.com",
+        "group": "What the research says",
+        "keywords": [
+          "funnel",
+          "drop-off",
+          "first note",
+          "data"
+        ],
+        "author": null
+      },
+      {
+        "id": "ob_a11y",
+        "image": "images/ob_a11y.jpg",
+        "branch": "detour",
+        "title": "Contrast, at least 4.5:1",
+        "minutesAgo": 72,
+        "stage": "o2",
+        "size": "s",
+        "source": "w3.org",
+        "link": "www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html",
+        "group": "Detour · Accessibility",
+        "keywords": [
+          "contrast",
+          "accessibility",
+          "text"
+        ],
+        "author": "W3C"
+      },
+      {
+        "id": "ob_sandbox",
+        "image": "images/ob_sandbox.jpg",
+        "branch": "blush",
+        "title": "Start inside a finished example",
+        "minutesAgo": 55,
+        "stage": "o3",
+        "size": "l",
+        "source": "pinterest.com",
+        "link": "www.pinterest.com/search/pins/?q=sample%20project%20onboarding",
+        "group": "Learning by doing",
+        "keywords": [
+          "sample data",
+          "learning",
+          "play",
+          "first note"
+        ],
+        "author": null
+      },
+      {
+        "id": "ob_x2",
+        "image": "images/ob_x2.jpg",
+        "branch": "blush",
+        "title": "“No tour. No checklist.”",
+        "minutesAgo": 50,
+        "stage": "o3",
+        "size": null,
+        "source": "x.com",
+        "link": "x.com/search?q=onboarding%20example",
+        "group": "Learning by doing",
+        "keywords": [
+          "example",
+          "learning",
+          "onboarding"
+        ],
+        "author": "@tobi.ux"
+      },
+      {
+        "id": "ob_inline",
+        "image": "images/ob_inline.jpg",
+        "branch": "blush",
+        "title": "A tip right where you need it",
+        "minutesAgo": 46,
+        "stage": "o3",
+        "size": "s",
+        "source": "pinterest.com",
+        "link": "www.pinterest.com/search/pins/?q=contextual%20tooltip",
+        "group": "Learning by doing",
+        "keywords": [
+          "tooltip",
+          "context",
+          "learning",
+          "templates"
+        ],
+        "author": null
+      },
+      {
+        "id": "ob_x3",
+        "image": "images/ob_x3.jpg",
+        "branch": "blush",
+        "title": "12 first-run interviews, a thread",
+        "minutesAgo": 42,
+        "stage": "o3",
+        "size": null,
+        "source": "x.com",
+        "link": "x.com/search?q=first-run%20interviews",
+        "group": "Learning by doing",
+        "keywords": [
+          "interviews",
+          "research",
+          "learning"
+        ],
+        "author": "@nadia.research"
+      },
+      {
+        "id": "ob_aha",
+        "image": "images/ob_aha.jpg",
+        "branch": "blush",
+        "title": "Time to first “aha”",
+        "minutesAgo": 37,
+        "stage": "o3",
+        "size": "s",
+        "source": "figma.com",
+        "link": "www.figma.com",
+        "group": "Learning by doing",
+        "keywords": [
+          "time to value",
+          "data",
+          "learning",
+          "play"
+        ],
+        "author": null
+      },
+      {
+        "id": "ob_micro",
+        "image": "images/ob_micro.jpg",
+        "branch": "detour",
+        "title": "“Words are UI”",
+        "minutesAgo": 48,
+        "stage": "o3",
+        "size": "s",
+        "source": "x.com",
+        "link": "x.com/search?q=microcopy",
+        "group": "Detour · Words and habits",
+        "keywords": [
+          "microcopy",
+          "words",
+          "first note"
+        ],
+        "author": "@copy.cat"
+      },
+      {
+        "id": "ob_game",
+        "image": "images/ob_game.jpg",
+        "branch": "detour",
+        "title": "“Streaks are not onboarding”",
+        "minutesAgo": 44,
+        "stage": "o3",
+        "size": "s",
+        "source": "x.com",
+        "link": "x.com/search?q=streaks%20onboarding",
+        "group": "Detour · Words and habits",
+        "keywords": [
+          "streaks",
+          "habits",
+          "retention"
+        ],
+        "author": "@hk.builds"
+      },
+      {
+        "id": "ob_affinity",
+        "image": "images/ob_affinity.jpg",
+        "branch": "lime",
+        "title": "Interview synthesis, 12 people",
+        "minutesAgo": 26,
+        "stage": "o4",
+        "size": "l",
+        "source": "figma.com",
+        "link": "www.figma.com",
+        "group": "Proving it",
+        "keywords": [
+          "interviews",
+          "synthesis",
+          "research",
+          "learning"
+        ],
+        "author": null
+      },
+      {
+        "id": "ob_proto",
+        "image": "images/ob_proto.jpg",
+        "branch": "lime",
+        "title": "New first run, v3",
+        "minutesAgo": 18,
+        "stage": "o4",
+        "size": null,
+        "source": "figma.com",
+        "link": "www.figma.com",
+        "group": "Proving it",
+        "keywords": [
+          "prototype",
+          "flow",
+          "sample data",
+          "onboarding"
+        ],
+        "author": null
+      },
+      {
+        "id": "ob_retention",
+        "image": "images/ob_retention.jpg",
+        "branch": "lime",
+        "title": "Retention, first 30 days",
+        "minutesAgo": 11,
+        "stage": "o4",
+        "size": null,
+        "source": "figma.com",
+        "link": "www.figma.com",
+        "group": "Proving it",
+        "keywords": [
+          "retention",
+          "data",
+          "progressive disclosure"
+        ],
+        "author": null
+      },
+      {
+        "id": "ob_last",
+        "image": "images/ob_last.jpg",
+        "branch": "lime",
+        "title": "Day-7 retention, before and after",
+        "minutesAgo": 3,
+        "stage": "o4",
+        "size": "l",
+        "source": "figma.com",
+        "link": "www.figma.com",
+        "group": "Proving it",
+        "keywords": [
+          "retention",
+          "data",
+          "result"
+        ],
+        "author": null
+      }
+    ],
+    "connections": [
+      {
+        "from": "start",
+        "to": "ob_check",
+        "type": "trail"
+      },
+      {
+        "from": "ob_check",
+        "to": "ob_empty",
+        "type": "trail"
+      },
+      {
+        "from": "ob_empty",
+        "to": "ob_tour",
+        "type": "trail"
+      },
+      {
+        "from": "ob_tour",
+        "to": "ob_x1",
+        "type": "trail"
+      },
+      {
+        "from": "ob_tour",
+        "to": "ob_krug",
+        "type": "detour"
+      },
+      {
+        "from": "ob_x1",
+        "to": "ob_nng",
+        "type": "trail"
+      },
+      {
+        "from": "ob_nng",
+        "to": "ob_hick",
+        "type": "trail"
+      },
+      {
+        "from": "ob_nng",
+        "to": "ob_zeig",
+        "type": "trail"
+      },
+      {
+        "from": "ob_hick",
+        "to": "ob_mom",
+        "type": "trail"
+      },
+      {
+        "from": "ob_zeig",
+        "to": "ob_mom",
+        "type": "trail"
+      },
+      {
+        "from": "ob_mom",
+        "to": "ob_chart",
+        "type": "trail"
+      },
+      {
+        "from": "ob_zeig",
+        "to": "ob_a11y",
+        "type": "detour"
+      },
+      {
+        "from": "ob_chart",
+        "to": "shift",
+        "type": "shift"
+      },
+      {
+        "from": "shift",
+        "to": "ob_sandbox",
+        "type": "shift"
+      },
+      {
+        "from": "ob_sandbox",
+        "to": "ob_x2",
+        "type": "trail"
+      },
+      {
+        "from": "ob_x2",
+        "to": "ob_inline",
+        "type": "trail"
+      },
+      {
+        "from": "ob_inline",
+        "to": "ob_x3",
+        "type": "trail"
+      },
+      {
+        "from": "ob_x3",
+        "to": "ob_aha",
+        "type": "trail"
+      },
+      {
+        "from": "ob_x2",
+        "to": "ob_micro",
+        "type": "detour"
+      },
+      {
+        "from": "ob_micro",
+        "to": "ob_game",
+        "type": "trail"
+      },
+      {
+        "from": "ob_aha",
+        "to": "shift2",
+        "type": "shift"
+      },
+      {
+        "from": "shift2",
+        "to": "ob_affinity",
+        "type": "shift"
+      },
+      {
+        "from": "ob_affinity",
+        "to": "ob_proto",
+        "type": "trail"
+      },
+      {
+        "from": "ob_proto",
+        "to": "ob_retention",
+        "type": "trail"
+      },
+      {
+        "from": "ob_retention",
+        "to": "ob_last",
+        "type": "trail"
+      },
+      {
+        "from": "ob_retention",
+        "to": "ob_nng",
+        "type": "return"
+      }
+    ]
+  },
+  "kintsugi": {
+    "title": "Kintsugi flow",
+    "role": "Visual research · kintsugi to text as form",
+    "started": "4:12 PM",
+    "duration": "1:24:10",
+    "start": "Opened Pinterest",
+    "stages": [
+      {
+        "id": "s1",
+        "name": "Kintsugi bowls",
+        "branch": "lime"
+      },
+      {
+        "id": "s2",
+        "name": "A kintsugi book",
+        "branch": "butter"
+      },
+      {
+        "id": "s3",
+        "name": "Text formats",
+        "branch": "blush"
+      },
+      {
+        "id": "s4",
+        "name": "Lines between things",
+        "branch": "lime"
+      }
+    ],
+    "shifts": [
+      {
+        "from": "Kintsugi",
+        "to": "text as form",
+        "into": "spill"
+      }
+    ],
+    "turn": "kintsugi became text as form",
+    "mcpShifts": [
+      {
+        "from": "The kintsugi book",
+        "to": "Text formats",
+        "note": "The book’s text became the subject: text as form."
+      }
+    ],
+    "nudge": {
+      "like": "words as form",
+      "explore": "asemic writing",
+      "branch": "Asemic writing"
+    },
+    "cards": [
+      {
+        "id": "bowl",
+        "image": "images/pin5.jpg",
+        "branch": "lime",
+        "title": "Kintsugi bowl",
+        "minutesAgo": 84,
+        "stage": "s1",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "seams",
+        "image": "images/pin6.jpg",
+        "branch": "lime",
+        "title": "Gold seams, up close",
+        "minutesAgo": 79,
+        "stage": "s1",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "blue",
+        "image": "images/N16.jpg",
+        "branch": "lime",
+        "title": "Gold seams on deep blue",
+        "minutesAgo": 70,
+        "stage": "s1",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "linen",
+        "image": "images/pin7.jpg",
+        "branch": "detour",
+        "title": "Gold beading instead of gold paint",
+        "minutesAgo": 74,
+        "stage": "s1",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "skin",
+        "image": "images/N11.jpg",
+        "branch": "detour",
+        "title": "Kintsugi on skin",
+        "minutesAgo": 66,
+        "stage": "s1",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "def",
+        "image": "images/N13.jpg",
+        "branch": "butter",
+        "title": "Kintsugi, defined",
+        "minutesAgo": 61,
+        "stage": "s2",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "poem",
+        "image": "images/N14.jpg",
+        "branch": "butter",
+        "title": "A kintsugi poem",
+        "minutesAgo": 57,
+        "stage": "s2",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "name",
+        "image": "images/N17.jpg",
+        "branch": "butter",
+        "title": "There’s a name for it in Japanese",
+        "minutesAgo": 53,
+        "stage": "s2",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "spill",
+        "image": "images/N7.jpg",
+        "branch": "blush",
+        "title": "Text spilling off the page",
+        "minutesAgo": 48,
+        "stage": "s3",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "words",
+        "image": "images/pin4.jpg",
+        "branch": "blush",
+        "title": "Some of them even seem to be falling",
+        "minutesAgo": 45,
+        "stage": "s3",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "grid",
+        "image": "images/N8.jpg",
+        "branch": "blush",
+        "title": "A sentence pulled apart",
+        "minutesAgo": 42,
+        "stage": "s3",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "thread",
+        "image": "images/pin2.jpg",
+        "branch": "blush",
+        "title": "Text strung like thread",
+        "minutesAgo": 39,
+        "stage": "s3",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "imag",
+        "image": "images/pin8.jpg",
+        "branch": "blush",
+        "title": "Imagine, scattered",
+        "minutesAgo": 36,
+        "stage": "s3",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "fig",
+        "image": "images/pin1.jpg",
+        "branch": "blush",
+        "title": "A figure made of words",
+        "minutesAgo": 33,
+        "stage": "s3",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "glitch",
+        "image": "images/N1.jpg",
+        "branch": "blush",
+        "title": "A figure glitching into text",
+        "minutesAgo": 30,
+        "stage": "s3",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "face",
+        "image": "images/N2.jpg",
+        "branch": "blush",
+        "title": "Text drifting across a face",
+        "minutesAgo": 27,
+        "stage": "s3",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "eye",
+        "image": "images/N6.jpg",
+        "branch": "blush",
+        "title": "Text across an eye",
+        "minutesAgo": 22,
+        "stage": "s3",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "green",
+        "image": "images/N3.jpg",
+        "branch": "blush",
+        "title": "A figure traced in text",
+        "minutesAgo": 18,
+        "stage": "s3",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "pix1",
+        "image": "images/N5.jpg",
+        "branch": "detour",
+        "title": "Pixels instead of letters",
+        "minutesAgo": 25,
+        "stage": "s3",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "pix2",
+        "image": "images/N10.jpg",
+        "branch": "detour",
+        "title": "A pixel-smeared figure",
+        "minutesAgo": 20,
+        "stage": "s3",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "hands",
+        "image": "images/pin3.jpg",
+        "branch": "lime",
+        "title": "Lines between hands",
+        "minutesAgo": 14,
+        "stage": "s4",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "net",
+        "image": "images/N9.jpg",
+        "branch": "lime",
+        "title": "A red network of notes",
+        "minutesAgo": 11,
+        "stage": "s4",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "string",
+        "image": "images/N12.jpg",
+        "branch": "lime",
+        "title": "A red thread through a figure",
+        "minutesAgo": 8,
+        "stage": "s4",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "wired",
+        "image": "images/N4.jpg",
+        "branch": "lime",
+        "title": "Wired to every reference",
+        "minutesAgo": 5,
+        "stage": "s4",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "stars",
+        "image": "images/N15.jpg",
+        "branch": "lime",
+        "title": "Constellations over a face",
+        "minutesAgo": 2,
+        "stage": "s4",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "dragon",
+        "image": "images/u1.jpg",
+        "branch": "detour",
+        "title": "Dragon plate, gold seams",
+        "minutesAgo": 76,
+        "stage": "s1",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "imperf",
+        "image": "images/u5.jpg",
+        "branch": "detour",
+        "title": "Is imperfection an eyesore?",
+        "minutesAgo": 72,
+        "stage": "s1",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "bodhi",
+        "image": "images/u2.jpg",
+        "branch": "detour",
+        "title": "Bodhisattva in blue ripples",
+        "minutesAgo": 68,
+        "stage": "s1",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "vase",
+        "image": "images/u4.jpg",
+        "branch": "detour",
+        "title": "Translated vase",
+        "minutesAgo": 59,
+        "stage": "s2",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "maybe",
+        "image": "images/u6.jpg",
+        "branch": "detour",
+        "title": "Maybe it’s nothing",
+        "minutesAgo": 43,
+        "stage": "s3",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "portal",
+        "image": "images/u3.jpg",
+        "branch": "detour",
+        "title": "A portal for creation",
+        "minutesAgo": 38,
+        "stage": "s3",
+        "size": null,
+        "source": "pinterest.com",
+        "link": null,
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "naoko",
+        "image": "images/a1.jpg",
+        "branch": "detour",
+        "title": "Naoko Fukumaru, kintsugi restorer",
+        "minutesAgo": 51,
+        "stage": "s2",
+        "size": null,
+        "source": "naokofukumaru.com",
+        "link": "naokofukumaru.com",
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "unbroken",
+        "image": "images/a2.jpg",
+        "branch": "detour",
+        "title": "Unbroken Kintsugi",
+        "minutesAgo": 49,
+        "stage": "s2",
+        "size": null,
+        "source": "unbrokenkintsugi.com",
+        "link": "www.unbrokenkintsugi.com/about",
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "cpdef",
+        "image": "images/a3.jpg",
+        "branch": "detour",
+        "title": "Concrete poetry, defined",
+        "minutesAgo": 31,
+        "stage": "s3",
+        "size": null,
+        "source": "poetryfoundation.org",
+        "link": "www.poetryfoundation.org/education/glossary/concrete-poetry",
+        "group": null,
+        "keywords": null,
+        "author": null
+      },
+      {
+        "id": "antho",
+        "image": "images/a4.jpg",
+        "branch": "detour",
+        "title": "Concrete Poetry: A 21st-Century Anthology",
+        "minutesAgo": 29,
+        "stage": "s3",
+        "size": null,
+        "source": "burlington.org.uk",
+        "link": "contemporary.burlington.org.uk/reviews/reviews/concrete-poetry-a-21st-century-anthology",
+        "group": null,
+        "keywords": null,
+        "author": null
+      }
+    ],
+    "connections": [
+      {
+        "from": "start",
+        "to": "bowl",
+        "type": "trail"
+      },
+      {
+        "from": "bowl",
+        "to": "seams",
+        "type": "trail"
+      },
+      {
+        "from": "seams",
+        "to": "blue",
+        "type": "trail"
+      },
+      {
+        "from": "blue",
+        "to": "def",
+        "type": "trail"
+      },
+      {
+        "from": "def",
+        "to": "poem",
+        "type": "trail"
+      },
+      {
+        "from": "poem",
+        "to": "name",
+        "type": "trail"
+      },
+      {
+        "from": "seams",
+        "to": "linen",
+        "type": "detour"
+      },
+      {
+        "from": "blue",
+        "to": "skin",
+        "type": "detour"
+      },
+      {
+        "from": "name",
+        "to": "shift",
+        "type": "shift"
+      },
+      {
+        "from": "shift",
+        "to": "spill",
+        "type": "shift"
+      },
+      {
+        "from": "shift",
+        "to": "fig",
+        "type": "shift"
+      },
+      {
+        "from": "spill",
+        "to": "words",
+        "type": "trail"
+      },
+      {
+        "from": "words",
+        "to": "grid",
+        "type": "trail"
+      },
+      {
+        "from": "grid",
+        "to": "thread",
+        "type": "trail"
+      },
+      {
+        "from": "thread",
+        "to": "imag",
+        "type": "trail"
+      },
+      {
+        "from": "fig",
+        "to": "glitch",
+        "type": "trail"
+      },
+      {
+        "from": "glitch",
+        "to": "face",
+        "type": "trail"
+      },
+      {
+        "from": "face",
+        "to": "eye",
+        "type": "trail"
+      },
+      {
+        "from": "eye",
+        "to": "green",
+        "type": "trail"
+      },
+      {
+        "from": "face",
+        "to": "pix1",
+        "type": "detour"
+      },
+      {
+        "from": "eye",
+        "to": "pix2",
+        "type": "detour"
+      },
+      {
+        "from": "imag",
+        "to": "hands",
+        "type": "trail"
+      },
+      {
+        "from": "green",
+        "to": "hands",
+        "type": "trail"
+      },
+      {
+        "from": "hands",
+        "to": "net",
+        "type": "trail"
+      },
+      {
+        "from": "net",
+        "to": "string",
+        "type": "trail"
+      },
+      {
+        "from": "string",
+        "to": "wired",
+        "type": "trail"
+      },
+      {
+        "from": "wired",
+        "to": "stars",
+        "type": "trail"
+      },
+      {
+        "from": "blue",
+        "to": "dragon",
+        "type": "detour"
+      },
+      {
+        "from": "dragon",
+        "to": "imperf",
+        "type": "trail"
+      },
+      {
+        "from": "imperf",
+        "to": "bodhi",
+        "type": "trail"
+      },
+      {
+        "from": "poem",
+        "to": "vase",
+        "type": "detour"
+      },
+      {
+        "from": "pix2",
+        "to": "maybe",
+        "type": "detour"
+      },
+      {
+        "from": "maybe",
+        "to": "portal",
+        "type": "trail"
+      },
+      {
+        "from": "name",
+        "to": "naoko",
+        "type": "detour"
+      },
+      {
+        "from": "naoko",
+        "to": "unbroken",
+        "type": "trail"
+      },
+      {
+        "from": "fig",
+        "to": "cpdef",
+        "type": "detour"
+      },
+      {
+        "from": "cpdef",
+        "to": "antho",
+        "type": "trail"
+      }
+    ]
+  }
+}
