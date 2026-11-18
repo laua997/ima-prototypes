@@ -185,7 +185,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
 .map-viewport.panning{cursor:grabbing}
 .map-canvas{position:relative;min-width:1760px;min-height:1280px;background:#141414}
 .slab,.alab{position:absolute;margin:0;color:#fff;font-weight:500;pointer-events:none;white-space:nowrap;font-family:var(--ui)}
-.slab{font-size:32px;letter-spacing:-.04em;line-height:1.1}
+.slab{font-size:32px;letter-spacing:0;line-height:1.1}
 .alab{font-size:13px;color:#e8e8e8}
 #map .hint{margin:0;font-size:12px;color:#c8c8c8;line-height:1.35}
 #map .empty-hint{position:absolute;width:220px;white-space:normal;pointer-events:none}
@@ -1029,7 +1029,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
       var group = sessions[lab.dataset.session];
       if (!group) return;
       lab.style.left = group.topX + "px";
-      lab.style.top = Math.max(8, group.minY - 72) + "px";
+      lab.style.top = Math.max(8, group.minY - 86) + "px";
       var hint = canvas.querySelector('.empty-hint[data-session="' + lab.dataset.session + '"]');
       if (hint) {
         hint.style.left = lab.style.left;
