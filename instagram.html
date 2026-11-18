@@ -7,7 +7,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23fff'/%3E%3Crect x='3' y='3' width='18' height='18' rx='5' fill='none' stroke='%23000' stroke-width='1.6'/%3E%3Ccircle cx='12' cy='12' r='4' fill='none' stroke='%23000' stroke-width='1.6'/%3E%3C/svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&family=Inter:wght@400;500&family=Spectral:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
   --ig:#000; --ig2:#737373; --line:#dbdbdb; --soft:#efefef; --blue:#0095f6; --hover:#f2f2f2;
@@ -229,6 +229,46 @@ body.picking,body.picking img.photo{cursor:crosshair}
 @media (min-width:1100px){.masonry{column-count:4}}
 @media (min-width:1400px){.masonry{column-count:5}}
 @media (max-width:800px){.closeup{grid-template-columns:1fr}}
+#site-sub{background:#fff;color:#222;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+#site-sub .stage{height:100%;overflow:auto;background:#fff}
+#site-sub .top{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:14px;height:64px;padding:0 24px 0 28px;padding-right:360px;background:#fff;border-bottom:1px solid #e6e6e6}
+#site-sub .mark{width:32px;height:32px;border:0;border-radius:8px;background:#FF6719;color:#fff;font-weight:700;font-size:18px;line-height:1}
+#site-sub .pubname{border:0;background:none;padding:0;font-weight:700;font-size:18px;color:#222}
+#site-sub .home{border:0;background:none;color:#777;font-size:14px;padding:6px 0}
+#site-sub .subbtn{margin-left:auto;border:0;border-radius:4px;background:#FF6719;color:#fff;font-weight:700;font-size:14px;padding:8px 14px}
+#site-sub .subbtn[aria-pressed="true"]{background:#222}
+#site-sub .read{width:min(640px,calc(100% - 400px));margin:28px 0 96px max(28px,calc((100% - 640px - 360px) / 2));padding:0 8px}
+#site-sub .feed{display:grid;gap:0}
+#site-sub .postlink{display:grid;gap:4px;text-align:left;border:0;border-bottom:1px solid #eee;background:#fff;padding:22px 0;color:#222}
+#site-sub .postlink .pub{font-size:13px;font-weight:700;color:#FF6719}
+#site-sub .postlink strong{font-family:Spectral,Georgia,serif;font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.2}
+#site-sub .postlink .dek,#site-sub .by{font-family:Spectral,Georgia,serif;color:#777;font-size:16px}
+#site-sub h1{font-family:Spectral,Georgia,serif;font-weight:700;font-size:42px;line-height:1.15;letter-spacing:-.02em;margin:8px 0 10px;color:#222}
+#site-sub .dek{font-family:Spectral,Georgia,serif;font-size:22px;line-height:1.35;color:#777;margin:0 0 16px}
+#site-sub .byline{display:flex;align-items:center;gap:10px;margin:0 0 14px;font-size:14px;color:#363737}
+#site-sub .byline b{font-weight:700}
+#site-sub .avatar{width:36px;height:36px;border-radius:50%;background:#FF6719;color:#fff;display:grid;place-items:center;font-weight:700}
+#site-sub .actions{display:flex;gap:8px;padding:8px 0 18px;border-top:1px solid #eee;border-bottom:1px solid #eee;margin-bottom:22px}
+#site-sub .actions button{flex:none;border:0;background:#fff;border-radius:999px;padding:8px 12px;font-size:14px;color:#363737;white-space:nowrap}
+#site-sub .actions button[aria-pressed="true"]{background:#FF6719;color:#fff}
+#site-sub .body p{font-family:Spectral,Georgia,serif;font-size:20px;line-height:1.6;margin:0 0 1.1em;color:#222}
+#site-sub .pull{font-family:Spectral,Georgia,serif;font-style:italic;font-size:28px;line-height:1.35;margin:1.3em 0;padding:0 0 0 16px;border-left:3px solid #FF6719;color:#222}
+#site-sub figure{margin:1.2em 0}
+#site-sub figure img{width:100%;display:block;background:#f4f4f4}
+#site-sub figcaption{font-family:Spectral,Georgia,serif;font-size:14px;color:#777;margin-top:8px}
+#site-sub .comments{margin-top:28px;display:grid;gap:12px}
+#site-sub .comments h2{font-size:16px;margin:0}
+#site-sub .comments p{margin:0;font-size:15px;line-height:1.45}
+#site-sub .comments form{display:grid;gap:8px}
+#site-sub .comments textarea{border:1px solid #e6e6e6;border-radius:6px;padding:8px 10px;font:400 15px/1.4 inherit;min-height:72px}
+#site-sub .comments button{justify-self:start;border:0;border-radius:4px;background:#FF6719;color:#fff;font-weight:700;padding:8px 12px}
+@media (max-width:1100px){
+  #site-sub .top{padding-right:24px}
+  #site-sub .read{width:auto;max-width:640px;margin:20px 24px 120px}
+}
+.quote-bubble{width:112px;height:112px;box-sizing:border-box;border:1px solid #000;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;padding:16px;overflow:hidden;text-align:center;font:400 11px/1.25 var(--ui);color:#000}
+.sheet .quote-full{margin:0 0 8px;font-size:18px;line-height:1.45;color:#000}
+.grid .qtile{display:flex;align-items:center;justify-content:center;height:100%;padding:8px;font-size:11px;line-height:1.3;text-align:center;color:#000}
 #detail{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.16);display:grid;place-items:center;padding:24px}
 .sheet{width:min(560px,100%);background:#fff;border:1px solid #000;border-radius:2px;padding:12px;box-shadow:none;max-height:calc(100vh - 48px);overflow:auto;font-family:var(--ui);letter-spacing:0;color:#000}
 .sheet img.big{width:100%;max-height:280px;object-fit:contain;background:#fff;border:1px solid #000;border-radius:0;display:block}
@@ -258,6 +298,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
 <div class="tabstrip" role="tablist" aria-label="Browser tabs">
   <button class="tab on" type="button" role="tab" data-tab="ig" aria-selected="true"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="4" fill="none" stroke="#111" stroke-width="1.4"/><circle cx="8" cy="8" r="3" fill="none" stroke="#111" stroke-width="1.4"/><circle cx="11.4" cy="4.6" r=".8" fill="#111"/></svg>Instagram</button>
   <button class="tab" type="button" role="tab" data-tab="pin" aria-selected="false"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#e60023"/><path fill="#fff" d="M8 3.2c-2.4 0-3.7 1.6-3.7 3.4 0 1 .4 1.9 1.2 2.2.1.1.2 0 .2-.1l.2-.8c0-.1 0-.2-.1-.3-.3-.3-.4-.8-.4-1.2 0-1.6 1.2-3 3.2-3 1.7 0 2.7 1.1 2.7 2.5 0 1.9-.8 3.5-2.1 3.5-.7 0-1.2-.6-1-1.3.2-.8.6-1.7.6-2.3 0-.5-.3-.9-.8-.9-.7 0-1.2.7-1.2 1.6 0 .6.2 1 .2 1l-.8 3.4c-.2 1-.1 2.2 0 3.1.6-.2 1.2-.6 1.6-1.1l.1-.1c.3.5 1.1.9 1.8.9 2.4 0 4-2.2 4-5.1 0-2.2-1.8-4.2-4.6-4.2Z"/></svg>Pinterest</button>
+  <button class="tab" type="button" role="tab" data-tab="sub" aria-selected="false"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="3" fill="#FF6719"/><path d="M4 5.2h8M4 8h8M4 10.8h5" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></svg>Substack</button>
 </div>
 <div class="toolbar">
   <button class="navbtn" id="hist-back" type="button" aria-label="Back" disabled><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4 6 9l5 5"/></svg></button>
@@ -299,6 +340,9 @@ body.picking,body.picking img.photo{cursor:crosshair}
     <button class="picon" id="p-profile" type="button" aria-label="Profile"><img src="images/a1.jpg" alt=""></button>
   </header>
   <div class="pbody" id="pbody"></div>
+</div>
+<div class="pane" id="site-sub" hidden>
+  <div class="stage" id="subbody"></div>
 </div>
 </div>
 </div>
@@ -372,6 +416,49 @@ body.picking,body.picking img.photo{cursor:crosshair}
     { session: "Tuesday references", site: "Instagram", handle: "light.room", board: "", image: "images/lt_led.jpg", caption: "Small lights in a dark room.", box: { x: 0.46, y: 0.22, w: 0.22, h: 0.26 }, tag: "color", note: "One small bright point." }
   ];
   SEEDS.forEach(function (seed) { seed.id = "seed-" + seed.handle + "-" + seed.session; });
+  var SUB_POSTS = [
+    {
+      id: "ss-gold", publication: "The Mended Page", author: "Ada Keene", date: "12 Nov 2026",
+      title: "The gold is the record", dek: "What a repaired bowl still shows", likes: 128, liked: false, restacked: false,
+      comments: [{ u: "Nia", t: "I kept reading the line, not the bowl." }],
+      blocks: [
+        { t: "p", text: "I keep coming back to the line of gold in the bowl. The break is still there. The gold does not hide it." },
+        { t: "img", src: "images/pin5.jpg", cap: "A bowl repaired with a gold line." },
+        { t: "pull", text: "The gold is not the repair. It is the record of the break." },
+        { t: "p", text: "If you look only at the gold, the bowl becomes a drawing. The clay is just the ground the line sits on." },
+        { t: "img", src: "images/N16.jpg", cap: "Gold lines on a deep blue ground." },
+        { t: "p", text: "Save the line, not the whole object. The rest of the picture can wait." }
+      ]
+    },
+    {
+      id: "ss-seam", publication: "The Mended Page", author: "Ada Keene", date: "3 Nov 2026",
+      title: "A seam you can follow", dek: "Looking only at the line", likes: 86, liked: false, restacked: false,
+      comments: [{ u: "Jonah", t: "The meeting of the two seams is the picture." }],
+      blocks: [
+        { t: "p", text: "A seam is a path. You can follow it from the rim to the foot without looking up." },
+        { t: "img", src: "images/pin6.jpg", cap: "Two seams meeting in the glaze." },
+        { t: "pull", text: "Follow the seam until it meets another." },
+        { t: "p", text: "Two seams meet near the center. That meeting is the part I would keep." }
+      ]
+    },
+    {
+      id: "ss-light", publication: "Field Notes on Light", author: "Jonah Pell", date: "8 Nov 2026",
+      title: "One small bright point", dek: "Notes from a dark room", likes: 204, liked: false, restacked: false,
+      comments: [{ u: "Ada", t: "The small point is enough." }],
+      blocks: [
+        { t: "p", text: "The room is almost dark. One point of light does all the work." },
+        { t: "img", src: "images/lt_led.jpg", cap: "A single bright point in a dark field." },
+        { t: "pull", text: "Keep the smallest light. The rest can stay dark." },
+        { t: "p", text: "I tried to save the whole field of lights. The picture got worse. The single point was the note." }
+      ]
+    }
+  ];
+  var TEXT_SEEDS = [
+    { id: "seed-text-mended-Sunday study", session: "Sunday study", site: "Substack", kind: "text", handle: "The Mended Page", author: "Ada Keene", board: "", postId: "ss-gold", quote: "The gold is not the repair. It is the record of the break.", caption: "The gold is the record", tag: "type", note: "A sentence from the essay on gold lines." }
+  ];
+  var subPostId = "";
+  var subFollow = {};
+  var textSel = "";
   var TAGS = ["color", "shape", "texture", "pose", "type"];
   var KEY = "tangents-ig-sample-v1";
   var state = load();
@@ -560,6 +647,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
       var mine = state.saves;
       html = '<div class="panel"><div class="me"><img src="images/a1.jpg" alt=""><div><strong>nita.studio</strong><span>Nita · ' + mine.length + " saved details</span></div></div><p>Saving one detail from pictures in the feed.</p>" +
         (mine.length ? '<div class="grid">' + mine.map(function (s) {
+          if (s.quote) return '<button type="button" data-card="' + esc(s.id) + '"><span class="qtile">' + esc(excerpt(s.quote)) + "</span></button>";
           return '<button type="button" data-card="' + esc(s.id) + '"><img src="' + esc(s.crop || s.image) + '" alt=""></button>';
         }).join("") + "</div>" : '<p class="empty">No saved details yet.</p><button class="btn pink" id="profile-save" type="button">Save a detail</button>') + "</div>";
     } else if (view === "more") {
@@ -580,15 +668,19 @@ body.picking,body.picking img.photo{cursor:crosshair}
     } else if (mode === "pick") {
       html = '<div class="island"><p class="hint">Drag a box over one detail. One click saves the whole post, and you can crop it later on the map.</p><div class="row"><button class="btn line" id="cancel-pick" type="button">Cancel</button></div></div>';
     } else if (mode === "review" && draft) {
-      html = '<div class="island"><img class="crop" id="draft-crop" alt="Selected detail" src="' + esc(draft.preview) + '"><p class="from">From <b>' + esc(draft.board ? draft.handle + " · " + draft.board : draft.handle) + "</b> on " + esc(draft.site || "Instagram") + "</p>" +
-        (draft.whole ? '<p class="hint">This is the whole post. You can crop it later on the map.</p>' : "") +
-        '<div class="tags" role="group" aria-label="Tags">' + TAGS.map(function (tag) {
-          return '<button type="button" data-tag="' + tag + '" aria-pressed="' + (draft.tag === tag ? "true" : "false") + '">' + tag + "</button>";
-        }).join("") + '</div><label class="why">why I saved this<textarea id="note" placeholder="Optional">' + esc(draft.note || "") + "</textarea></label>" +
+      var fromWho = draft.author ? draft.handle + " · " + draft.author : (draft.board ? draft.handle + " · " + draft.board : draft.handle);
+      var tags = '<div class="tags" role="group" aria-label="Tags">' + TAGS.map(function (tag) {
+        return '<button type="button" data-tag="' + tag + '" aria-pressed="' + (draft.tag === tag ? "true" : "false") + '">' + tag + "</button>";
+      }).join("") + '</div><label class="why">why I saved this<textarea id="note" placeholder="Optional">' + esc(draft.note || "") + "</textarea></label>" +
         (draft.warn ? '<p class="warn">' + esc(draft.warn) + "</p>" : "") +
-        '<div class="row"><button class="btn ghost" id="cancel-review" type="button">Cancel</button><button class="btn pink" id="commit-save" type="button">Save</button></div></div>';
+        '<div class="row"><button class="btn ghost" id="cancel-review" type="button">Cancel</button><button class="btn pink" id="commit-save" type="button">Save</button></div>';
+      html = draft.kind === "text"
+        ? '<div class="island"><p class="from">“' + esc(draft.quote) + '”</p><p class="from">From <b>' + esc(fromWho) + "</b> on Substack</p>" + tags + "</div>"
+        : '<div class="island"><img class="crop" id="draft-crop" alt="Selected detail" src="' + esc(draft.preview) + '"><p class="from">From <b>' + esc(fromWho) + "</b> on " + esc(draft.site || "Instagram") + "</p>" +
+          (draft.whole ? '<p class="hint">This is the whole post. You can crop it later on the map.</p>' : "") + tags + "</div>";
     } else {
-      html = '<div class="island"><div class="live"><i class="dotp"></i><p class="q">Session on</p><span class="count" id="save-count">' + n + " saved</span></div><div class=\"row\"><button class=\"btn line\" id=\"save-detail\" type=\"button\">Save a detail</button><button class=\"btn pink\" id=\"open-map\" type=\"button\">Open map</button></div><button class=\"btn text\" id=\"reset-sample\" type=\"button\">Reset sample</button></div>";
+      var textBtn = textSel ? '<div class="row"><button class="btn line" id="save-text" type="button">Save selected text</button></div>' : "";
+      html = '<div class="island"><div class="live"><i class="dotp"></i><p class="q">Session on</p><span class="count" id="save-count">' + n + " saved</span></div>" + textBtn + "<div class=\"row\"><button class=\"btn line\" id=\"save-detail\" type=\"button\">Save a detail</button><button class=\"btn pink\" id=\"open-map\" type=\"button\">Open map</button></div><button class=\"btn text\" id=\"reset-sample\" type=\"button\">Reset sample</button></div>";
     }
     root.classList.toggle("review", mode === "review");
     root.innerHTML = html;
@@ -616,7 +708,8 @@ body.picking,body.picking img.photo{cursor:crosshair}
     "seed-goldseam-Sunday study": { x: 800, y: 72 },
     "seed-blueground.studio-Sunday study": { x: 560, y: 450 },
     "seed-field.lines-Tuesday references": { x: 500, y: 980 },
-    "seed-light.room-Tuesday references": { x: 180, y: 730 }
+    "seed-light.room-Tuesday references": { x: 180, y: 730 },
+    "seed-text-mended-Sunday study": { x: 1060, y: 120 }
   };
   var ACCOUNT_SLOTS = [
     { x: 36, y: 210 },
@@ -659,9 +752,16 @@ body.picking,body.picking img.photo{cursor:crosshair}
       y: Math.round(origin.y + slot.y + lap * 90 + cloud.y + ring * 28 + jitter(item.id, "y"))
     };
   }
+  function excerpt(text) {
+    var t = String(text || "").replace(/\s+/g, " ").trim();
+    if (t.length <= 32) return t;
+    return t.slice(0, 30).replace(/\s+\S*$/, "") + "…";
+  }
   function cardButton(item, spot) {
-    var src = item.crop || item.image;
-    return '<button class="map-card" type="button" data-card="' + esc(item.id) + '" data-session="' + esc(item.session || "") + '" data-account="' + esc(accountKey(item)) + '" data-site="' + esc(item.site || "Instagram") + '" style="left:' + spot.x + 'px;top:' + spot.y + 'px"><img src="' + esc(src) + '" alt="" draggable="false"><span class="chips"><span class="site">' + esc(item.site || "Instagram") + '</span><span class="tag">' + esc(item.tag || "no tag") + '</span></span><span class="note">' + esc(item.note || "No note") + "</span></button>";
+    var body = item.quote
+      ? '<span class="quote-bubble">' + esc(excerpt(item.quote)) + "</span>"
+      : '<img src="' + esc(item.crop || item.image) + '" alt="" draggable="false">';
+    return '<button class="map-card' + (item.quote ? " text-clip" : "") + '" type="button" data-card="' + esc(item.id) + '" data-session="' + esc(item.session || "") + '" data-account="' + esc(accountKey(item)) + '" data-site="' + esc(item.site || "Instagram") + '" style="left:' + spot.x + 'px;top:' + spot.y + 'px">' + body + '<span class="chips"><span class="site">' + esc(item.site || "Instagram") + '</span><span class="tag">' + esc(item.tag || "no tag") + '</span></span><span class="note">' + esc(item.note || "No note") + "</span></button>";
   }
   function sessionMarkup(sessionName, items) {
     var anchor = SESSION_ANCHORS[sessionName] || { x: 80, y: 80 };
@@ -736,15 +836,15 @@ body.picking,body.picking img.photo{cursor:crosshair}
     canvas.style.height = Math.round(maxY) + "px";
   }
   function allCards() {
-    return SEEDS.concat(state.saves);
+    return SEEDS.concat(TEXT_SEEDS).concat(state.saves);
   }
   function renderMap() {
     var map = document.getElementById("map");
     map.hidden = false;
     map.innerHTML = '<div class="mapbar"><div class="logo">tangents</div><h1>Map</h1><button class="btn line" id="back-feed" type="button">Back to the feed</button><button class="btn line" id="copy-notes" type="button">Copy session notes</button><button class="btn text" id="reset-sample-map" type="button">Reset sample</button></div><div class="map-viewport"><div class="map-canvas" id="map-canvas"><svg id="map-links" aria-hidden="true"></svg>' +
       sessionMarkup("This session", state.saves) +
-      sessionMarkup("Sunday study", SEEDS.filter(function (s) { return s.session === "Sunday study"; })) +
-      sessionMarkup("Tuesday references", SEEDS.filter(function (s) { return s.session === "Tuesday references"; })) +
+      sessionMarkup("Sunday study", SEEDS.concat(TEXT_SEEDS).filter(function (s) { return s.session === "Sunday study"; })) +
+      sessionMarkup("Tuesday references", SEEDS.concat(TEXT_SEEDS).filter(function (s) { return s.session === "Tuesday references"; })) +
       "</div></div>" + toolsMarkup();
     layoutLabels();
     paintNotes();
@@ -948,7 +1048,12 @@ body.picking,body.picking img.photo{cursor:crosshair}
     if (!openCard) { el.hidden = true; el.innerHTML = ""; return; }
     var c = openCard;
     el.hidden = false;
-    el.innerHTML = '<div class="sheet" role="dialog" aria-label="Saved detail"><img class="big" src="' + esc(c.crop || c.image) + '" alt=""><div class="meta"><span class="site">' + esc(c.site || "Instagram") + '</span><span class="tag">' + esc(c.tag || "no tag") + "</span><strong>" + esc(c.board ? c.handle + " · " + c.board : c.handle) + "</strong></div><p>" + esc(c.note || "No note yet.") + '</p><div class="orig"><span>Original post</span><img id="original" src="' + esc(c.image) + '" alt="' + esc(c.caption || "") + '" draggable="false"></div>' +
+    var who = esc(c.author ? c.handle + " · " + c.author : (c.board ? c.handle + " · " + c.board : c.handle));
+    if (c.quote) {
+      el.innerHTML = '<div class="sheet" role="dialog" aria-label="Saved text"><p class="quote-full">“' + esc(c.quote) + '”</p><div class="meta"><span class="site">Substack</span><span class="tag">' + esc(c.tag || "no tag") + "</span><strong>" + who + "</strong></div><p>" + esc(c.note || "No note yet.") + '</p><p>' + esc(c.caption || "") + '</p><div class="row"><button class="btn line" id="open-source" type="button" data-post="' + esc(c.postId || "") + '">Show this post</button><button class="btn line" id="close-detail" type="button">Close</button></div></div>';
+      return;
+    }
+    el.innerHTML = '<div class="sheet" role="dialog" aria-label="Saved detail"><img class="big" src="' + esc(c.crop || c.image) + '" alt=""><div class="meta"><span class="site">' + esc(c.site || "Instagram") + '</span><span class="tag">' + esc(c.tag || "no tag") + "</span><strong>" + who + "</strong></div><p>" + esc(c.note || "No note yet.") + '</p><div class="orig"><span>Original post</span><img id="original" src="' + esc(c.image) + '" alt="' + esc(c.caption || "") + '" draggable="false"></div>' +
       (c.whole ? '<p class="hint">Drag a box on the original post to keep one detail.</p>' : "") +
       '<div class="row"><button class="btn line" id="close-detail" type="button">Close</button></div></div>';
   }
@@ -1015,6 +1120,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     draft = {
       site: article.dataset.site || "Instagram",
       handle: article.dataset.handle,
+      author: article.dataset.author || "",
       board: article.dataset.board || "",
       postId: article.id,
       image: img.getAttribute("src"),
@@ -1035,12 +1141,39 @@ body.picking,body.picking img.photo{cursor:crosshair}
     var note = document.getElementById("note");
     draft.note = note ? note.value.trim() : "";
     if (!draft.tag) { draft.warn = "Choose a tag."; renderPopup(); var area = document.getElementById("note"); if (area) area.value = draft.note; return; }
+    if (draft.kind === "text") {
+      state.saves.push({
+        id: "now-" + Date.now(),
+        kind: "text",
+        session: "This session",
+        site: "Substack",
+        handle: draft.handle,
+        author: draft.author || "",
+        board: "",
+        postId: draft.postId,
+        quote: draft.quote,
+        caption: draft.caption || "",
+        tag: draft.tag,
+        note: draft.note
+      });
+      state.active = true;
+      persist();
+      draft = null;
+      textSel = "";
+      mode = "live";
+      var sel = window.getSelection();
+      if (sel) sel.removeAllRanges();
+      renderPopup();
+      toast("Saved");
+      return;
+    }
     state.saves.push({
       id: "now-" + Date.now(),
       session: "This session",
       site: draft.site || "Instagram",
       handle: draft.handle,
       board: draft.board || "",
+      author: draft.author || "",
       postId: draft.postId,
       image: draft.image,
       caption: draft.caption,
@@ -1081,18 +1214,19 @@ body.picking,body.picking img.photo{cursor:crosshair}
       chunks.push(title);
       if (!items.length) chunks.push("No details saved.");
       items.forEach(function (item) {
-        chunks.push((item.site || "Instagram") + "\n" + (item.board ? item.handle + " · " + item.board : item.handle) + "\n" + (item.tag || "no tag") + "\n" + (item.note || "No note") + "\n" + (item.whole ? "Whole post" : "Crop saved with this note") + "\n" + item.caption);
+        chunks.push((item.site || "Instagram") + "\n" + (item.author ? item.handle + " · " + item.author : (item.board ? item.handle + " · " + item.board : item.handle)) + "\n" + (item.tag || "no tag") + "\n" + (item.note || "No note") + "\n" + (item.quote ? "Text clip\n" + item.quote : (item.whole ? "Whole post" : "Crop saved with this note") + "\n" + item.caption));
       });
       chunks.push("");
     }
-    add("Sunday study", SEEDS.filter(function (s) { return s.session === "Sunday study"; }));
-    add("Tuesday references", SEEDS.filter(function (s) { return s.session === "Tuesday references"; }));
+    add("Sunday study", SEEDS.concat(TEXT_SEEDS).filter(function (s) { return s.session === "Sunday study"; }));
+    add("Tuesday references", SEEDS.concat(TEXT_SEEDS).filter(function (s) { return s.session === "Tuesday references"; }));
     add("This session", state.saves);
     return chunks.join("\n");
   }
   function copyNotes() {
     var text = sessionNotes();
     var html = "<article>" + allCards().map(function (item) {
+      if (item.quote) return "<p><b>" + esc(item.handle) + "</b> · " + esc(item.quote) + "<br>" + esc(item.note || "No note") + "</p>";
       var src = item.crop || item.image;
       return "<p><img src=\"" + src + "\" alt=\"\"><br><b>" + esc(item.handle) + "</b> · " + esc(item.tag || "no tag") + "<br>" + esc(item.note || "No note") + "</p>";
     }).join("") + "</article>";
@@ -1176,6 +1310,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     if (e.target.id === "not-now") { state.dismissed = true; persist(); mode = "pill"; renderPopup(); return; }
     if (e.target.id === "reopen") { mode = state.active ? "live" : "ask"; renderPopup(); return; }
     if (e.target.id === "save-detail") { startPick(); return; }
+    if (e.target.id === "save-text") { saveSelectedText(); return; }
     if (e.target.id === "cancel-pick" || e.target.id === "cancel-review") { draft = null; stopPick(); return; }
     if (e.target.id === "open-map") { renderMap(); return; }
     if (e.target.id === "reset-sample") { resetSample(); return; }
@@ -1346,7 +1481,11 @@ body.picking,body.picking img.photo{cursor:crosshair}
     endBubble(e, true);
     mapPress = null;
   });
+  document.getElementById("popup").addEventListener("mousedown", function (e) {
+    if (e.target.id === "save-text") e.preventDefault();
+  });
   document.getElementById("detail").addEventListener("click", function (e) {
+    if (e.target.id === "open-source") { showSubPost(e.target.dataset.post); return; }
     if (e.target.id === "close-detail" || e.target.id === "detail") { openCard = null; renderDetail(); }
   });
   document.getElementById("copybox").addEventListener("click", function (e) {
@@ -1490,8 +1629,8 @@ body.picking,body.picking img.photo{cursor:crosshair}
     el.innerHTML = title + '<div class="masonry">' + (list.length ? list.map(pinCard).join("") : '<p class="empty" style="padding:16px">No pins match that search.</p>') + "</div>";
     paintChrome();
   }
-  function snapshot() { return { tab: tab, view: view, pview: pview, pin: openPinId }; }
-  function sameSnap(a, b) { return a && b && a.tab === b.tab && a.view === b.view && a.pview === b.pview && a.pin === b.pin; }
+  function snapshot() { return { tab: tab, view: view, pview: pview, pin: openPinId, post: subPostId }; }
+  function sameSnap(a, b) { return a && b && a.tab === b.tab && a.view === b.view && a.pview === b.pview && a.pin === b.pin && (a.post || "") === (b.post || ""); }
   function paintChrome() {
     document.querySelectorAll(".tab").forEach(function (b) {
       var on = b.dataset.tab === tab;
@@ -1500,10 +1639,12 @@ body.picking,body.picking img.photo{cursor:crosshair}
     });
     var url = "instagram.com";
     if (tab === "pin") url = openPinId ? "pinterest.com/pin/" + openPinId : (pview === "explore" ? "pinterest.com/explore" : pview === "create" ? "pinterest.com/boards" : "pinterest.com");
+    else if (tab === "sub") url = subPostId ? "substack.com/p/" + subPostId : "substack.com";
     else if (view && view !== "home") url = "instagram.com/" + view;
     document.getElementById("url").textContent = url;
     document.getElementById("site-ig").hidden = tab !== "ig";
     document.getElementById("site-pin").hidden = tab !== "pin";
+    document.getElementById("site-sub").hidden = tab !== "sub";
     document.getElementById("hist-back").disabled = histAt <= 0;
     document.getElementById("hist-forward").disabled = histAt < 0 || histAt >= hist.length - 1;
   }
@@ -1522,10 +1663,12 @@ body.picking,body.picking img.photo{cursor:crosshair}
     view = snap.view;
     pview = snap.pview;
     openPinId = snap.pin;
+    subPostId = snap.post || "";
     openThread = null;
     renderNav();
     renderCenter();
     renderPin();
+    renderSub();
     paintChrome();
     placePopup();
     applying = false;
@@ -1533,6 +1676,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
   function setTab(next) {
     if (tab === next) return;
     tab = next;
+    if (tab === "sub") renderSub();
     remember();
     placePopup();
   }
@@ -1552,6 +1696,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
   };
   document.getElementById("hist-reload").onclick = function () {
     if (tab === "ig") { view = "home"; openThread = null; renderNav(); renderCenter(); }
+    else if (tab === "sub") { subPostId = ""; renderSub(); }
     else { pview = "home"; openPinId = null; pquery = ""; var box = document.getElementById("psearch"); if (box) box.value = ""; renderPin(); }
     remember();
     toast("Page refreshed");
@@ -1601,10 +1746,111 @@ body.picking,body.picking img.photo{cursor:crosshair}
     if (article && e.target.closest("img.photo")) { openPinId = article.id; pview = "pin"; renderPin(); remember(); }
   });
 
+  function subPost(id) { return SUB_POSTS.filter(function (p) { return p.id === id; })[0]; }
+  function showSubPost(id) {
+    openCard = null;
+    renderDetail();
+    document.getElementById("map").hidden = true;
+    subPostId = id || "";
+    tab = "sub";
+    renderSub();
+    remember();
+    placePopup();
+  }
+  function currentQuote() {
+    var sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.rangeCount) return "";
+    var node = sel.anchorNode;
+    var el = node && (node.nodeType === 1 ? node : node.parentElement);
+    if (!el || !el.closest || !el.closest("#site-sub")) return "";
+    return sel.toString().replace(/\s+/g, " ").trim();
+  }
+  function postFromSelection() {
+    var sel = window.getSelection();
+    var node = sel && sel.anchorNode;
+    var el = node && (node.nodeType === 1 ? node : node.parentElement);
+    var marked = el && el.closest && el.closest("[data-post]");
+    return subPost(marked ? marked.dataset.post : subPostId);
+  }
+  function saveSelectedText() {
+    var quote = textSel || currentQuote();
+    var post = postFromSelection();
+    if (!quote || quote.length < 3 || !post || !state.active) return;
+    draft = {
+      kind: "text",
+      site: "Substack",
+      handle: post.publication,
+      author: post.author,
+      board: "",
+      postId: post.id,
+      quote: quote,
+      caption: post.title,
+      tag: "",
+      note: ""
+    };
+    mode = "review";
+    renderPopup();
+  }
+  function renderSub() {
+    var el = document.getElementById("subbody");
+    if (!el) return;
+    var post = subPost(subPostId);
+    var pub = post ? post.publication : "";
+    var initial = pub ? pub.charAt(0) : "S";
+    var head = '<header class="top"><button class="mark" type="button" id="sub-home" aria-label="Substack home">' + esc(initial) + '</button><button class="pubname" type="button" id="sub-title">' + esc(pub || "Substack") + '</button><button class="home" type="button" id="sub-feed">Home</button>' +
+      (pub ? '<button class="subbtn" type="button" id="sub-follow" aria-pressed="' + (subFollow[pub] ? "true" : "false") + '">' + (subFollow[pub] ? "Subscribed" : "Subscribe") + "</button>" : "") + "</header>";
+    if (!post) {
+      el.innerHTML = head + '<div class="read feed"><h1>Posts</h1>' + SUB_POSTS.map(function (p) {
+        return '<button class="postlink" type="button" data-post="' + esc(p.id) + '"><span class="pub">' + esc(p.publication) + "</span><strong>" + esc(p.title) + '</strong><span class="dek">' + esc(p.dek) + '</span><span class="by">' + esc(p.author) + " · " + esc(p.date) + "</span></button>";
+      }).join("") + "</div>";
+      return;
+    }
+    var blocks = post.blocks.map(function (block) {
+      if (block.t === "pull") return '<blockquote class="pull">' + esc(block.text) + "</blockquote>";
+      if (block.t === "img") return '<figure><img class="photo" src="' + esc(block.src) + '" alt="' + esc(block.cap) + '" draggable="false"><figcaption>' + esc(block.cap) + "</figcaption></figure>";
+      return "<p>" + esc(block.text) + "</p>";
+    }).join("");
+    var comments = post.comments.map(function (c) { return "<p><b>" + esc(c.u) + "</b> " + esc(c.t) + "</p>"; }).join("");
+    el.innerHTML = head + '<article class="read" id="' + esc(post.id) + '" data-post="' + esc(post.id) + '" data-site="Substack" data-handle="' + esc(post.publication) + '" data-author="' + esc(post.author) + '" data-caption="' + esc(post.title) + '">' +
+      '<p class="pub" style="margin:0;color:#FF6719;font-weight:700;font-size:13px">' + esc(post.publication) + "</p><h1>" + esc(post.title) + '</h1><p class="dek">' + esc(post.dek) + '</p><div class="byline"><span class="avatar" aria-hidden="true">' + esc(post.author.charAt(0)) + "</span><span><b>" + esc(post.author) + "</b><br>" + esc(post.date) + '</span></div><div class="actions"><button type="button" id="sub-like" aria-pressed="' + (post.liked ? "true" : "false") + '">' + (post.liked ? "Liked" : "Like") + " " + post.likes + '</button><button type="button" id="sub-comment">Comment ' + post.comments.length + '</button><button type="button" id="sub-restack" aria-pressed="' + (post.restacked ? "true" : "false") + '">' + (post.restacked ? "Restacked" : "Restack") + '</button></div><div class="body">' + blocks + '</div><div class="comments"><h2>Comments</h2>' + comments + '<form id="sub-form"><textarea name="text" placeholder="Write a comment" aria-label="Write a comment"></textarea><button type="submit">Post comment</button></form></div></article>';
+  }
+  document.getElementById("site-sub").addEventListener("click", function (e) {
+    if (e.target.id === "sub-home" || e.target.id === "sub-title" || e.target.id === "sub-feed") { showSubPost(""); return; }
+    var open = e.target.closest("[data-post]");
+    if (open && open.classList.contains("postlink")) { showSubPost(open.dataset.post); return; }
+    var post = subPost(subPostId);
+    if (!post) return;
+    if (e.target.id === "sub-follow") { subFollow[post.publication] = !subFollow[post.publication]; renderSub(); return; }
+    if (e.target.id === "sub-like") { post.liked = !post.liked; post.likes += post.liked ? 1 : -1; renderSub(); return; }
+    if (e.target.id === "sub-restack") { post.restacked = !post.restacked; renderSub(); return; }
+    if (e.target.id === "sub-comment") { var area = document.querySelector("#sub-form textarea"); if (area) area.focus(); }
+  });
+  document.getElementById("site-sub").addEventListener("submit", function (e) {
+    if (e.target.id !== "sub-form") return;
+    e.preventDefault();
+    var post = subPost(subPostId);
+    var text = e.target.text.value.trim();
+    if (!post || !text) return;
+    post.comments.push({ u: "nita.studio", t: text });
+    renderSub();
+  });
+  document.addEventListener("selectionchange", function () {
+    if (mode !== "live" || tab !== "sub") {
+      if (textSel) { textSel = ""; if (mode === "live") renderPopup(); }
+      return;
+    }
+    var next = currentQuote();
+    if (next.length < 3) next = "";
+    if (next === textSel) return;
+    textSel = next;
+    renderPopup();
+  });
+
   renderNav();
   renderRight();
   renderCenter();
   renderPin();
+  renderSub();
   renderPopup();
   remember();
 })();
