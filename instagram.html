@@ -960,7 +960,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     var extra = makingProject
       ? '<input id="new-project-name" type="text" maxlength="60" placeholder="Project name" aria-label="Project name" value="' + esc(newProjectDraft) + '"><div class="row"><button class="btn pink" id="create-project" type="button">Create project</button></div>'
       : "";
-    return '<label class="why">Project<select id="' + id + '" aria-label="Project">' + opts + "</select></label>" + extra;
+    return '<label class="why">project<select id="' + id + '" aria-label="project">' + opts + "</select></label>" + extra;
   }
   function renderPopup() {
     var root = document.getElementById("popup");
@@ -971,7 +971,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     } else if (mode === "ask") {
       html = '<div class="island"><div class="ask"><p class="q">Start a session?</p><button class="btn ghost" id="not-now" type="button">Not now</button><button class="btn pink" id="start-session" type="button">Start</button></div>' + projectField("project-pick") + '<button class="btn text" id="reset-sample" type="button">Reset sample</button></div>';
     } else if (mode === "pick") {
-      html = '<div class="island"><p class="hint">Drag a box over one detail. One click saves the whole post, and you can crop it later on the map.</p><p class="from">Project: <b>' + esc(currentProject().name) + '</b></p><div class="row"><button class="btn line" id="cancel-pick" type="button">Cancel</button></div></div>';
+      html = '<div class="island"><p class="hint">Drag a box over one detail. One click saves the whole post, and you can crop it later on the map.</p><p class="from">project: <b>' + esc(currentProject().name) + '</b></p><div class="row"><button class="btn line" id="cancel-pick" type="button">Cancel</button></div></div>';
     } else if (mode === "review" && draft) {
       var fromWho = draft.author ? draft.handle + " · " + draft.author : (draft.board ? draft.handle + " · " + draft.board : draft.handle);
       var tags = projectField("review-project") + '<div class="tags" role="group" aria-label="Tags">' + TAGS.map(function (tag) {
@@ -1680,7 +1680,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     var html = fact("Account", "<p>" + esc(accountLine(c)) + "</p>") +
       fact("Saved", "<p>" + esc(savedWhen(c)) + "</p>") +
       fact("Session", "<p>" + esc(c.session || "This session") + "</p>") +
-      fact("Project", "<p>" + esc(project.name || "Project") + "</p>") +
+      fact("project", "<p>" + esc(project.name || "Project") + "</p>") +
       fact("Note", "<p>" + esc(c.note || "No note yet.") + "</p>") +
       fact("Link", "<p>" + linkHtml(c) + "</p>");
     if (connected.length) html += fact("Connected to", connected.map(function (name) { return "<p>" + esc(name) + "</p>"; }).join(""));
@@ -1958,7 +1958,7 @@ body.picking,body.picking img.photo{cursor:crosshair}
     var saves = summarySaves();
     var length = formatLength(summary.started ? summary.ended - summary.started : 0);
     var projectName = project ? project.name : "Project";
-    var body = fact("Length", "<p>" + esc(length) + "</p>") + fact("Project", "<p>" + esc(projectName) + "</p>");
+    var body = fact("Length", "<p>" + esc(length) + "</p>") + fact("project", "<p>" + esc(projectName) + "</p>");
     if (!saves.length) {
       body = '<p class="plain">Nothing was saved in this session.</p>' + body + fact("Saved", "<p>0 details</p>");
     } else {
